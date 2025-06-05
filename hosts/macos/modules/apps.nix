@@ -21,6 +21,8 @@
     gopass
     posting
     qbittorrent
+    gh
+    claude-code
   ];
   environment.variables.EDITOR = "nvim";
 
