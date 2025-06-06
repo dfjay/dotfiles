@@ -35,7 +35,9 @@
       cleanup = "zap";
     };
 
-    masApps = {};
+    masApps = {
+      "Xcode" = 497799835;
+    };
 
     taps = [
       "homebrew/services"
