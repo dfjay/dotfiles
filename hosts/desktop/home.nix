@@ -42,13 +42,6 @@
     homeDirectory = "/home/${username}";
   };
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 16;
-  };
-
   home.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.droid-sans-mono

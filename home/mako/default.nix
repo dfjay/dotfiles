@@ -8,9 +8,6 @@
       max-history = 100;
       max-visible = 5;
 
-      background-color = "#cba6f7";
-      border-color = "#cba6f7";
-
       border-radius = 10;
       border-size = 2;
       default-timeout = 5000;
@@ -19,7 +16,6 @@
       padding = "15";
       width = 300;
       height = 100;
-      font = "Fantasque Sans Mono, 12";
     };
 
 

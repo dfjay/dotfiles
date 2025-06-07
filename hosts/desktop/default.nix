@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     ./impermanence.nix
+    ../../modules/stylix.nix
     ../../modules/audio.nix
     ../../modules/dewm/hyprland.nix
     ../../modules/locale.nix

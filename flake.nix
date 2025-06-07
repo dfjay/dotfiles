@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,7 +29,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, disko, impermanence, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, stylix, disko, impermanence, hyprland, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
@@ -76,6 +81,7 @@
           inherit specialArgs;
           system = "x86_64-linux";
           modules = [
+            stylix.nixosModules.stylix
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence
             ./hosts/desktop

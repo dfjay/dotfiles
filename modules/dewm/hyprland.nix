@@ -23,6 +23,8 @@
     dconf.enable = true;
   };
 
+  stylix.autoEnable = true;
+
   security.pam.services.hyprlock = {};
 
   environment.systemPackages = with pkgs; [
