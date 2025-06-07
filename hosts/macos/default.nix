@@ -1,10 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [ 
-    ./modules/nixcore.nix
-    ./modules/macos.nix
-    ./modules/aerospace.nix
+    ../../modules/darwin/nixcore.nix
+    ../../modules/darwin/macos.nix
+    ../../modules/darwin/aerospace.nix
+    ../../modules/darwin/stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [

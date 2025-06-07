@@ -58,6 +58,7 @@
               };
             })
 
+            stylix.darwinModules.stylix
             ./hosts/macos
             home-manager.darwinModules.home-manager
             {
