@@ -36,7 +36,5 @@
     stateVersion = "25.05";
   };
 
-  targets.darwin.defaults."com.apple.desktopservices".DSDontWriteNetworkStores = true;
-
   programs.home-manager.enable = true;
 }

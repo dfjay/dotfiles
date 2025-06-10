@@ -1,6 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+    wget
+    curl
+  ];
+
   nix = {
     gc = {
       automatic = true;

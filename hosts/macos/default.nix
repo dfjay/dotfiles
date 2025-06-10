@@ -2,15 +2,13 @@
 
 {
   imports = [ 
-    ../../modules/darwin/nixcore.nix
+    ../../modules/darwin/system.nix
     ../../modules/darwin/macos.nix
     ../../modules/darwin/aerospace.nix
     ../../modules/darwin/stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    wget
-    curl
     aria2
     httpie
     neovim
@@ -97,7 +95,6 @@
       "memoryanalyzer" # DEL (home nix)
       "jdk-mission-control" # DEL (home nix)
       "vmware-fusion"
-      "virtualbox"
       "cyberduck"
       #"vagrant" # only proxy
       "intellij-idea" # only proxy
