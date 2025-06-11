@@ -82,7 +82,6 @@
  
       "soundsource"
       "iina"
-      "maccy"
 
       "kitty"
       "insomnia"
