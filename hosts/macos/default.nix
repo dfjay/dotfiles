@@ -9,25 +9,34 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    audacity
     aria2
-    httpie
-    neovim
-    lunarvim
-    git
-    just
-    mkpasswd
-    openfortivpn
-    cookiecutter
-    recode
+    bitwarden
+    claude-code
     colima
+    cookiecutter
+    dbeaver-bin
+    discord
     docker
     docker-credential-helpers
-    zulu
-    gopass
-    posting
-    qbittorrent
     gh
-    claude-code
+    git
+    gopass
+    httpie
+    insomnia
+    just
+    kitty
+    lunarvim
+    mkpasswd
+    neovim
+    openfortivpn
+    posting
+    slack
+    spotify
+    qbittorrent
+    recode
+    zotero
+    zulu
   ];
   environment.variables.EDITOR = "nvim";
 
@@ -55,58 +64,38 @@
     ];
 
     casks = [
-      "libreoffice"
-      "microsoft-excel"
-      "microsoft-word"
-      "microsoft-powerpoint"
-
-      "firefox@developer-edition"
-      "tor-browser"
-       
-      "syncthing"
-      "logseq"
-      "obsidian"
-      "zotero"
-      "poe"
-
-      "telegram-desktop"
-      "discord"
-      "slack"
-      "mattermost"
-      "element"
-      "tuta-mail"
-      "spotify"
-      "deepl"
-      "obs"
-      "audacity"
- 
-      "soundsource"
-      "iina"
-
-      "kitty"
-      "insomnia"
-      "visual-studio-code"
-      "visualvm" # DEL (home nix)
-      "wireshark"
       "balenaetcher"
-      "dbeaver-community"
       "beekeeper-studio"
-      "memoryanalyzer" # DEL (home nix)
-      "jdk-mission-control" # DEL (home nix)
-      "vmware-fusion"
       "cyberduck"
-      #"vagrant" # only proxy
-      "intellij-idea" # only proxy
-      "intellij-idea-ce"
-
-      "keepassxc"
-      "bitwarden"
-      "yubico-authenticator"
+      "deepl"
+      "element"
+      "firefox@developer-edition"
       "gpg-suite"
-
-      # Mac utilities
+      "iina"
+      "intellij-idea"
+      "intellij-idea-ce"
+      "jdk-mission-control"
+      "keepassxc"
+      "libreoffice"
       "linearmouse"
+      "logseq"
+      "mattermost"
+      "memoryanalyzer"
+      "microsoft-excel"
+      "microsoft-powerpoint"
+      "microsoft-word"
+      "obs"
+      "obsidian"
+      "poe"
       "raycast"
+      "soundsource"
+      "syncthing"
+      "telegram-desktop"
+      "tor-browser"
+      "tuta-mail"
+      "visualvm"
+      "vmware-fusion"
+      "yubico-authenticator"
     ];
   };
 }

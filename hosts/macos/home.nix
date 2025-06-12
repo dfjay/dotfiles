@@ -24,6 +24,7 @@
     ../../home/skim
     ../../home/starship
     ../../home/translateshell
+    ../../home/vscode
     ../../home/yazi
     ../../home/zed
     ../../home/zsh
