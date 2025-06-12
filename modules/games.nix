@@ -1,6 +1,11 @@
 { ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+    lutris
+    heroic
+  ];
+
   programs.gamescope = {
     enable = true;
     capSysNice = true;
