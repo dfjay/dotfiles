@@ -29,42 +29,34 @@
   services.v2raya.enable = true;
 
   environment.systemPackages = with pkgs; [
+    bitwarden-desktop
+    brave
+    element-desktop
+    furmark
+    glmark2
     gnumake
+    gopass
+    gpg-tui
+    grimblast
+    gui-for-singbox
+    hiddify-app
+    jetbrains.idea-community
     just
-    tuifimanager
-    wineWowPackages.stable
-    winetricks
-    rustup
-
-    spotify
+    libreoffice-qt
+    lunarvim
     nekoray
+    prismlauncher
+    qbittorrent
+    rustup
+    spotify
     telegram-desktop
+    tor-browser
+    tuifimanager
     usbutils
     via
-
-    prismlauncher
-    tor-browser
-    element-desktop
-    lunarvim
-    brave
-    libreoffice-qt
-    bitwarden-desktop
-    nekoray
-    jetbrains.idea-community
     v2rayn
-
-    grimblast
-
-    hiddify-app
-
-    gpg-tui
-    gopass
-
-    gui-for-singbox
-
-    glmark2
-    furmark
-    qbittorrent
+    winetricks
+    wineWowPackages.stable
     woeusb
   ];
 }

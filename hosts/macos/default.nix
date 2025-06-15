@@ -92,6 +92,7 @@
       "poe"
       "raycast"
       "soundsource"
+      "steam"
       "syncthing"
       "telegram-desktop"
       "tor-browser"
