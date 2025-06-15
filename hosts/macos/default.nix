@@ -50,6 +50,7 @@
     };
 
     masApps = {
+      "GarageBand" = 408709785;
       "Xcode" = 497799835;
     };
 
@@ -64,6 +65,7 @@
     ];
 
     casks = [
+      "audio-hijack"
       "balenaetcher"
       "beekeeper-studio"
       "cyberduck"
@@ -79,6 +81,7 @@
       "libreoffice"
       "linearmouse"
       "logseq"
+      "loopback"
       "mattermost"
       "memoryanalyzer"
       "microsoft-excel"
