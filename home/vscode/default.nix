@@ -17,6 +17,10 @@
 
           sonarsource.sonarlint-vscode
 
+          redhat.vscode-yaml
+          redhat.vscode-xml
+          mechatroner.rainbow-csv
+
           ms-python.python
           ms-python.debugpy
           ms-python.pylint
