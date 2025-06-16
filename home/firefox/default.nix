@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  programs.librewolf = {
+  programs.firefox = {
     enable = true;
 
     profiles = {
@@ -11,5 +11,5 @@
     };
   };
 
-  stylix.targets.librewolf.profileNames = [ "default" ];
+  stylix.targets.firefox.profileNames = [ "default" ];
 }

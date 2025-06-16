@@ -71,7 +71,6 @@
       "cyberduck"
       "deepl"
       "element"
-      "firefox@developer-edition"
       "gpg-suite"
       "iina"
       "intellij-idea"

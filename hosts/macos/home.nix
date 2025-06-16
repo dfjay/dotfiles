@@ -6,6 +6,7 @@
     ../../home/common
     ../../home/eza
     ../../home/fastfetch
+    ../../home/firefox
     #../../home/ghostty
     ../../home/git
     ../../home/go
