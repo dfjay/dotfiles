@@ -9,6 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +31,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, stylix, disko, impermanence, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
@@ -51,6 +53,8 @@
               system.primaryUser = username;
 
               nixpkgs.hostPlatform = "aarch64-darwin";
+
+              nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
 
               users.users.dfjay = {
                 name = username;
