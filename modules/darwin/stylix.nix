@@ -2,7 +2,7 @@
 
 let
   opacity = 0.95;
-  fontSize = 14;
+  fontSize = 12;
 in
 {
   stylix = {
@@ -43,18 +43,18 @@ in
 
     fonts = {
       serif = {
-        package = pkgs.aleo-fonts;
-        name = "Aleo";
+        package = pkgs.inter;
+        name = "Inter";
       };
 
       sansSerif = {
-        package = pkgs.noto-fonts-cjk-sans;
-        name = "Noto Sans CJK JP";
+        package = pkgs.inter;
+        name = "Inter";
       };
 
       monospace = {
-        package = pkgs.maple-mono.variable;
-        name = "Maple Mono";
+        package = pkgs.jetbrains-mono;
+        name = "JetBrains Mono";
       };
 
       emoji = {
