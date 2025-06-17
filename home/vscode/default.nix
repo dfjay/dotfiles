@@ -16,10 +16,15 @@
           ms-kubernetes-tools.vscode-kubernetes-tools
 
           sonarsource.sonarlint-vscode
+          streetsidesoftware.code-spell-checker
+          streetsidesoftware.code-spell-checker-russian
+
+          chrmarti.regex
 
           redhat.vscode-yaml
           redhat.vscode-xml
           mechatroner.rainbow-csv
+          janisdd.vscode-edit-csv
 
           ms-python.python
           ms-python.debugpy
@@ -39,6 +44,11 @@
 
           golang.go
 
+          dbaeumer.vscode-eslint
+          esbenp.prettier-vscode
+          formulahendry.auto-close-tag
+          pranaygp.vscode-css-peek
+          vitest.explorer
           svelte.svelte-vscode
           vue.volar
         ];
@@ -46,6 +56,8 @@
         userSettings = {
           "files.autoSave" = "afterDelay";
           "python.analysis.typeCheckingMode" = "standard";
+
+          "cSpell.language" = "en,ru";
         };
       };
     };
