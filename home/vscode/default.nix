@@ -55,9 +55,13 @@
 
         userSettings = {
           "files.autoSave" = "afterDelay";
-          "python.analysis.typeCheckingMode" = "standard";
-
+          "editor.minimap.enabled" = false;
+          "editor.unicodeHighlight.allowedLocales" = {
+            "ru" = true;
+          };
           "cSpell.language" = "en,ru";
+
+          "python.analysis.typeCheckingMode" = "standard";
         };
       };
     };
