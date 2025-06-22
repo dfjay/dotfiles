@@ -1,14 +1,12 @@
 { pkgs, ... }:
 
 {
-  services.xserver = {
+  services.displayManager.gdm = {
     enable = true;
-    displayManager.gdm = {
-      enable = true;
-    };
-    desktopManager.gnome = {
-      enable = true;
-    };
+  };
+
+  services.desktopManager.gnome = {
+    enable = true;
   };
 
   programs.dconf.enable = true;
@@ -17,10 +15,11 @@
     geary
   ];
 
-  # Gnome extensions
   environment.systemPackages = with pkgs.gnomeExtensions; [
     dash-to-dock
     blur-my-shell
     gsconnect
+    forge
+    pop-shell
   ];
 }
