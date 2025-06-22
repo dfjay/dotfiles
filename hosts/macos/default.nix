@@ -19,6 +19,7 @@
     discord
     docker
     docker-credential-helpers
+    dua
     gh
     git
     gopass
