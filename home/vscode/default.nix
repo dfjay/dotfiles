@@ -56,6 +56,7 @@
         userSettings = {
           "files.autoSave" = "afterDelay";
           "editor.minimap.enabled" = false;
+          "editor.density.editorTabHeight" = "compact";
           "editor.unicodeHighlight.allowedLocales" = {
             "ru" = true;
           };
