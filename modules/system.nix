@@ -24,8 +24,6 @@
 
   programs.dconf.enable = true;
 
-  programs.ssh.startAgent = true;
-
   programs.coolercontrol = {
     enable = true;
     nvidiaSupport = true;

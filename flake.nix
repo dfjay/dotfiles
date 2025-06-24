@@ -86,6 +86,9 @@
           inherit specialArgs;
           system = "x86_64-linux";
           modules = [
+            ({ pkgs, lib, ... }: {
+              nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+            })
             stylix.nixosModules.stylix
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence
