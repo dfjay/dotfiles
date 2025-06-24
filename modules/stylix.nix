@@ -41,11 +41,11 @@ in
       popups = opacity;
     };
 
-    cursor = {
-      package = pkgs.phinger-cursors;
-      name = "phinger-cursors";
-      size = 24;
-    };
+    #cursor = {
+    #  package = pkgs.phinger-cursors;
+    #  name = "phinger-cursors";
+    #  size = 24;
+    #};
 
     fonts = {
       serif = {
