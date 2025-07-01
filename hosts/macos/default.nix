@@ -17,6 +17,7 @@
     cookiecutter
     dbeaver-bin
     discord
+    dive
     docker
     docker-credential-helpers
     dua
