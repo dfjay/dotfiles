@@ -14,6 +14,7 @@
           eamodio.gitlens
           vscodevim.vim
           ms-kubernetes-tools.vscode-kubernetes-tools
+          github.vscode-pull-request-github
 
           sonarsource.sonarlint-vscode
           streetsidesoftware.code-spell-checker
