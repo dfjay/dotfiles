@@ -23,7 +23,7 @@
     ../../home/lazydocker
     ../../home/lazygit
     #../../home/mako
-    ../../home/nodejs
+    ../../home/js
     ../../home/nushell
     ../../home/postgresql
     #../../home/rofi

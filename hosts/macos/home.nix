@@ -19,7 +19,7 @@
     ../../home/lazydocker
     ../../home/lazygit
     ../../home/librewolf
-    ../../home/nodejs
+    ../../home/js
     ../../home/nushell
     ../../home/postgresql
     ../../home/python
