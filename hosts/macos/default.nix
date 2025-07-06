@@ -73,6 +73,7 @@
       "claude"
       "cyberduck"
       "element"
+      "figma"
       "ghostty"
       "gpg-suite"
       "iina"
@@ -101,6 +102,7 @@
       "tuta-mail"
       "visualvm"
       "vmware-fusion"
+      "waterfox"
       "yubico-authenticator"
     ];
   };
