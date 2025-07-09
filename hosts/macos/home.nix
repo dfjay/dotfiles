@@ -22,6 +22,7 @@
     ../../home/js
     ../../home/nushell
     ../../home/postgresql
+    ../../home/proto
     ../../home/python
     ../../home/skim
     ../../home/starship

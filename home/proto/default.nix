@@ -2,8 +2,8 @@
 
 {
   home.packages = with pkgs; [
-    kotlin
-    kotlin-native
-    ktlint
+    protobuf
+    protoc-gen-go
+    protoc-gen-go-grpc
   ];
 }
