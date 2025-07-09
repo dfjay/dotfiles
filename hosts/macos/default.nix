@@ -22,7 +22,6 @@
     docker-credential-helpers
     dua
     gh
-    git
     gopass
     httpie
     insomnia
@@ -52,7 +51,7 @@
     };
 
     masApps = {
-      "GarageBand" = 408709785;
+      "GarageBand" = 682658836;
       "Xcode" = 497799835;
     };
 

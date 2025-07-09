@@ -2,9 +2,12 @@
 
 {
   environment.systemPackages = with pkgs; [
-    wget
     curl
+    git
+    wget
   ];
+
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   nix = {
     gc = {
