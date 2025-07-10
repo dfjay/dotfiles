@@ -25,6 +25,7 @@
     ../../home/proto
     ../../home/python
     ../../home/skim
+    ../../home/ssh
     ../../home/starship
     ../../home/translateshell
     ../../home/vscode
