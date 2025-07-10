@@ -37,6 +37,7 @@
     spotify
     qbittorrent
     recode
+    wabt
     zotero
     zulu
   ];
