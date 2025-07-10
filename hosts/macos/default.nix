@@ -22,6 +22,7 @@
     docker-credential-helpers
     dua
     gh
+    glab
     gopass
     httpie
     insomnia
