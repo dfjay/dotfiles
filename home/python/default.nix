@@ -9,4 +9,6 @@
       ps.requests
     ]))
   ];
+
+  programs.uv.enable = true;
 }

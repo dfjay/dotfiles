@@ -25,6 +25,7 @@
     glab
     gopass
     httpie
+    jetbrains.idea-community
     insomnia
     just
     kitty
@@ -79,7 +80,6 @@
       "gpg-suite"
       "iina"
       "intellij-idea"
-      "intellij-idea-ce"
       "jdk-mission-control"
       "keepassxc"
       "libreoffice"

@@ -15,6 +15,7 @@
           vscodevim.vim
           ms-kubernetes-tools.vscode-kubernetes-tools
           github.vscode-pull-request-github
+          humao.rest-client
 
           sonarsource.sonarlint-vscode
           streetsidesoftware.code-spell-checker
