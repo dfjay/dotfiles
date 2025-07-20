@@ -32,7 +32,7 @@
     mkpasswd
     neovim
     openfortivpn
-    posting
+    #posting
     slack
     spotify
     qbittorrent
