@@ -25,7 +25,6 @@
     glab
     gopass
     httpie
-    jetbrains.idea-community
     insomnia
     just
     kitty
@@ -76,6 +75,7 @@
       "cyberduck"
       "element"
       "figma"
+      "fleet"
       "ghostty"
       "gpg-suite"
       "iina"
