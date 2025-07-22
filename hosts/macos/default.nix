@@ -26,9 +26,11 @@
     gopass
     httpie
     insomnia
+    jetbrains.idea-ultimate
     just
     kitty
     lunarvim
+    minio-client
     mkpasswd
     neovim
     openfortivpn
@@ -79,7 +81,6 @@
       "ghostty"
       "gpg-suite"
       "iina"
-      "intellij-idea"
       "jdk-mission-control"
       "keepassxc"
       "libreoffice"
