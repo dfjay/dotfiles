@@ -35,6 +35,7 @@
     neovim
     openfortivpn
     #posting
+    rclone
     slack
     spotify
     qbittorrent
@@ -65,8 +66,9 @@
 
     brews = [
       "gnupg"
-      "pinentry-mac"
       "incus"
+      "pinentry-mac"
+      "ykman"
     ];
 
     casks = [
@@ -82,7 +84,6 @@
       "gpg-suite"
       "iina"
       "jdk-mission-control"
-      "keepassxc"
       "libreoffice"
       "linearmouse"
       "logseq"
