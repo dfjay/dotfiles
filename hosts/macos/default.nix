@@ -41,6 +41,7 @@
     qbittorrent
     recode
     wabt
+    xh
     zotero
     zulu
   ];
