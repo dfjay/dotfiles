@@ -9,14 +9,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    audacity
     aria2
-    bitwarden
     claude-code
     colima
     cookiecutter
-    dbeaver-bin
-    discord
     dive
     docker
     docker-credential-helpers
@@ -26,23 +22,18 @@
     gopass
     httpie
     insomnia
-    jetbrains.idea-ultimate
     just
-    kitty
     lunarvim
     minio-client
     mkpasswd
     neovim
     openfortivpn
     #posting
-    rclone
-    slack
-    spotify
     qbittorrent
+    rclone
     recode
     wabt
     xh
-    zotero
     zulu
   ];
   environment.variables.EDITOR = "nvim";
@@ -73,17 +64,21 @@
     ];
 
     casks = [
+      "audacity"
       "audio-hijack"
       "balenaetcher"
       "beekeeper-studio"
+      "bitwarden"
       "claude"
       "cyberduck"
+      "discord"
       "element"
       "figma"
       "fleet"
       "ghostty"
       "gpg-suite"
       "iina"
+      "intellij-idea"
       "jdk-mission-control"
       "libreoffice"
       "linearmouse"
@@ -98,7 +93,9 @@
       "obsidian"
       "poe"
       "raycast"
+      "slack"
       "soundsource"
+      "spotify"
       "steam"
       "syncthing-app"
       "telegram-desktop"
@@ -108,6 +105,7 @@
       "vmware-fusion"
       "waterfox"
       "yubico-authenticator"
+      "zotero"
     ];
   };
 }
