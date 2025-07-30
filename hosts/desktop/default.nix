@@ -32,13 +32,11 @@
     bitwarden-desktop
     brave
     element-desktop
-    furmark
     glmark2
     gnumake
     gopass
     gpg-tui
     grimblast
-    gui-for-singbox
     hiddify-app
     jetbrains.idea-community
     just
