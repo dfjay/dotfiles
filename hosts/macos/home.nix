@@ -3,7 +3,6 @@
 {
   imports = [
     ../../home/bat
-    ../../home/common
     ../../home/erlang
     ../../home/eza
     ../../home/fastfetch

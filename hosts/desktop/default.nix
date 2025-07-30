@@ -7,7 +7,7 @@
     ./impermanence.nix
     ../../modules/stylix.nix
     ../../modules/audio.nix
-    ../../modules/dewm/cosmic.nix
+    ../../modules/de/cosmic.nix
     ../../modules/locale.nix
     ../../modules/system.nix
     ../../modules/games.nix

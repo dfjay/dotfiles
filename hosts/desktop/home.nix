@@ -4,8 +4,6 @@
   imports = [
     ../../home/bat
     ../../home/btop
-    ../../home/common
-    #../../home/dconf
     ../../home/eza
     ../../home/fastfetch
     ../../home/ghostty
@@ -15,23 +13,18 @@
     ../../home/gradle
     ../../home/helix
     ../../home/htop
-    #../../home/hyprland
     ../../home/jdk
     ../../home/k8s
     ../../home/kitty
     ../../home/kotlin
     ../../home/lazydocker
     ../../home/lazygit
-    #../../home/mako
     ../../home/js
-    ../../home/nushell
     ../../home/postgresql
-    #../../home/rofi
     ../../home/skim
     ../../home/starship
     ../../home/translateshell
     ../../home/vscode
-    #../../home/waybar
     ../../home/yazi
     ../../home/zed
     ../../home/zsh

@@ -19,6 +19,7 @@
     dua
     gh
     glab
+    glow
     gopass
     httpie
     insomnia
@@ -28,7 +29,7 @@
     mkpasswd
     neovim
     openfortivpn
-    #posting
+    posting
     qbittorrent
     rclone
     recode
