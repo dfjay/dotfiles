@@ -50,6 +50,7 @@
 
     masApps = {
       "GarageBand" = 682658836;
+      #"Logic Pro" = 634148309;
       "Xcode" = 497799835;
     };
 
@@ -65,13 +66,13 @@
     ];
 
     casks = [
-      "audacity"
       "audio-hijack"
       "balenaetcher"
       "beekeeper-studio"
       "bitwarden"
       "claude"
       "cyberduck"
+      "datagrip"
       "discord"
       "element"
       "figma"
