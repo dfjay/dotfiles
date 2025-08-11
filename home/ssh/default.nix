@@ -6,6 +6,7 @@
     addKeysToAgent = "yes";
     includes = [
       "~/.colima/ssh_config"
+      "~/.orbstack/ssh"
     ];
   };
 }

@@ -31,12 +31,12 @@
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, ... }:
   {
-    # darwin-rebuild build --flake .#dfjay-laptop
+    # darwin-rebuild build --flake .#MacBook-Air-daniil
     darwinConfigurations = {
-      "dfjay-laptop" = 
+      "MacBook-Air-daniil" = 
         let
-          username = "dfjay";  
-          useremail = "mail@dfjay.com";
+          username = "daniil";  
+          useremail = "daniilvdovin4@gmail.com";
           specialArgs = inputs // { inherit inputs username useremail; };
         in
         nix-darwin.lib.darwinSystem {
@@ -53,8 +53,8 @@
               nixpkgs.hostPlatform = "aarch64-darwin";
 
               nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
-
-              users.users.dfjay = {
+              
+              users.users.daniil = {
                 name = username;
                 home = "/Users/${username}";
               };
@@ -68,35 +68,6 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.users.${username} = import ./hosts/macos/home.nix;
-            }
-          ];
-        };
-    };
-
-    nixosConfigurations = {
-      dfjay-desktop = 
-        let
-          username = "dfjay";  
-          useremail = "mail@dfjay.com";
-          specialArgs = inputs // { inherit inputs username useremail; };
-        in
-        nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules = [
-            ({ pkgs, lib, ... }: {
-              nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
-            })
-            stylix.nixosModules.stylix
-            disko.nixosModules.disko
-            impermanence.nixosModules.impermanence
-            ./hosts/desktop
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.users.${username} = import ./hosts/desktop/home.nix;
             }
           ];
         };

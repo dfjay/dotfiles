@@ -3,39 +3,13 @@
 {
   imports = [ 
     ../../modules/darwin/system.nix
-    ../../modules/darwin/macos.nix
-    ../../modules/darwin/aerospace.nix
-    ../../modules/darwin/stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [
     aria2
-    claude-code
-    colima
-    cookiecutter
-    dive
     docker
     docker-credential-helpers
-    dua
-    gh
-    glab
-    glow
-    gopass
-    httpie
-    insomnia
-    just
     lunarvim
-    minio-client
-    mkpasswd
-    neovim
-    openfortivpn
-    posting
-    qbittorrent
-    rclone
-    recode
-    wabt
-    xh
-    zulu
   ];
   environment.variables.EDITOR = "nvim";
 
@@ -49,65 +23,32 @@
     };
 
     masApps = {
-      "GarageBand" = 682658836;
-      #"Logic Pro" = 634148309;
-      "Xcode" = 497799835;
+      #"Xcode" = 497799835;
     };
 
     taps = [
-      "homebrew/services"
     ];
 
     brews = [
       "gnupg"
-      "incus"
       "pinentry-mac"
       "ykman"
     ];
 
     casks = [
-      "audio-hijack"
-      "balenaetcher"
-      "beekeeper-studio"
-      "bitwarden"
-      "claude"
-      "cyberduck"
-      "datagrip"
-      "discord"
-      "element"
+      #"discord"
       "figma"
-      "fleet"
       "ghostty"
       "gpg-suite"
       "iina"
-      "intellij-idea"
-      "jdk-mission-control"
-      "libreoffice"
       "linearmouse"
-      "logseq"
-      "loopback"
-      "mattermost"
-      "memoryanalyzer"
-      "microsoft-excel"
-      "microsoft-powerpoint"
-      "microsoft-word"
-      "obs"
-      "obsidian"
-      "poe"
-      "raycast"
-      "slack"
-      "soundsource"
-      "spotify"
-      "steam"
-      "syncthing-app"
+      "maccy"
+      "orbstack"
+      #"microsoft-excel"
+      #"microsoft-powerpoint"
+      #"microsoft-word"
       "telegram-desktop"
-      "tor-browser"
-      "tuta-mail"
-      "visualvm"
-      "vmware-fusion"
-      "waterfox"
-      "yubico-authenticator"
-      "zotero"
+      "visual-studio-code"
     ];
   };
 }
