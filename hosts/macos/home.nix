@@ -17,7 +17,6 @@
     ../../home/kotlin
     ../../home/lazydocker
     ../../home/lazygit
-    ../../home/librewolf
     ../../home/js
     ../../home/nushell
     ../../home/postgresql

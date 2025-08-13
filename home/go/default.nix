@@ -13,5 +13,6 @@
       golangci-lint
       go-migrate
       gosec
+      sqlc
   ];
 }

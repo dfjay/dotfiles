@@ -6,5 +6,6 @@
     bun
   ] ++ (with pkgs.nodePackages; [
     npm-check-updates
+    tsx
   ]);
 }

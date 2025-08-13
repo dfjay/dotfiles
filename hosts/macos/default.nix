@@ -93,6 +93,7 @@
       "microsoft-word"
       "obs"
       "obsidian"
+      "orion"
       "poe"
       "raycast"
       "slack"
