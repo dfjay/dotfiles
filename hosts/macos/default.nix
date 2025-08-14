@@ -9,6 +9,7 @@
     aria2
     docker
     docker-credential-helpers
+    just
     lunarvim
   ];
   environment.variables.EDITOR = "nvim";
@@ -36,9 +37,7 @@
     ];
 
     casks = [
-      #"discord"
       "figma"
-      "ghostty"
       "gpg-suite"
       "iina"
       "linearmouse"
@@ -49,6 +48,7 @@
       #"microsoft-word"
       "telegram-desktop"
       "visual-studio-code"
+      #"whatsapp"
     ];
   };
 }
