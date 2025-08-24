@@ -7,7 +7,7 @@
     ./impermanence.nix
     ../../modules/stylix.nix
     ../../modules/audio.nix
-    ../../modules/de/cosmic.nix
+    ../../modules/wm/hyprland.nix
     ../../modules/locale.nix
     ../../modules/system.nix
     ../../modules/games.nix
@@ -31,6 +31,7 @@
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
     brave
+    discord
     element-desktop
     glmark2
     gnumake

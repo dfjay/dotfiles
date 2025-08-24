@@ -27,9 +27,11 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
