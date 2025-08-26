@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, hostname, ... }:
 
 {
   nixpkgs.config.allowUnfree = true;
@@ -64,7 +64,7 @@
   };
 
   networking = {
-    hostName = "nixos";
+    hostName = hostname;
     networkmanager.enable = true;
     firewall = {
       enable = false;

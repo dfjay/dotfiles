@@ -54,9 +54,7 @@
       "Xcode" = 497799835;
     };
 
-    taps = [
-      "homebrew/services"
-    ];
+    taps = [];
 
     brews = [
       "gnupg"
@@ -66,6 +64,8 @@
     ];
 
     casks = [
+      "alfred"
+      "amneziavpn"
       "audio-hijack"
       "balenaetcher"
       "beekeeper-studio"
@@ -90,11 +90,11 @@
       "memoryanalyzer"
       "microsoft-excel"
       "microsoft-powerpoint"
+      "microsoft-teams"
       "microsoft-word"
       "obs"
       "obsidian"
       "orion"
-      "poe"
       "raycast"
       "slack"
       "soundsource"

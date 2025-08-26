@@ -80,7 +80,9 @@
         let
           username = "dfjay";  
           useremail = "mail@dfjay.com";
-          specialArgs = inputs // { inherit inputs username useremail; };
+          hostname = "dfjay-desktop";
+          userdesc = "Pavel Yozhikov";
+          specialArgs = inputs // { inherit inputs username useremail hostname userdesc; };        
         in
         nixpkgs.lib.nixosSystem {
           inherit specialArgs;
@@ -99,6 +101,28 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.users.${username} = import ./hosts/desktop/home.nix;
+            }
+          ];
+        };
+
+      dfjay-vps = 
+        let
+          username = "dfjay";  
+          useremail = "mail@dfjay.com";
+          hostname = "dfjay-vps";
+          specialArgs = inputs // { inherit inputs username useremail hostname; };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/vps
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = specialArgs;
+              home-manager.users.${username} = import ./hosts/vps/home.nix;
             }
           ];
         };
