@@ -1,12 +1,6 @@
 { pkgs, username, ... }:
 
 {
-  #services.xserver = {
-    #displayManager = {
-    #  lightdm.enable = false;
-    #};
-  #};
-
   security = {
     polkit.enable = true;
   };
@@ -67,7 +61,7 @@
       };
 
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --greeting 'Welcome to NixOS' --asterisks --remember --remember-user-session --time -cmd uwsm start hyprland-uwsm.desktop";
+        command = "${pkgs.tuigreet}/bin/tuigreet --greeting 'Welcome to NixOS' --asterisks --remember --remember-user-session --time -cmd uwsm start hyprland-uwsm.desktop";
         user = "greeter";
       };
     };

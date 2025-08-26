@@ -38,7 +38,6 @@
     gopass
     gpg-tui
     grimblast
-    hiddify-app
     jetbrains.idea-community
     just
     libreoffice-qt
