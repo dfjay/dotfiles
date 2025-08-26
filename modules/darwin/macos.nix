@@ -7,9 +7,9 @@
     defaults = {
       dock = {
         autohide = true;
-        autohide-delay = 0.2;
-        autohide-time-modifier = 0.1;
-        magnification = true;
+        autohide-delay = 86400.0;
+        autohide-time-modifier = 0.0;
+        magnification = false;
         mineffect = "scale";
         show-recents = false;
         orientation = "bottom";
