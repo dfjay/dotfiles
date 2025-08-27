@@ -29,9 +29,11 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
+
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, mac-app-util, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
@@ -64,8 +66,13 @@
 
             stylix.darwinModules.stylix
             ./hosts/macos
+            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
             {
+              home-manager.sharedModules = [
+                mac-app-util.homeManagerModules.default
+              ];
+
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = specialArgs;
