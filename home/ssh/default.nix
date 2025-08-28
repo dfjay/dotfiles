@@ -3,9 +3,12 @@
 {
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
     includes = [
       "~/.colima/ssh_config"
     ];
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+    };
   };
 }

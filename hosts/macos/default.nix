@@ -64,7 +64,6 @@
     ];
 
     casks = [
-      "alfred"
       "amneziavpn"
       "audio-hijack"
       "balenaetcher"
