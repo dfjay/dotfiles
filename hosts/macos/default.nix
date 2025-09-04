@@ -65,6 +65,7 @@
 
     casks = [
       "amneziavpn"
+      "android-studio"
       "audio-hijack"
       "balenaetcher"
       "beekeeper-studio"
