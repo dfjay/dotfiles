@@ -22,6 +22,7 @@
     ../../home/postgresql
     ../../home/proto
     ../../home/python
+    ../../home/rust
     ../../home/skim
     ../../home/ssh
     ../../home/starship
