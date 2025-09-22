@@ -7,7 +7,7 @@
     ./impermanence.nix
     ../../modules/stylix.nix
     ../../modules/audio.nix
-    ../../modules/wm/hyprland.nix
+    ../../modules/de/cosmic.nix
     ../../modules/locale.nix
     ../../modules/system.nix
     ../../modules/games.nix
@@ -45,7 +45,6 @@
     nekoray
     prismlauncher
     qbittorrent
-    rustup
     spotify
     telegram-desktop
     tor-browser

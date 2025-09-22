@@ -13,18 +13,17 @@
     ../../home/gradle
     ../../home/helix
     ../../home/htop
-    ../../home/hyprland
     ../../home/jdk
     ../../home/k8s
     ../../home/kitty
     ../../home/kotlin
     ../../home/lazydocker
     ../../home/lazygit
-    ../../home/mako
     ../../home/librewolf
+    ../../home/jdk
     ../../home/js
     ../../home/postgresql
-    ../../home/rofi
+    ../../home/rust
     ../../home/skim
     ../../home/starship
     ../../home/translateshell
