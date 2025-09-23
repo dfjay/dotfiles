@@ -31,9 +31,11 @@
     hyprland.url = "github:hyprwm/Hyprland";
 
     mac-app-util.url = "github:hraban/mac-app-util";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, mac-app-util, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, mac-app-util, nix-flatpak, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
@@ -98,6 +100,7 @@
             ({ pkgs, lib, ... }: {
               nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
             })
+            nix-flatpak.nixosModules.nix-flatpak
             stylix.nixosModules.stylix
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence

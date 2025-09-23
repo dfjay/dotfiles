@@ -1,18 +1,19 @@
-{ pkgs, username, userdesc, ... }:
+{ pkgs, lib, username, userdesc, ... }:
 
 {
   imports = [ 
     ./hardware-configuration.nix
     ./disk-config.nix
     ./impermanence.nix
-    ../../modules/stylix.nix
     ../../modules/audio.nix
-    ../../modules/de/cosmic.nix
-    ../../modules/locale.nix
-    ../../modules/system.nix
-    ../../modules/games.nix
     ../../modules/bluetooth.nix
+    ../../modules/de/cosmic.nix
+    ../../modules/flatpak.nix
+    ../../modules/games.nix
+    ../../modules/locale.nix
     ../../modules/shell/zsh.nix
+    ../../modules/system.nix
+    ../../modules/stylix.nix
   ];
 
   users = {
@@ -33,19 +34,16 @@
     brave
     discord
     element-desktop
-    glmark2
     gnumake
     gopass
     gpg-tui
     grimblast
-    jetbrains.idea-community
     just
     libreoffice-qt
     lunarvim
     nekoray
     prismlauncher
     qbittorrent
-    spotify
     telegram-desktop
     tor-browser
     tuifimanager
@@ -55,5 +53,11 @@
     winetricks
     wineWowPackages.stable
     woeusb
+  ];
+
+  services.flatpak.packages = [
+    "com.google.AndroidStudio"
+    "com.jetbrains.IntelliJ-IDEA-Community"
+    "com.spotify.Client"
   ];
 }

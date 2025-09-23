@@ -22,8 +22,6 @@
     };
   };
 
-  programs.dconf.enable = true;
-
   programs.coolercontrol = {
     enable = true;
     nvidiaSupport = true;
@@ -51,10 +49,7 @@
     coolercontrol.coolercontrol-liqctld
   ];
 
-  services = {
-    flatpak.enable = true;
-    printing.enable = true;
-  };
+  services.printing.enable = true;
 
   hardware.cpu.amd.updateMicrocode = true;
 

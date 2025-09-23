@@ -16,10 +16,7 @@
   ];
 
   environment.systemPackages = with pkgs.gnomeExtensions; [
-    dash-to-dock
     blur-my-shell
     gsconnect
-    forge
-    pop-shell
   ];
 }
