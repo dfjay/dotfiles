@@ -2,34 +2,34 @@
 
 {
   imports = [
-    ../../home/bat
-    ../../home/btop
-    ../../home/eza
-    ../../home/fastfetch
-    ../../home/ghostty
-    ../../home/git
-    ../../home/go
-    ../../home/gpg
-    ../../home/gradle
-    ../../home/helix
-    ../../home/jdk
-    ../../home/k8s
-    ../../home/kitty
-    ../../home/kotlin
-    ../../home/lazydocker
-    ../../home/lazygit
-    ../../home/librewolf
-    ../../home/jdk
-    ../../home/js
-    ../../home/postgresql
-    ../../home/rust
-    ../../home/skim
-    ../../home/starship
-    ../../home/translateshell
-    ../../home/vscode
-    ../../home/yazi
-    ../../home/zed
-    ../../home/zsh
+    ../../home/bat.nix
+    ../../home/btop.nix
+    ../../home/eza.nix
+    ../../home/fastfetch.nix
+    ../../home/ghostty.nix
+    ../../home/git.nix
+    ../../home/go.nix
+    ../../home/gpg.nix
+    ../../home/gradle.nix
+    ../../home/helix.nix
+    ../../home/jdk.nix
+    ../../home/k8s.nix
+    ../../home/kitty.nix
+    ../../home/kotlin.nix
+    ../../home/lazydocker.nix
+    ../../home/lazygit.nix
+    ../../home/librewolf.nix
+    ../../home/jdk.nix
+    ../../home/js.nix
+    ../../home/postgresql.nix
+    ../../home/rust.nix
+    ../../home/skim.nix
+    ../../home/starship.nix
+    ../../home/translateshell.nix
+    ../../home/vscode.nix
+    ../../home/yazi.nix
+    ../../home/zed.nix
+    ../../home/zsh.nix
   ];
 
   news.display = "show";
@@ -45,7 +45,6 @@
     nerd-fonts.noto
     nerd-fonts.hack
     nerd-fonts.ubuntu
-    #nerd-fonts.mplus
   ];
 
   programs.home-manager.enable = true;

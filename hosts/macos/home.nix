@@ -2,35 +2,35 @@
 
 {
   imports = [
-    ../../home/bat
-    ../../home/erlang
-    ../../home/eza
-    ../../home/fastfetch
-    ../../home/firefox
-    #../../home/ghostty
-    ../../home/git
-    ../../home/go
-    ../../home/helix
-    ../../home/htop
-    ../../home/k8s
-    ../../home/kitty
-    ../../home/kotlin
-    ../../home/lazydocker
-    ../../home/lazygit
-    ../../home/js
-    ../../home/nushell
-    ../../home/postgresql
-    ../../home/proto
-    ../../home/python
-    ../../home/rust
-    ../../home/skim
-    ../../home/ssh
-    ../../home/starship
-    ../../home/translateshell
-    ../../home/vscode
-    ../../home/yazi
-    ../../home/zed
-    ../../home/zsh
+    ../../home/bat.nix
+    ../../home/erlang.nix
+    ../../home/eza.nix
+    ../../home/fastfetch.nix
+    ../../home/firefox.nix
+    #../../home/ghostty.nix
+    ../../home/git.nix
+    ../../home/go.nix
+    ../../home/helix.nix
+    ../../home/htop.nix
+    ../../home/k8s.nix
+    ../../home/kitty.nix
+    ../../home/kotlin.nix
+    ../../home/lazydocker.nix
+    ../../home/lazygit.nix
+    ../../home/js.nix
+    ../../home/nushell.nix
+    ../../home/postgresql.nix
+    ../../home/proto.nix
+    ../../home/python.nix
+    ../../home/rust.nix
+    ../../home/skim.nix
+    ../../home/ssh.nix
+    ../../home/starship.nix
+    ../../home/translateshell.nix
+    ../../home/vscode.nix
+    ../../home/yazi.nix
+    ../../home/zed.nix
+    ../../home/zsh.nix
   ];
 
   home = {
