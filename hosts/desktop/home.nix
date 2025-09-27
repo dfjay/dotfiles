@@ -12,7 +12,6 @@
     ../../home/gpg
     ../../home/gradle
     ../../home/helix
-    ../../home/htop
     ../../home/jdk
     ../../home/k8s
     ../../home/kitty

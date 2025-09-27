@@ -122,12 +122,27 @@
         9)
       );
       
+      workspace = [
+        "1, monitor:DP-2"
+        "2, monitor:DP-2"
+        "3, monitor:DP-2"
+        "4, monitor:DP-2"
+        "5, monitor:DP-2"
+        "6, monitor:DP-2"
+        "7, monitor:DP-2"
+        "8, monitor:DP-2"
+        "9, monitor:HDMI-A-1"
+      ];
+
       input = {
         kb_layout = "us,ru";
         kb_options = "grp:win_space_toggle";
       };
 
-      monitor = "DP-2, 5120x2160@120, 0x0, 1.25";
+      monitor = [
+        "DP-2, 5120x2160@120, 0x0, 1.25"
+        "HDMI-A-1, 3840x2160@60, 512x1728, 1.25"
+      ];
 
       xwayland = {
         force_zero_scaling = true;
@@ -141,7 +156,7 @@
 
     extraConfig = ''
       # mouse
-      input:sensitivity=-0.7
+      input:sensitivity=-0.6
       input:accel_profile=flat
     '';
   };
