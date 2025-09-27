@@ -3,8 +3,6 @@
 {
   imports = [ 
     ./hardware-configuration.nix
-    ./disk-config.nix
-    ./impermanence.nix
     ../../modules/audio.nix
     ../../modules/bluetooth.nix
     ../../modules/de/cosmic.nix
