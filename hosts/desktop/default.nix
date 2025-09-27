@@ -30,18 +30,20 @@
   services.v2raya.enable = true;
 
   environment.systemPackages = with pkgs; [
+    android-studio
     bitwarden-desktop
     brave
+    claude-code
     discord
     element-desktop
     gnumake
     gopass
     gpg-tui
     grimblast
+    jetbrains.idea-ultimate
     just
     libreoffice-qt
     lunarvim
-    nekoray
     prismlauncher
     qbittorrent
     telegram-desktop
@@ -56,8 +58,11 @@
   ];
 
   services.flatpak.packages = [
-    "com.google.AndroidStudio"
-    "com.jetbrains.IntelliJ-IDEA-Community"
     "com.spotify.Client"
   ];
+
+  programs.nekoray = {
+    enable = true;
+    tunMode.enable = true;
+  };
 }
