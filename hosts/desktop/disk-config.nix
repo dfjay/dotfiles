@@ -4,7 +4,7 @@
   disko.devices = {
     disk.main = {
       type = "disk";
-      device = "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0NA42104P";
+      device = lib.mkDefault "/dev/nvme0n1";
       content = {
         type = "gpt";
         partitions = {
@@ -19,6 +19,15 @@
               mountOptions = [ "umask=0077" ];
             };
           };
+
+          swap = {
+            size = "8G";
+            content = {
+              type = "swap";
+              randomEncryption = true;
+            };
+          };
+
           root = {
             size = "100%";
             content = {
@@ -53,7 +62,7 @@
 
   boot.initrd.postResumeCommands = lib.mkAfter ''
     mkdir /btrfs_tmp
-    mount /dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0NA42104P /btrfs_tmp
+    mount /dev/nvme0n1 /btrfs_tmp
     if [[ -e /btrfs_tmp/root ]]; then
         mkdir -p /btrfs_tmp/old_roots
         timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")

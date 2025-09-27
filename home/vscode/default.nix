@@ -28,6 +28,8 @@
           mechatroner.rainbow-csv
           janisdd.vscode-edit-csv
 
+          jnoortheen.nix-ide
+
           ms-python.python
           ms-python.debugpy
           ms-python.pylint
