@@ -33,9 +33,14 @@
     mac-app-util.url = "github:hraban/mac-app-util";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, mac-app-util, nix-flatpak, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nix-vscode-extensions, stylix, disko, impermanence, hyprland, mac-app-util, nix-flatpak, sops-nix, ... }:
   {
     # darwin-rebuild build --flake .#dfjay-laptop
     darwinConfigurations = {
@@ -67,6 +72,7 @@
             })
 
             stylix.darwinModules.stylix
+            sops-nix.darwinModules.sops
             ./hosts/macos
             mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
@@ -104,6 +110,7 @@
             stylix.nixosModules.stylix
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence
+            sops-nix.nixosModules.sops
             ./hosts/desktop
             home-manager.nixosModules.home-manager
             {
