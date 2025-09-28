@@ -47,15 +47,36 @@
     coolercontrol.coolercontrold
     coolercontrol.coolercontrol-ui-data
     coolercontrol.coolercontrol-liqctld
+
+    pinentry
+    sops
   ];
+
+  security = {
+    pam.services = {
+      login = {
+        enableGnomeKeyring = true;
+      };
+      logind.enableGnomeKeyring = true;
+    };
+
+    polkit.enable = true;
+  };
+
+  sops = {
+    defaultSopsFile = ../secrets/secret.yaml;
+    defaultSopsFormat = "yaml";
+  };
 
   services.printing.enable = true;
 
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware = {
+    cpu.amd.updateMicrocode = true;
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
   };
 
   networking = {
