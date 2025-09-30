@@ -48,6 +48,8 @@
 
           golang.go
 
+          rust-lang.rust-analyzer
+
           dbaeumer.vscode-eslint
           esbenp.prettier-vscode
           formulahendry.auto-close-tag
