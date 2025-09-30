@@ -77,6 +77,7 @@
       "element"
       "figma"
       "ghostty"
+      "goland"
       "gpg-suite"
       "iina"
       "intellij-idea"
