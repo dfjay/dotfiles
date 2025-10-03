@@ -49,7 +49,6 @@
     };
 
     masApps = {
-      "GarageBand" = 682658836;
       #"Logic Pro" = 634148309;
       "Xcode" = 497799835;
     };
@@ -87,6 +86,7 @@
       "logseq"
       "loopback"
       "mattermost"
+      "melodics"
       "memoryanalyzer"
       "microsoft-excel"
       "microsoft-powerpoint"

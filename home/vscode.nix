@@ -1,5 +1,26 @@
 { pkgs, ... }:
+let
+  kotlin-lsp = pkgs.vscode-utils.buildVscodeExtension {
+    pname = "kotlin-lsp";
+    version = "0.253.10629";
+    vscodeExtName = "kotlin-lsp";
+    vscodeExtUniqueId = "kotlin.kotlin-lsp";
+    vscodeExtPublisher = "kotlin";
+    
+    src = pkgs.fetchurl {
+      url = "https://download-cdn.jetbrains.com/kotlin-lsp/0.253.10629/kotlin-0.253.10629.vsix";
+      sha256 = "077ibc8mkgbcb283f9spk70cb5zv7i20dpy7z1c52zny5xaw33k3";
+    };
 
+    nativeBuildInputs = [ pkgs.unzip ];
+    
+    unpackPhase = ''
+      runHook preUnpack
+      unzip "$src"
+      runHook postUnpack
+    '';
+  };
+in
 {
   programs.vscode = {
     enable = true;
@@ -44,8 +65,6 @@
           vscjava.vscode-java-dependency
           redhat.java
 
-          fwcd.kotlin # todo: replace to official kotlin lsp
-
           golang.go
 
           rust-lang.rust-analyzer
@@ -57,6 +76,8 @@
           vitest.explorer
           svelte.svelte-vscode
           vue.volar
+        ] ++ [
+          kotlin-lsp
         ];
 
         userSettings = {
