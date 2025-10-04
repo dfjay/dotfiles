@@ -23,6 +23,7 @@
     gopass
     httpie
     insomnia
+    jmeter
     just
     lunarvim
     minio-client

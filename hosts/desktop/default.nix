@@ -39,6 +39,7 @@
     gpg-tui
     grimblast
     jetbrains.idea-ultimate
+    jmeter
     just
     libreoffice-qt
     lunarvim
