@@ -6,8 +6,8 @@
     extensions = [ 
       "catppuccin"
       "dockerfile" 
-      "docker compose" 
-      "git firefly"
+      "docker-compose" 
+      "git-firefly"
       "helm"
       "nix"
       "java"

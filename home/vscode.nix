@@ -90,6 +90,8 @@ in
           "cSpell.language" = "en,ru";
 
           "python.analysis.typeCheckingMode" = "standard";
+
+          "jdk.telemetry.enabled" = false;
         };
       };
     };
