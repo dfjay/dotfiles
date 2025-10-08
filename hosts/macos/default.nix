@@ -82,6 +82,7 @@
       "iina"
       "intellij-idea"
       "jdk-mission-control"
+      "keystore-explorer"
       "libreoffice"
       "linearmouse"
       "logseq"

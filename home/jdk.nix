@@ -6,7 +6,8 @@
   };
 
   home.packages = with pkgs; [
-    visualvm
     eclipse-mat
+    keystore-explorer
+    visualvm
   ];
 }
