@@ -1,9 +1,7 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
@@ -31,14 +29,6 @@
               format = "vfat";
               mountpoint = "/boot";
               mountOptions = [ "umask=0077" ];
-            };
-          };
-
-          swap = {
-            size = "8G";
-            content = {
-              type = "swap";
-              randomEncryption = true;
             };
           };
 
@@ -98,6 +88,13 @@
     btrfs subvolume create /btrfs_tmp/root
     umount /btrfs_tmp
   '';
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 8 * 1024;
+    }
+  ];
 
   environment.persistence."/persist" = {
     hideMounts = true;
