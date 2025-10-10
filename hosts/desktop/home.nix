@@ -22,6 +22,7 @@
     ../../home/jdk.nix
     ../../home/js.nix
     ../../home/postgresql.nix
+    ../../home/ripgrep.nix
     ../../home/rust.nix
     ../../home/skim.nix
     ../../home/starship.nix
@@ -29,6 +30,7 @@
     ../../home/vscode.nix
     ../../home/yazi.nix
     ../../home/zed.nix
+    ../../home/zoxide.nix
     ../../home/zsh.nix
   ];
 

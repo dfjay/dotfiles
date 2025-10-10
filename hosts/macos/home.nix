@@ -6,8 +6,6 @@
     ../../home/erlang.nix
     ../../home/eza.nix
     ../../home/fastfetch.nix
-    ../../home/firefox.nix
-    #../../home/ghostty.nix
     ../../home/git.nix
     ../../home/go.nix
     ../../home/helix.nix
@@ -22,6 +20,7 @@
     ../../home/postgresql.nix
     ../../home/proto.nix
     ../../home/python.nix
+    ../../home/ripgrep.nix
     ../../home/rust.nix
     ../../home/skim.nix
     ../../home/ssh.nix
@@ -30,6 +29,7 @@
     ../../home/vscode.nix
     ../../home/yazi.nix
     ../../home/zed.nix
+    ../../home/zoxide.nix
     ../../home/zsh.nix
   ];
 
