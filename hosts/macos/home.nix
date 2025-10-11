@@ -1,6 +1,4 @@
-{ username, ... }:
-
-{
+{username, ...}: {
   imports = [
     ../../home/bat.nix
     ../../home/erlang.nix
@@ -10,13 +8,14 @@
     ../../home/go.nix
     ../../home/helix.nix
     ../../home/htop.nix
+    ../../home/js.nix
     ../../home/k8s.nix
     ../../home/kitty.nix
     ../../home/kotlin.nix
     ../../home/lazydocker.nix
     ../../home/lazygit.nix
-    ../../home/js.nix
     ../../home/nushell.nix
+    ../../home/nvchad.nix
     ../../home/postgresql.nix
     ../../home/proto.nix
     ../../home/python.nix

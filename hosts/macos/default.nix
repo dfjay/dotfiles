@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ../../modules/darwin/system.nix
     ../../modules/darwin/macos.nix
     ../../modules/darwin/aerospace.nix
@@ -17,6 +17,7 @@
     docker
     docker-credential-helpers
     dua
+    ffmpeg
     gh
     glab
     glow
@@ -25,10 +26,8 @@
     insomnia
     jmeter
     just
-    lunarvim
     minio-client
     mkpasswd
-    neovim
     openfortivpn
     posting
     qbittorrent
@@ -54,7 +53,7 @@
       "Xcode" = 497799835;
     };
 
-    taps = [];
+    taps = [ ];
 
     brews = [
       "gnupg"
