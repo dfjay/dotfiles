@@ -7,7 +7,7 @@
       #start-at-login = true;
       enable-normalization-flatten-containers = true;
       enable-normalization-opposite-orientation-for-nested-containers = true;
-      on-focused-monitor-changed = ["move-mouse monitor-lazy-center"];
+      on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
       automatically-unhide-macos-hidden-apps = false;
 
       gaps = {
@@ -16,7 +16,7 @@
         outer.left = 5;
         outer.bottom = 5;
         outer.top = [
-          { monitor."built-in" = 3; } 
+          { monitor."built-in" = 3; }
           5
         ];
         outer.right = 5;
@@ -62,15 +62,39 @@
       };
 
       mode.service.binding = {
-        esc = ["reload-config" "mode main"];
-        r = ["flatten-workspace-tree" "mode main"]; # reset layout
-        f = ["layout floating tiling" "mode main"]; # Toggle between floating and tiling layout
-        backspace = ["close-all-windows-but-current" "mode main"];
+        esc = [
+          "reload-config"
+          "mode main"
+        ];
+        r = [
+          "flatten-workspace-tree"
+          "mode main"
+        ]; # reset layout
+        f = [
+          "layout floating tiling"
+          "mode main"
+        ]; # Toggle between floating and tiling layout
+        backspace = [
+          "close-all-windows-but-current"
+          "mode main"
+        ];
 
-        alt-shift-h = ["join-with left" "mode main"];
-        alt-shift-j = ["join-with down" "mode main"];
-        alt-shift-k = ["join-with up" "mode main"];
-        alt-shift-l = ["join-with right" "mode main"];
+        alt-shift-h = [
+          "join-with left"
+          "mode main"
+        ];
+        alt-shift-j = [
+          "join-with down"
+          "mode main"
+        ];
+        alt-shift-k = [
+          "join-with up"
+          "mode main"
+        ];
+        alt-shift-l = [
+          "join-with right"
+          "mode main"
+        ];
       };
 
       workspace-to-monitor-force-assignment = {
@@ -79,10 +103,24 @@
         "3" = "built-in";
         "4" = "built-in";
         "5" = "built-in";
-        "6" = [ "1" "built-in" ];
-        "7" = [ "1" "built-in" ];
-        "8" = [ "3" "2" "built-in" ];
-        "9" = [ "3" "2" "built-in" ];
+        "6" = [
+          "1"
+          "built-in"
+        ];
+        "7" = [
+          "1"
+          "built-in"
+        ];
+        "8" = [
+          "3"
+          "2"
+          "built-in"
+        ];
+        "9" = [
+          "3"
+          "2"
+          "built-in"
+        ];
       };
     };
   };

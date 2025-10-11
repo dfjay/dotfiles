@@ -11,8 +11,9 @@
     enable = true;
     systemd.enable = false;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;  
-    
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+
     settings = {
       general = {
         gaps_in = 5;
@@ -111,17 +112,19 @@
         ", Print, exec, grimblast copy area"
         "ALT, Escape, exec, hyprlock"
       ]
-      ++ (
-        builtins.concatLists (builtins.genList (i:
-          let ws = i + 1;
-          in [
+      ++ (builtins.concatLists (
+        builtins.genList (
+          i:
+          let
+            ws = i + 1;
+          in
+          [
             "$mod, code:1${toString i}, workspace, ${toString ws}"
             "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
           ]
-        )
-        9)
-      );
-      
+        ) 9
+      ));
+
       workspace = [
         "1, monitor:DP-2"
         "2, monitor:DP-2"
@@ -149,8 +152,8 @@
       };
 
       exec-once = [
-      "$terminal"
-      "hyprlock"
+        "$terminal"
+        "hyprlock"
       ];
     };
 

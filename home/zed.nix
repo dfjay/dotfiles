@@ -3,23 +3,23 @@
 {
   programs.zed-editor = {
     enable = true;
-    extensions = [ 
+    extensions = [
       "catppuccin"
-      "dockerfile" 
-      "docker-compose" 
+      "dockerfile"
+      "docker-compose"
       "git-firefly"
       "helm"
       "nix"
       "java"
       "kotlin"
       "html"
-      "sql" 
+      "sql"
       "svelte"
-      "vue" 
+      "vue"
       "toml"
       "golangci-lint"
       "justfile"
-      "make"    
+      "make"
     ];
     userSettings = {
       telemetry = {

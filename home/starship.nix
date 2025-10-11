@@ -94,7 +94,9 @@ in
         format = "[ $symbol $branch](fg:purple)(:$remote_branch)";
       };
       continuation_prompt = "∙  ┆ ";
-      line_break = { disabled = false; };
+      line_break = {
+        disabled = false;
+      };
       cmd_duration = {
         min_time = 1000;
         format = "[$duration ](fg:yellow)";
@@ -110,7 +112,7 @@ in
       c = lang "" "blue";
       golang = lang "" "blue";
       dart = lang "" "blue";
-      elixir = lang "" "purple"; 
+      elixir = lang "" "purple";
 
       character = {
         success_symbol = "[›](bold green)";

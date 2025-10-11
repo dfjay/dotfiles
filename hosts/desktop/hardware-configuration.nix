@@ -1,9 +1,20 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" ];
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "xhci_pci"
+    "ahci"
+    "usbhid"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -40,19 +51,31 @@
               subvolumes = {
                 "@root" = {
                   mountpoint = "/";
-                  mountOptions = [ "compress=zstd" "noatime" ];
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                 };
                 "@home" = {
                   mountpoint = "/home";
-                  mountOptions = [ "compress=zstd" "noatime" ];
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                 };
                 "@persist" = {
                   mountpoint = "/persist";
-                  mountOptions = [ "compress=zstd" "noatime" ];
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                 };
                 "@nix" = {
                   mountpoint = "/nix";
-                  mountOptions = [ "compress=zstd" "noatime" ];
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                 };
               };
             };
@@ -109,11 +132,21 @@
       "/var/lib/AccountsService"
       "/var/lib/NetworkManager"
       "/var/lib/sudo"
-      { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+      {
+        directory = "/var/lib/colord";
+        user = "colord";
+        group = "colord";
+        mode = "u=rwx,g=rx,o=";
+      }
     ];
     files = [
       "/etc/machine-id"
-      { file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+      {
+        file = "/var/keys/secret_file";
+        parentDirectory = {
+          mode = "u=rwx,g=,o=";
+        };
+      }
     ];
   };
 }

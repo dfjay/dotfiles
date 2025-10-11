@@ -34,7 +34,7 @@
       };
 
       trackpad = {
-      
+
       };
 
       WindowManager = {

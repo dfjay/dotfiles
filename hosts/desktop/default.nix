@@ -1,7 +1,13 @@
-{ pkgs, lib, username, userdesc, ... }:
+{
+  pkgs,
+  lib,
+  username,
+  userdesc,
+  ...
+}:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
     ../../modules/audio.nix
     ../../modules/bluetooth.nix
@@ -20,7 +26,11 @@
     users.${username} = {
       isNormalUser = true;
       description = userdesc;
-      extraGroups = [ "networkmanager" "wheel" "docker" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+      ];
       hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
     };
   };
