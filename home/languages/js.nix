@@ -4,8 +4,9 @@
   home.packages =
     with pkgs;
     [
-      nodejs_22
       bun
+      nodejs_22
+      typescript-language-server
     ]
     ++ (with pkgs.nodePackages; [
       npm-check-updates

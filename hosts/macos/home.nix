@@ -3,14 +3,15 @@
 {
   imports = [
     ../../home/bat.nix
+    ../../home/docker.nix
     ../../home/eza.nix
     ../../home/fastfetch.nix
+    ../../home/formats.nix
     ../../home/git.nix
     ../../home/helix.nix
     ../../home/htop.nix
     ../../home/k8s.nix
     ../../home/kitty.nix
-    ../../home/kotlin.nix
     ../../home/lazydocker.nix
     ../../home/lazygit.nix
     ../../home/nushell.nix
@@ -31,6 +32,7 @@
     ../../home/languages/erlang.nix
     ../../home/languages/go.nix
     ../../home/languages/js.nix
+    ../../home/languages/kotlin.nix
     ../../home/languages/python.nix
     ../../home/languages/rust.nix
     ../../home/languages/solidity.nix

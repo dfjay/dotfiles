@@ -13,7 +13,6 @@
     ../../home/helix.nix
     ../../home/k8s.nix
     ../../home/kitty.nix
-    ../../home/kotlin.nix
     ../../home/lazydocker.nix
     ../../home/lazygit.nix
     ../../home/librewolf.nix
@@ -31,6 +30,7 @@
     ../../home/languages/go.nix
     ../../home/languages/js.nix
     ../../home/languages/jdk.nix
+    ../../home/languages/kotlin.nix
     ../../home/languages/rust.nix
     ../../home/languages/python.nix
   ];

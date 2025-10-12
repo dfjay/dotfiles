@@ -2,6 +2,7 @@
 
 {
   home.packages = with pkgs; [
+    helm-ls
     kubectl
     kubelogin-oidc
     kubecm
