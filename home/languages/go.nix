@@ -10,9 +10,11 @@
   ];
 
   home.packages = with pkgs; [
+    delve
     golangci-lint
-    go-migrate
+    gopls
     gosec
     sqlc
+    go-migrate
   ];
 }

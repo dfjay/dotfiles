@@ -8,22 +8,17 @@
     ../../home/fastfetch.nix
     ../../home/ghostty.nix
     ../../home/git.nix
-    ../../home/go.nix
     ../../home/gpg.nix
     ../../home/gradle.nix
     ../../home/helix.nix
-    ../../home/jdk.nix
     ../../home/k8s.nix
     ../../home/kitty.nix
     ../../home/kotlin.nix
     ../../home/lazydocker.nix
     ../../home/lazygit.nix
     ../../home/librewolf.nix
-    ../../home/jdk.nix
-    ../../home/js.nix
     ../../home/postgresql.nix
     ../../home/ripgrep.nix
-    ../../home/rust.nix
     ../../home/skim.nix
     ../../home/starship.nix
     ../../home/translateshell.nix
@@ -32,6 +27,12 @@
     ../../home/zed.nix
     ../../home/zoxide.nix
     ../../home/zsh.nix
+
+    ../../home/languages/go.nix
+    ../../home/languages/js.nix
+    ../../home/languages/jdk.nix
+    ../../home/languages/rust.nix
+    ../../home/languages/python.nix
   ];
 
   news.display = "show";

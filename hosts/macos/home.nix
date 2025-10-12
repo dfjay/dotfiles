@@ -3,14 +3,11 @@
 {
   imports = [
     ../../home/bat.nix
-    ../../home/erlang.nix
     ../../home/eza.nix
     ../../home/fastfetch.nix
     ../../home/git.nix
-    ../../home/go.nix
     ../../home/helix.nix
     ../../home/htop.nix
-    ../../home/js.nix
     ../../home/k8s.nix
     ../../home/kitty.nix
     ../../home/kotlin.nix
@@ -20,9 +17,7 @@
     ../../home/nvchad.nix
     ../../home/postgresql.nix
     ../../home/proto.nix
-    ../../home/python.nix
     ../../home/ripgrep.nix
-    ../../home/rust.nix
     ../../home/skim.nix
     ../../home/ssh.nix
     ../../home/starship.nix
@@ -32,6 +27,13 @@
     ../../home/zed.nix
     ../../home/zoxide.nix
     ../../home/zsh.nix
+
+    ../../home/languages/erlang.nix
+    ../../home/languages/go.nix
+    ../../home/languages/js.nix
+    ../../home/languages/python.nix
+    ../../home/languages/rust.nix
+    ../../home/languages/solidity.nix
   ];
 
   home = {
