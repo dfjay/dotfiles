@@ -1,4 +1,6 @@
-{username, ...}: {
+{ username, ... }:
+
+{
   imports = [
     ../../home/bat.nix
     ../../home/erlang.nix
