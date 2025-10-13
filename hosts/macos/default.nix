@@ -96,6 +96,7 @@
       "obs"
       "obsidian"
       "orion"
+      "rustrover"
       "slack"
       "soundsource"
       "spotify"
