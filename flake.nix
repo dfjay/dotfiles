@@ -160,6 +160,9 @@
               ./hosts/desktop
               home-manager.nixosModules.home-manager
               {
+                home-manager.sharedModules = [
+                  nix4nvchad.homeManagerModules.default
+                ];
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.extraSpecialArgs = specialArgs;

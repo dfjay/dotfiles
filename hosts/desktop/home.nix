@@ -16,6 +16,7 @@
     ../../home/lazydocker.nix
     ../../home/lazygit.nix
     ../../home/librewolf.nix
+    ../../home/nvchad.nix
     ../../home/postgresql.nix
     ../../home/ripgrep.nix
     ../../home/skim.nix
