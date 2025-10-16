@@ -69,6 +69,7 @@
       "balenaetcher"
       "beekeeper-studio"
       "bitwarden"
+      "bruno"
       "claude"
       "cyberduck"
       "datagrip"
@@ -108,6 +109,7 @@
       "visualvm"
       "vmware-fusion"
       "waterfox"
+      "windows-app"
       "yubico-authenticator"
       "zotero"
     ];
