@@ -40,165 +40,22 @@
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nix-darwin,
-      home-manager,
-      nix-vscode-extensions,
-      stylix,
-      disko,
-      impermanence,
-      hyprland,
-      mac-app-util,
-      nix-flatpak,
-      sops-nix,
-      nix4nvchad,
-      ...
-    }:
-    {
-      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; }
+      {
+        systems = [
+          "aarch64-darwin"
+          "x86_64-linux"
+        ];
 
-      # darwin-rebuild build --flake .#dfjay-laptop
-      darwinConfigurations = {
-        "dfjay-laptop" =
-          let
-            username = "dfjay";
-            useremail = "mail@dfjay.com";
-            specialArgs = inputs // {
-              inherit inputs username useremail;
-            };
-          in
-          nix-darwin.lib.darwinSystem {
-            inherit specialArgs;
-            modules = [
-              (
-                {
-                  pkgs,
-                  lib,
-                  ...
-                }:
-                {
-                  # Set Git commit hash for darwin-version.
-                  system.configurationRevision = self.rev or self.dirtyRev or null;
-
-                  # $ darwin-rebuild changelog
-                  system.stateVersion = 6;
-                  system.primaryUser = username;
-
-                  nixpkgs.hostPlatform = "aarch64-darwin";
-
-                  nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
-
-                  users.users.dfjay = {
-                    name = username;
-                    home = "/Users/${username}";
-                  };
-                }
-              )
-
-              stylix.darwinModules.stylix
-              sops-nix.darwinModules.sops
-              ./hosts/macos
-              mac-app-util.darwinModules.default
-              home-manager.darwinModules.home-manager
-              {
-                home-manager.sharedModules = [
-                  mac-app-util.homeManagerModules.default
-                  nix4nvchad.homeManagerModules.default
-                ];
-
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = specialArgs;
-                home-manager.users.${username} = import ./hosts/macos/home.nix;
-              }
-            ];
-          };
+        imports = [ ./modules/flake-parts/flake-module.nix ];
       };
-
-      nixosConfigurations = {
-        dfjay-desktop =
-          let
-            username = "dfjay";
-            useremail = "mail@dfjay.com";
-            hostname = "dfjay-desktop";
-            userdesc = "Pavel Yozhikov";
-            specialArgs = inputs // {
-              inherit
-                inputs
-                username
-                useremail
-                hostname
-                userdesc
-                ;
-            };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
-            system = "x86_64-linux";
-            modules = [
-              (
-                {
-                  pkgs,
-                  lib,
-                  ...
-                }:
-                {
-                  nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
-                }
-              )
-              nix-flatpak.nixosModules.nix-flatpak
-              stylix.nixosModules.stylix
-              disko.nixosModules.disko
-              impermanence.nixosModules.impermanence
-              sops-nix.nixosModules.sops
-              ./hosts/desktop
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.sharedModules = [
-                  nix4nvchad.homeManagerModules.default
-                ];
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = specialArgs;
-                home-manager.users.${username} = import ./hosts/desktop/home.nix;
-              }
-            ];
-          };
-
-        dfjay-vps =
-          let
-            username = "dfjay";
-            useremail = "mail@dfjay.com";
-            hostname = "dfjay-vps";
-            specialArgs = inputs // {
-              inherit
-                inputs
-                username
-                useremail
-                hostname
-                ;
-            };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
-            system = "x86_64-linux";
-            modules = [
-              ./hosts/vps
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = specialArgs;
-                home-manager.users.${username} = import ./hosts/vps/home.nix;
-              }
-            ];
-          };
-      };
-    };
 }
