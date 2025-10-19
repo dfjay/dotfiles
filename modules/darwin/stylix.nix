@@ -63,10 +63,10 @@ in
       };
 
       sizes = {
-        applications = fontSize;
+        applications = 11;
         desktop = fontSize;
         popups = fontSize;
-        terminal = fontSize;
+        terminal = 11.5;
       };
     };
   };
