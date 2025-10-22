@@ -73,6 +73,9 @@
 
                 rust-lang.rust-analyzer
 
+                jakebecker.elixir-ls
+                gleam.gleam
+
                 dbaeumer.vscode-eslint
                 esbenp.prettier-vscode
                 formulahendry.auto-close-tag
