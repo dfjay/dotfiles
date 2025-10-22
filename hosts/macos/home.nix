@@ -2,40 +2,41 @@
 
 {
   imports = [
-    ../../home/bat.nix
-    ../../home/docker.nix
-    ../../home/eza.nix
-    ../../home/fastfetch.nix
-    ../../home/formats.nix
-    ../../home/git.nix
-    ../../home/helix.nix
-    ../../home/htop.nix
-    ../../home/k8s.nix
-    ../../home/kitty.nix
-    ../../home/lazydocker.nix
-    ../../home/lazygit.nix
-    ../../home/nushell.nix
-    ../../home/nvchad.nix
-    ../../home/postgresql.nix
-    ../../home/proto.nix
-    ../../home/ripgrep.nix
-    ../../home/skim.nix
-    ../../home/ssh.nix
-    ../../home/starship.nix
-    ../../home/translateshell.nix
-    ../../home/vscode.nix
-    ../../home/yazi.nix
-    ../../home/zed.nix
-    ../../home/zoxide.nix
-    ../../home/zsh.nix
+    (import ../../modules/bat.nix).homeModule
+    (import ../../modules/docker.nix).homeModule
+    (import ../../modules/eza.nix).homeModule
+    (import ../../modules/fastfetch.nix).homeModule
+    (import ../../modules/formats.nix).homeModule
+    (import ../../modules/git.nix).homeModule
+    (import ../../modules/helix.nix).homeModule
+    (import ../../modules/htop.nix).homeModule
+    (import ../../modules/k8s.nix).homeModule
+    (import ../../modules/kitty.nix).homeModule
+    (import ../../modules/lazydocker.nix).homeModule
+    (import ../../modules/lazygit.nix).homeModule
+    (import ../../modules/nushell.nix).homeModule
+    (import ../../modules/nvchad.nix).homeModule
+    (import ../../modules/postgresql.nix).homeModule
+    (import ../../modules/proto.nix).homeModule
+    (import ../../modules/ripgrep.nix).homeModule
+    (import ../../modules/skim.nix).homeModule
+    (import ../../modules/ssh.nix).homeModule
+    (import ../../modules/starship.nix).homeModule
+    (import ../../modules/translateshell.nix).homeModule
+    (import ../../modules/vscode.nix).homeModule
+    (import ../../modules/yazi.nix).homeModule
+    (import ../../modules/zed.nix).homeModule
+    (import ../../modules/zoxide.nix).homeModule
+    (import ../../modules/zsh.nix).homeModule
 
-    ../../home/languages/erlang.nix
-    ../../home/languages/go.nix
-    ../../home/languages/js.nix
-    ../../home/languages/kotlin.nix
-    ../../home/languages/python.nix
-    ../../home/languages/rust.nix
-    ../../home/languages/solidity.nix
+    # Language modules
+    (import ../../modules/languages/erlang.nix).homeModule
+    (import ../../modules/languages/go.nix).homeModule
+    (import ../../modules/languages/js.nix).homeModule
+    (import ../../modules/languages/kotlin.nix).homeModule
+    (import ../../modules/languages/python.nix).homeModule
+    (import ../../modules/languages/rust.nix).homeModule
+    (import ../../modules/languages/solidity.nix).homeModule
   ];
 
   home = {

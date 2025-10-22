@@ -1,10 +1,13 @@
-{ ... }:
-
 {
-  services.flatpak = {
-    enable = true;
+  nixosModule =
+    { ... }:
 
-    update.auto.enable = false;
-    uninstallUnmanaged = true;
-  };
+    {
+      services.flatpak = {
+        enable = true;
+
+        update.auto.enable = false;
+        uninstallUnmanaged = true;
+      };
+    };
 }
