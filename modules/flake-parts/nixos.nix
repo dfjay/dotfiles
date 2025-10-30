@@ -35,7 +35,7 @@
           inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.stylix.nixosModules.stylix
           inputs.disko.nixosModules.disko
-          inputs.impermanence.nixosModules.impermanence
+          inputs.preservation.nixosModules.preservation
           inputs.sops-nix.nixosModules.sops
           ../../hosts/desktop
 

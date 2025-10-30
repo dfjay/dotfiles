@@ -30,7 +30,6 @@
     mkpasswd
     openfortivpn
     posting
-    qbittorrent
     rclone
     recode
     wabt
