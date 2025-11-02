@@ -87,17 +87,23 @@
 
   fileSystems."/persist".neededForBoot = true;
 
-  # Systemd unit for ephemeral root with btrfs snapshots
   boot.initrd.systemd.services.rollback = {
     description = "Rollback BTRFS root subvolume to a pristine state";
     wantedBy = [ "initrd.target" ];
-    after = [ "systemd-cryptsetup@crypted.service" ];
     before = [ "sysroot.mount" ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''
+      for i in {1..20}; do
+        if [ -b /dev/nvme0n1p2 ]; then
+          break
+        fi
+        sleep 0.1
+      done
+
       mkdir -p /btrfs_tmp
-      mount /dev/nvme0n1p2 /btrfs_tmp
+      mount -t btrfs -o subvol=/ /dev/nvme0n1p2 /btrfs_tmp
+
       if [[ -e /btrfs_tmp/@root ]]; then
           mkdir -p /btrfs_tmp/old_roots
           timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%d_%H:%M:%S")
