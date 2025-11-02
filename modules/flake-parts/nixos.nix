@@ -49,36 +49,5 @@
           }
         ];
       };
-
-    dfjay-vps =
-      let
-        username = "dfjay";
-        useremail = "mail@dfjay.com";
-        hostname = "dfjay-vps";
-
-        specialArgs = inputs // {
-          inherit
-            inputs
-            username
-            useremail
-            hostname
-            ;
-        };
-      in
-      inputs.nixpkgs.lib.nixosSystem {
-        inherit specialArgs;
-        system = "x86_64-linux";
-        modules = [
-          ../../hosts/vps
-
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username}.imports = [ ];
-          }
-        ];
-      };
   };
 }

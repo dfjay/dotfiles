@@ -26,7 +26,6 @@
 
       programs.coolercontrol = {
         enable = true;
-        nvidiaSupport = true;
       };
 
       environment.systemPackages = with pkgs; [
@@ -48,9 +47,8 @@
         lm_sensors
         coolercontrol.coolercontrold
         coolercontrol.coolercontrol-ui-data
-        coolercontrol.coolercontrol-liqctld
 
-        pinentry
+        pinentry-gnome3
         sops
       ];
 
@@ -69,6 +67,9 @@
         defaultSopsFile = ../secrets/secret.yaml;
         defaultSopsFormat = "yaml";
       };
+
+      # Suppress systemd-machine-id-commit.service since machine-id is persisted via preservation
+      systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
       services.printing.enable = true;
 
@@ -94,6 +95,9 @@
           systemd-boot.enable = true;
           efi.canTouchEfiVariables = true;
         };
+
+        # Enable systemd in initrd (required for preservation)
+        initrd.systemd.enable = true;
 
         kernelPackages = pkgs.linuxPackages_zen;
       };

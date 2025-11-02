@@ -87,30 +87,39 @@
 
   fileSystems."/persist".neededForBoot = true;
 
-  boot.initrd.postResumeCommands = lib.mkAfter ''
-    mkdir /btrfs_tmp
-    mount /dev/nvme0n1 /btrfs_tmp
-    if [[ -e /btrfs_tmp/root ]]; then
-        mkdir -p /btrfs_tmp/old_roots
-        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-    fi
+  # Systemd unit for ephemeral root with btrfs snapshots
+  boot.initrd.systemd.services.rollback = {
+    description = "Rollback BTRFS root subvolume to a pristine state";
+    wantedBy = [ "initrd.target" ];
+    after = [ "systemd-cryptsetup@crypted.service" ];
+    before = [ "sysroot.mount" ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /btrfs_tmp
+      mount /dev/nvme0n1p2 /btrfs_tmp
+      if [[ -e /btrfs_tmp/@root ]]; then
+          mkdir -p /btrfs_tmp/old_roots
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%d_%H:%M:%S")
+          mv /btrfs_tmp/@root "/btrfs_tmp/old_roots/$timestamp"
+      fi
 
-    delete_subvolume_recursively() {
-        IFS=$'\n'
-        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-            delete_subvolume_recursively "/btrfs_tmp/$i"
-        done
-        btrfs subvolume delete "$1"
-    }
+      delete_subvolume_recursively() {
+          IFS=$'\n'
+          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+              delete_subvolume_recursively "/btrfs_tmp/$i"
+          done
+          btrfs subvolume delete "$1"
+      }
 
-    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-        delete_subvolume_recursively "$i"
-    done
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+          delete_subvolume_recursively "$i"
+      done
 
-    btrfs subvolume create /btrfs_tmp/root
-    umount /btrfs_tmp
-  '';
+      btrfs subvolume create /btrfs_tmp/@root
+      umount /btrfs_tmp
+    '';
+  };
 
   swapDevices = [
     {
@@ -119,34 +128,40 @@
     }
   ];
 
-  environment.persistence."/persist" = {
-    hideMounts = true;
-    directories = [
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
-      "/etc/NetworkManager/system-connections"
-      "/etc/ssh"
-      "/etc/nixos"
-      "/var/lib/AccountsService"
-      "/var/lib/NetworkManager"
-      "/var/lib/sudo"
-      {
-        directory = "/var/lib/colord";
-        user = "colord";
-        group = "colord";
-        mode = "u=rwx,g=rx,o=";
-      }
-    ];
-    files = [
-      "/etc/machine-id"
-      {
-        file = "/var/keys/secret_file";
-        parentDirectory = {
-          mode = "u=rwx,g=,o=";
-        };
-      }
-    ];
+  preservation = {
+    enable = true;
+    preserveAt."/persist" = {
+      directories = [
+        "/var/log"
+        "/var/lib/bluetooth"
+        "/var/lib/nixos"
+        "/var/lib/systemd/coredump"
+        "/etc/NetworkManager/system-connections"
+        "/etc/nixos"
+        "/var/lib/AccountsService"
+        "/var/lib/NetworkManager"
+        "/var/lib/sudo"
+        {
+          directory = "/var/lib/colord";
+          user = "colord";
+          group = "colord";
+          mode = "0750";
+        }
+      ];
+      files = [
+        { file = "/etc/machine-id"; inInitrd = true; }
+        { file = "/etc/ssh/ssh_host_rsa_key"; how = "symlink"; configureParent = true; }
+        { file = "/etc/ssh/ssh_host_rsa_key.pub"; how = "symlink"; configureParent = true; }
+        { file = "/etc/ssh/ssh_host_ed25519_key"; how = "symlink"; configureParent = true; }
+        { file = "/etc/ssh/ssh_host_ed25519_key.pub"; how = "symlink"; configureParent = true; }
+        {
+          file = "/var/keys/secret_file";
+          configureParent = true;
+          parent = {
+            mode = "0700";
+          };
+        }
+      ];
+    };
   };
 }
