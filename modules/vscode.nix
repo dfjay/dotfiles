@@ -73,6 +73,7 @@
 
                 rust-lang.rust-analyzer
 
+                haskell.haskell
                 jakebecker.elixir-ls
                 gleam.gleam
 
