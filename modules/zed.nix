@@ -22,6 +22,9 @@
           "golangci-lint"
           "justfile"
           "make"
+          "haskell"
+          "elixir"
+          "gleam"
         ];
         userSettings = {
           telemetry = {
