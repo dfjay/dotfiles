@@ -26,8 +26,6 @@
 
     preservation.url = "github:nix-community/preservation";
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
     mac-app-util.url = "github:hraban/mac-app-util";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
@@ -36,6 +34,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nix4nvchad = {
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
