@@ -25,6 +25,10 @@
           "haskell"
           "elixir"
           "gleam"
+          "proto"
+
+          # MCP
+          "mcp-server-context7"
         ];
         userSettings = {
           telemetry = {
