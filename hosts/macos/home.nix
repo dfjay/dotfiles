@@ -23,7 +23,6 @@
     (import ../../modules/ssh.nix).homeModule
     (import ../../modules/starship.nix).homeModule
     (import ../../modules/translateshell.nix).homeModule
-    (import ../../modules/vscode.nix).homeModule
     (import ../../modules/yazi.nix).homeModule
     (import ../../modules/zed.nix).homeModule
     (import ../../modules/zoxide.nix).homeModule

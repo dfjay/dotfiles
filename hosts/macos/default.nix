@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-master, ... }:
 
 {
   imports = [
@@ -10,7 +10,7 @@
 
   environment.systemPackages = with pkgs; [
     aria2
-    claude-code
+    pkgs-master.claude-code
     colima
     cookiecutter
     dive
@@ -28,6 +28,7 @@
     just
     minio-client
     mkpasswd
+    mkcert
     openfortivpn
     posting
     rclone
@@ -69,6 +70,8 @@
       "bitwarden"
       "brave-browser"
       "bruno"
+      "claude"
+      "clash-verge-rev"
       "cyberduck"
       "datagrip"
       "discord"
@@ -109,6 +112,7 @@
       "vmware-fusion"
       "waterfox"
       "windows-app"
+      "wireshark-app"
       "yubico-authenticator"
       "zotero"
     ];
