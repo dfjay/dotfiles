@@ -6,9 +6,15 @@
         username = "dfjay";
         useremail = "mail@dfjay.com";
         hostname = "dfjay-laptop";
+        system = "aarch64-darwin";
+
+        pkgs-master = import inputs.nixpkgs-master {
+          inherit system;
+          config.allowUnfree = true;
+        };
 
         specialArgs = inputs // {
-          inherit inputs username useremail;
+          inherit inputs username useremail pkgs-master;
         };
       in
       inputs.nix-darwin.lib.darwinSystem {
