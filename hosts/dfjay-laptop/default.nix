@@ -2,6 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
+    age
     aria2
     pkgs-master.claude-code
     colima
@@ -26,6 +27,7 @@
     posting
     rclone
     recode
+    sops
     wabt
     xh
     zulu

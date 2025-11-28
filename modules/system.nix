@@ -63,11 +63,6 @@
         polkit.enable = true;
       };
 
-      sops = {
-        defaultSopsFile = ../secrets/secret.yaml;
-        defaultSopsFormat = "yaml";
-      };
-
       # Suppress systemd-machine-id-commit.service since machine-id is persisted via preservation
       systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
