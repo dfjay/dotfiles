@@ -22,6 +22,12 @@
           }
         ];
 
+        ignores = [
+          ".claude/"
+          ".claude-flow/"
+          ".swarm/"
+        ];
+
         settings = {
           user = {
             name = username;
