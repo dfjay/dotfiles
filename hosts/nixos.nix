@@ -81,6 +81,27 @@ in
 {
   imports = [
     (mkNixosConfiguration {
+      host = "linode-vps";
+      user = "dfjay";
+      userdesc = "Pavel Yozhikov";
+      system = "x86_64-linux";
+      nixosModules = with modules; [
+        locale
+      ];
+      homeModules = with modules; [
+        bat
+        btop
+        eza
+        git
+        helix
+        ripgrep
+        starship
+        yazi
+        zoxide
+      ];
+      hostModules = [ ./linode-vps ];
+    })
+    (mkNixosConfiguration {
       host = "dfjay-desktop";
       user = "dfjay";
       userdesc = "Pavel Yozhikov";
@@ -93,6 +114,7 @@ in
         games
         locale
         shell.zsh
+        sops
         system
         stylix
       ];
