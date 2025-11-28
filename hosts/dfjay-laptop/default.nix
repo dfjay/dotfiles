@@ -1,13 +1,6 @@
 { pkgs, pkgs-master, ... }:
 
 {
-  imports = [
-    (import ../../modules/darwin-system.nix).darwinModule
-    (import ../../modules/darwin-macos.nix).darwinModule
-    (import ../../modules/darwin-aerospace.nix).darwinModule
-    (import ../../modules/stylix.nix).darwinModule
-  ];
-
   environment.systemPackages = with pkgs; [
     aria2
     pkgs-master.claude-code

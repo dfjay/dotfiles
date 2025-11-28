@@ -56,6 +56,9 @@
         "x86_64-linux"
       ];
 
-      imports = [ ./modules/flake-parts/flake-module.nix ];
+      imports = [
+        ./hosts/flake-module.nix
+        ./modules/flake-parts/flake-module.nix
+      ];
     };
 }

@@ -9,15 +9,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    (import ../../modules/audio.nix).nixosModule
-    (import ../../modules/bluetooth.nix).nixosModule
-    (import ../../modules/de/cosmic.nix).nixosModule
-    (import ../../modules/flatpak.nix).nixosModule
-    (import ../../modules/games.nix).nixosModule
-    (import ../../modules/locale.nix).nixosModule
-    (import ../../modules/shell/zsh.nix).nixosModule
-    (import ../../modules/system.nix).nixosModule
-    (import ../../modules/stylix.nix).nixosModule
   ];
 
   users = {
