@@ -1,4 +1,6 @@
 keys:
+  - &yubikey A82705DF08BC95859FF5CB7E577260D68251AC22
+
   - &mac ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9W6B9WBu7PbMJWdKGFzBLMR1y2IK+kFuSsIWh2fwqg
   # - &desktop ssh-ed25519 AAAAC3...
   # - &linode ssh-ed25519 AAAAC3...
@@ -6,7 +8,9 @@ keys:
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
-      - age:
+      - pgp:
+          - *yubikey
+        age:
           - *mac
           # - *desktop
           # - *linode
