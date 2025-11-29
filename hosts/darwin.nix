@@ -56,6 +56,7 @@ let
               home-manager.sharedModules = [
                 inputs.mac-app-util.homeManagerModules.default
                 inputs.nix4nvchad.homeManagerModules.default
+                inputs.sops-nix.homeManagerModules.sops
               ];
               home-manager.backupFileExtension = "backup";
               home-manager.useGlobalPkgs = true;
@@ -91,6 +92,8 @@ in
         stylix
       ];
       homeModules = with modules; [
+        sops
+        claude
         bat
         docker
         eza

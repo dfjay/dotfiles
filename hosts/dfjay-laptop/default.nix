@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     age
     aria2
-    pkgs-master.claude-code
     colima
     cookiecutter
     dive
@@ -65,6 +64,7 @@
       "bitwarden"
       "brave-browser"
       "bruno"
+      "chromium"
       "claude"
       "clash-verge-rev"
       "cyberduck"

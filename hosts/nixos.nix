@@ -49,7 +49,10 @@ let
           ++ [
             inputs.home-manager.nixosModules.home-manager
             {
-              home-manager.sharedModules = [ inputs.nix4nvchad.homeManagerModules.default ];
+              home-manager.sharedModules = [
+                inputs.nix4nvchad.homeManagerModules.default
+                inputs.sops-nix.homeManagerModules.sops
+              ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = specialArgs;
