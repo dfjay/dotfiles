@@ -28,53 +28,52 @@ let
     {
       flake.darwinConfigurations.${host} = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs;
-        modules =
-          [
-            (
+        modules = [
+          (
+            { ... }:
+            {
+              system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+              system.stateVersion = 6;
+              system.primaryUser = user;
+              nixpkgs.hostPlatform = system;
+              nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+              users.users.${user} = {
+                name = user;
+                home = "/Users/${user}";
+              };
+            }
+          )
+          inputs.stylix.darwinModules.stylix
+          inputs.sops-nix.darwinModules.sops
+          inputs.mac-app-util.darwinModules.default
+        ]
+        ++ getDarwinModules darwinModules
+        ++ hostModules
+        ++ [
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager.sharedModules = [
+              inputs.mac-app-util.homeManagerModules.default
+              inputs.nix4nvchad.homeManagerModules.default
+              inputs.sops-nix.homeManagerModules.sops
+            ];
+            home-manager.backupFileExtension = "backup";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = specialArgs;
+            home-manager.users.${user} =
               { ... }:
               {
-                system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-                system.stateVersion = 6;
-                system.primaryUser = user;
-                nixpkgs.hostPlatform = system;
-                nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
-                users.users.${user} = {
-                  name = user;
-                  home = "/Users/${user}";
+                imports = getHomeModules homeModules;
+                home = {
+                  username = user;
+                  homeDirectory = "/Users/${user}";
+                  stateVersion = "25.11";
                 };
-              }
-            )
-            inputs.stylix.darwinModules.stylix
-            inputs.sops-nix.darwinModules.sops
-            inputs.mac-app-util.darwinModules.default
-          ]
-          ++ getDarwinModules darwinModules
-          ++ hostModules
-          ++ [
-            inputs.home-manager.darwinModules.home-manager
-            {
-              home-manager.sharedModules = [
-                inputs.mac-app-util.homeManagerModules.default
-                inputs.nix4nvchad.homeManagerModules.default
-                inputs.sops-nix.homeManagerModules.sops
-              ];
-              home-manager.backupFileExtension = "backup";
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.users.${user} =
-                { ... }:
-                {
-                  imports = getHomeModules homeModules;
-                  home = {
-                    username = user;
-                    homeDirectory = "/Users/${user}";
-                    stateVersion = "25.11";
-                  };
-                  programs.home-manager.enable = true;
-                };
-            }
-          ];
+                programs.home-manager.enable = true;
+              };
+          }
+        ];
       };
     };
 

@@ -25,13 +25,21 @@
         mcpServers = {
           "claude-flow@alpha" = {
             command = "npx";
-            args = [ "claude-flow@alpha" "mcp" "start" ];
+            args = [
+              "claude-flow@alpha"
+              "mcp"
+              "start"
+            ];
             type = "stdio";
           };
 
           ruv-swarm = {
             command = "npx";
-            args = [ "ruv-swarm@latest" "mcp" "start" ];
+            args = [
+              "ruv-swarm@latest"
+              "mcp"
+              "start"
+            ];
             type = "stdio";
           };
 
@@ -47,7 +55,10 @@
 
           taskmaster-ai = {
             command = "npx";
-            args = [ "-y" "task-master-ai" ];
+            args = [
+              "-y"
+              "task-master-ai"
+            ];
             type = "stdio";
           };
         };

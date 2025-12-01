@@ -2,55 +2,60 @@
 let
   inherit (builtins) readDir;
   inherit (lib)
-    attrNames filterAttrs hasAttr hasSuffix mapAttrs mapAttrs' nameValuePair
-    removeSuffix;
+    attrNames
+    filterAttrs
+    hasAttr
+    hasSuffix
+    mapAttrs
+    mapAttrs'
+    nameValuePair
+    removeSuffix
+    ;
 
   # Import a single module file
   importModule = path: filename: import (path + "/${filename}");
 
   # Recursively collect modules from a directory
   # Returns nested attrset: { bat = <module>; languages = { kotlin = <module>; }; }
-  collectModules = path:
+  collectModules =
+    path:
     let
       contents = readDir path;
 
       # Regular .nix files (excluding default.nix)
-      nixFiles = filterAttrs
-        (name: type: type == "regular" && hasSuffix ".nix" name && name != "default.nix")
-        contents;
+      nixFiles = filterAttrs (
+        name: type: type == "regular" && hasSuffix ".nix" name && name != "default.nix"
+      ) contents;
 
       # Subdirectories (excluding flake-parts and other special dirs)
-      subDirs = filterAttrs
-        (name: type: type == "directory" && name != "flake-parts")
-        contents;
+      subDirs = filterAttrs (name: type: type == "directory" && name != "flake-parts") contents;
 
       # Import .nix files as modules
-      fileModules = mapAttrs'
-        (filename: _: nameValuePair (removeSuffix ".nix" filename) (importModule path filename))
-        nixFiles;
+      fileModules = mapAttrs' (
+        filename: _: nameValuePair (removeSuffix ".nix" filename) (importModule path filename)
+      ) nixFiles;
 
       # Recursively process subdirectories
-      dirModules = mapAttrs
-        (dirname: _: collectModules (path + "/${dirname}"))
-        subDirs;
+      dirModules = mapAttrs (dirname: _: collectModules (path + "/${dirname}")) subDirs;
     in
     fileModules // dirModules;
 
   # Extract specific module type (homeModule, darwinModule, nixosModule) from collected modules
   # Flattens nested structure for easier use
-  extractModuleType = type: modules:
+  extractModuleType =
+    type: modules:
     let
-      extract = prefix: mods:
-        lib.concatMapAttrs
-          (name: value:
-            if hasAttr type value then
-              { ${if prefix == "" then name else "${prefix}/${name}"} = value.${type}; }
-            else if builtins.isAttrs value then
-              extract (if prefix == "" then name else "${prefix}/${name}") value
-            else
-              { }
-          )
-          mods;
+      extract =
+        prefix: mods:
+        lib.concatMapAttrs (
+          name: value:
+          if hasAttr type value then
+            { ${if prefix == "" then name else "${prefix}/${name}"} = value.${type}; }
+          else if builtins.isAttrs value then
+            extract (if prefix == "" then name else "${prefix}/${name}") value
+          else
+            { }
+        ) mods;
     in
     extract "" modules;
 
@@ -61,12 +66,12 @@ in
   inherit modules;
 
   # Helper to get list of module attrs for a specific type
-  getHomeModules = moduleList:
-    map (m: m.homeModule) (builtins.filter (hasAttr "homeModule") moduleList);
+  getHomeModules =
+    moduleList: map (m: m.homeModule) (builtins.filter (hasAttr "homeModule") moduleList);
 
-  getDarwinModules = moduleList:
-    map (m: m.darwinModule) (builtins.filter (hasAttr "darwinModule") moduleList);
+  getDarwinModules =
+    moduleList: map (m: m.darwinModule) (builtins.filter (hasAttr "darwinModule") moduleList);
 
-  getNixosModules = moduleList:
-    map (m: m.nixosModule) (builtins.filter (hasAttr "nixosModule") moduleList);
+  getNixosModules =
+    moduleList: map (m: m.nixosModule) (builtins.filter (hasAttr "nixosModule") moduleList);
 }

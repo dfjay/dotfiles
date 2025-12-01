@@ -38,12 +38,12 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
-      22    # SSH
-      443   # HTTPS / sing-box
-      80    # HTTP (for cert validation)
+      22 # SSH
+      443 # HTTPS / sing-box
+      80 # HTTP (for cert validation)
     ];
     allowedUDPPorts = [
-      443   # sing-box UDP
+      443 # sing-box UDP
     ];
   };
 
