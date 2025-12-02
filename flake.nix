@@ -35,8 +35,6 @@
 
     preservation.url = "github:nix-community/preservation";
 
-    mac-app-util.url = "github:hraban/mac-app-util";
-
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     sops-nix = {

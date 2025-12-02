@@ -45,7 +45,6 @@ let
           )
           inputs.stylix.darwinModules.stylix
           inputs.sops-nix.darwinModules.sops
-          inputs.mac-app-util.darwinModules.default
         ]
         ++ getDarwinModules darwinModules
         ++ hostModules
@@ -53,7 +52,6 @@ let
           inputs.home-manager.darwinModules.home-manager
           {
             home-manager.sharedModules = [
-              inputs.mac-app-util.homeManagerModules.default
               inputs.nix4nvchad.homeManagerModules.default
               inputs.sops-nix.homeManagerModules.sops
             ];
