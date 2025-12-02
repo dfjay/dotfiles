@@ -14,6 +14,7 @@ let
       nixosModules ? [ ],
       hostModules ? [ ],
       nixpkgs ? inputs.nixpkgs,
+      home-manager ? inputs.home-manager,
     }:
     let
       specialArgs = inputs // {
@@ -47,7 +48,7 @@ let
         ++ getNixosModules nixosModules
         ++ hostModules
         ++ [
-          inputs.home-manager.nixosModules.home-manager
+          home-manager.nixosModules.home-manager
           {
             home-manager.sharedModules = [
               inputs.nix4nvchad.homeManagerModules.default
@@ -89,6 +90,7 @@ in
       userdesc = "Pavel Yozhikov";
       system = "x86_64-linux";
       nixpkgs = inputs.nixpkgs-stable;
+      home-manager = inputs.home-manager-stable;
       nixosModules = with modules; [
         locale
       ];
