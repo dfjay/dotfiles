@@ -13,6 +13,7 @@ let
       homeModules ? [ ],
       nixosModules ? [ ],
       hostModules ? [ ],
+      nixpkgs ? inputs.nixpkgs,
     }:
     let
       specialArgs = inputs // {
@@ -28,7 +29,7 @@ let
       };
     in
     {
-      flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
+      flake.nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
           (
@@ -87,6 +88,7 @@ in
       user = "dfjay";
       userdesc = "Pavel Yozhikov";
       system = "x86_64-linux";
+      nixpkgs = inputs.nixpkgs-stable;
       nixosModules = with modules; [
         locale
       ];
