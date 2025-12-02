@@ -7,7 +7,7 @@
         with pkgs;
         [
           bun
-          nodejs_22
+          nodejs_24
           typescript-language-server
         ]
         ++ (with pkgs.nodePackages; [
