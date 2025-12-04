@@ -3,6 +3,14 @@ let
   self-lib = import ../lib.nix { inherit lib; };
   inherit (self-lib) modules getHomeModules getNixosModules;
 
+  # Colmena deployment targets
+  colmenaHosts = {
+    linode-vps = {
+      targetHost = "subs.dfjay.com";
+      targetUser = "dfjay";
+    };
+  };
+
   mkNixosConfiguration =
     {
       host,
@@ -83,6 +91,25 @@ let
 
 in
 {
+  flake.colmena = let
+    conf = inputs.self.nixosConfigurations;
+  in {
+    meta = {
+      nixpkgs = import inputs.nixpkgs-stable { system = "x86_64-linux"; };
+      nodeNixpkgs = builtins.mapAttrs (name: value: value.pkgs) conf;
+      nodeSpecialArgs = builtins.mapAttrs (name: value: value._module.specialArgs) conf;
+    };
+
+    linode-vps = {
+      deployment = {
+        targetHost = colmenaHosts.linode-vps.targetHost;
+        targetUser = colmenaHosts.linode-vps.targetUser;
+        buildOnTarget = true;
+      };
+      imports = conf.linode-vps._module.args.modules;
+    };
+  };
+
   imports = [
     (mkNixosConfiguration {
       host = "linode-vps";

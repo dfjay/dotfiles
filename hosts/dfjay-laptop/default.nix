@@ -5,6 +5,7 @@
     age
     aria2
     colima
+    colmena
     cookiecutter
     dive
     docker
@@ -26,6 +27,7 @@
     posting
     rclone
     recode
+    sing-box
     sops
     wabt
     xh
