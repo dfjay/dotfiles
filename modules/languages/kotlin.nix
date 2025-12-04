@@ -5,7 +5,7 @@
     {
       home.packages = with pkgs; [
         kotlin
-        kotlin-native
+        #kotlin-native
         ktlint
       ];
     };
