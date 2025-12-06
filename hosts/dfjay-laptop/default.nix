@@ -68,7 +68,6 @@
       "bruno"
       "chromium"
       "claude"
-      "clash-verge-rev"
       "cyberduck"
       "datagrip"
       "discord"

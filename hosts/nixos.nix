@@ -6,7 +6,7 @@ let
   # Colmena deployment targets
   colmenaHosts = {
     linode-vps = {
-      targetHost = "subs.dfjay.com";
+      targetHost = "ssh.dfjay.com"; # DNS only (no Cloudflare proxy)
       targetUser = "dfjay";
     };
   };
