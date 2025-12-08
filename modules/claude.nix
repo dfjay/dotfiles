@@ -23,26 +23,6 @@
         enable = true;
 
         mcpServers = {
-          "claude-flow@alpha" = {
-            command = "npx";
-            args = [
-              "claude-flow@alpha"
-              "mcp"
-              "start"
-            ];
-            type = "stdio";
-          };
-
-          ruv-swarm = {
-            command = "npx";
-            args = [
-              "ruv-swarm@latest"
-              "mcp"
-              "start"
-            ];
-            type = "stdio";
-          };
-
           playwright = {
             command = "npx";
             args = [
