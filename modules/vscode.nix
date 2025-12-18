@@ -2,26 +2,42 @@
   homeModule =
     { pkgs, ... }:
     let
-      kotlin-lsp = pkgs.vscode-utils.buildVscodeExtension {
-        pname = "kotlin-lsp";
-        version = "0.253.10629";
-        vscodeExtName = "kotlin-lsp";
-        vscodeExtUniqueId = "kotlin.kotlin-lsp";
-        vscodeExtPublisher = "kotlin";
+      kotlin-lsp =
+        let
+          version = "261.13587.0";
+          sources = {
+            aarch64-darwin = {
+              url = "https://download-cdn.jetbrains.com/kotlin-lsp/${version}/kotlin-lsp-${version}-mac-aarch64.vsix";
+              sha256 = "1bcr3z5ns7l1yfb5fipj5sdchl6xg26g69070nwjc4vxh9y865ry";
+            };
+            x86_64-linux = {
+              url = "https://download-cdn.jetbrains.com/kotlin-lsp/${version}/kotlin-lsp-${version}-linux-x64.vsix";
+              sha256 = "1g2ziy3xnf2pbb6dsi8c5rg8pbri8j5my4ayd3fmp3b7mn12q13b";
+            };
+          };
+          src =
+            sources.${pkgs.stdenv.hostPlatform.system}
+              or (throw "Unsupported platform: ${pkgs.stdenv.hostPlatform.system}");
+        in
+        pkgs.vscode-utils.buildVscodeExtension {
+          pname = "kotlin-lsp";
+          inherit version;
+          vscodeExtName = "kotlin-lsp";
+          vscodeExtUniqueId = "kotlin.kotlin-lsp";
+          vscodeExtPublisher = "kotlin";
 
-        src = pkgs.fetchurl {
-          url = "https://download-cdn.jetbrains.com/kotlin-lsp/0.253.10629/kotlin-0.253.10629.vsix";
-          sha256 = "077ibc8mkgbcb283f9spk70cb5zv7i20dpy7z1c52zny5xaw33k3";
+          src = pkgs.fetchurl {
+            inherit (src) url sha256;
+          };
+
+          nativeBuildInputs = [ pkgs.unzip ];
+
+          unpackPhase = ''
+            runHook preUnpack
+            unzip "$src"
+            runHook postUnpack
+          '';
         };
-
-        nativeBuildInputs = [ pkgs.unzip ];
-
-        unpackPhase = ''
-          runHook preUnpack
-          unzip "$src"
-          runHook postUnpack
-        '';
-      };
     in
     {
       programs.vscode = {

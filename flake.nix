@@ -68,7 +68,12 @@
 
       imports = [
         ./hosts/flake-module.nix
-        ./modules/flake-parts/flake-module.nix
       ];
+
+      perSystem =
+        { pkgs, ... }:
+        {
+          formatter = pkgs.nixfmt-tree;
+        };
     };
 }
