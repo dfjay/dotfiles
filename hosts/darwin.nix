@@ -11,7 +11,7 @@ let
       system,
       homeModules ? [ ],
       darwinModules ? [ ],
-      hostModules ? [ ],
+      hostConfig ? null,
     }:
     let
       pkgs-master = import inputs.nixpkgs-master {
@@ -36,7 +36,20 @@ let
               system.stateVersion = 6;
               system.primaryUser = user;
               nixpkgs.hostPlatform = system;
-              nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+              nixpkgs.overlays = [
+                inputs.nix-vscode-extensions.overlays.default
+                (final: prev: {
+                  openfortivpn = prev.openfortivpn.overrideAttrs (old: rec {
+                    version = "1.24.0";
+                    src = final.fetchFromGitHub {
+                      owner = "adrienverge";
+                      repo = "openfortivpn";
+                      rev = "v${version}";
+                      hash = "sha256-JpHza2FzzgIYdO86v7x5WGcDSWCqejfYtjgaVV+xl7Y=";
+                    };
+                  });
+                })
+              ];
               users.users.${user} = {
                 name = user;
                 home = "/Users/${user}";
@@ -47,7 +60,7 @@ let
           inputs.sops-nix.darwinModules.sops
         ]
         ++ getDarwinModules darwinModules
-        ++ hostModules
+        ++ (if hostConfig != null then [ hostConfig ] else [ ])
         ++ [
           inputs.home-manager.darwinModules.home-manager
           {
@@ -75,56 +88,16 @@ let
       };
     };
 
+  # Import host configurations
+  laptop = import ./dfjay-laptop { inherit modules; };
+
 in
 {
   imports = [
     (mkDarwinConfiguration {
       host = "dfjay-laptop";
-      user = "dfjay";
-      system = "aarch64-darwin";
-      darwinModules = with modules; [
-        darwin-system
-        darwin-macos
-        darwin-aerospace
-        stylix
-      ];
-      homeModules = with modules; [
-        sops
-        claude
-        bat
-        docker
-        eza
-        fastfetch
-        formats
-        git
-        helix
-        htop
-        k8s
-        kitty
-        lazydocker
-        lazygit
-        nushell
-        nvchad
-        postgresql
-        proto
-        ripgrep
-        skim
-        ssh
-        starship
-        translateshell
-        yazi
-        zed
-        zoxide
-        zsh
-        languages.erlang
-        languages.go
-        languages.js
-        languages.kotlin
-        languages.python
-        languages.rust
-        languages.solidity
-      ];
-      hostModules = [ ./dfjay-laptop ];
+      inherit (laptop) system user homeModules darwinModules;
+      hostConfig = laptop.config;
     })
   ];
 }

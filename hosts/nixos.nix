@@ -3,14 +3,6 @@ let
   self-lib = import ../lib.nix { inherit lib; };
   inherit (self-lib) modules getHomeModules getNixosModules;
 
-  # Colmena deployment targets
-  colmenaHosts = {
-    linode-vps = {
-      targetHost = "ssh.dfjay.com"; # DNS only (no Cloudflare proxy)
-      targetUser = "dfjay";
-    };
-  };
-
   mkNixosConfiguration =
     {
       host,
@@ -20,7 +12,7 @@ let
       system,
       homeModules ? [ ],
       nixosModules ? [ ],
-      hostModules ? [ ],
+      hostConfig ? null,
       nixpkgs ? inputs.nixpkgs,
       home-manager ? inputs.home-manager,
     }:
@@ -54,7 +46,7 @@ let
           inputs.sops-nix.nixosModules.sops
         ]
         ++ getNixosModules nixosModules
-        ++ hostModules
+        ++ (if hostConfig != null then [ hostConfig ] else [ ])
         ++ [
           home-manager.nixosModules.home-manager
           {
@@ -89,6 +81,10 @@ let
       };
     };
 
+  # Import host configurations
+  vps = import ./linode-vps { inherit modules; };
+  desktop = import ./dfjay-desktop { inherit modules; };
+
 in
 {
   flake.colmena =
@@ -104,8 +100,8 @@ in
 
       linode-vps = {
         deployment = {
-          targetHost = colmenaHosts.linode-vps.targetHost;
-          targetUser = colmenaHosts.linode-vps.targetUser;
+          targetHost = vps.colmena.targetHost;
+          targetUser = vps.colmena.targetUser;
           buildOnTarget = true;
         };
         imports = conf.linode-vps._module.args.modules;
@@ -115,78 +111,15 @@ in
   imports = [
     (mkNixosConfiguration {
       host = "linode-vps";
-      user = "dfjay";
-      userdesc = "Pavel Yozhikov";
-      system = "x86_64-linux";
+      inherit (vps) system user userdesc homeModules nixosModules;
+      hostConfig = vps.config;
       nixpkgs = inputs.nixpkgs-stable;
       home-manager = inputs.home-manager-stable;
-      nixosModules = with modules; [
-        locale
-      ];
-      homeModules = with modules; [
-        bat
-        btop
-        eza
-        git
-        helix
-        ripgrep
-        starship
-        yazi
-        zoxide
-      ];
-      hostModules = [ ./linode-vps ];
     })
     (mkNixosConfiguration {
       host = "dfjay-desktop";
-      user = "dfjay";
-      userdesc = "Pavel Yozhikov";
-      system = "x86_64-linux";
-      nixosModules = with modules; [
-        audio
-        bluetooth
-        de.cosmic
-        flatpak
-        games
-        locale
-        shell.zsh
-        sops
-        system
-        stylix
-      ];
-      homeModules = with modules; [
-        bat
-        btop
-        eza
-        fastfetch
-        ghostty
-        git
-        gpg
-        gradle
-        helix
-        k8s
-        kitty
-        lazydocker
-        lazygit
-        librewolf
-        nvchad
-        postgresql
-        ripgrep
-        skim
-        starship
-        translateshell
-        vscode
-        yazi
-        zed
-        zoxide
-        zsh
-        languages.go
-        languages.js
-        languages.jdk
-        languages.kotlin
-        languages.rust
-        languages.python
-      ];
-      hostModules = [ ./dfjay-desktop ];
+      inherit (desktop) system user userdesc homeModules nixosModules;
+      hostConfig = desktop.config;
     })
   ];
 }
