@@ -39,7 +39,6 @@ let
               nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
             }
           )
-          inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.stylix.nixosModules.stylix
           inputs.disko.nixosModules.disko
           inputs.preservation.nixosModules.preservation

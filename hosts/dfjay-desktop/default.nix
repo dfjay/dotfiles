@@ -9,7 +9,6 @@
     audio
     bluetooth
     de.cosmic
-    flatpak
     games
     locale
     shell.zsh
@@ -99,6 +98,7 @@
         lunarvim
         prismlauncher
         qbittorrent
+        spotify
         telegram-desktop
         tor-browser
         tuifimanager
@@ -108,10 +108,6 @@
         winetricks
         wineWowPackages.stable
         woeusb
-      ];
-
-      services.flatpak.packages = [
-        "com.spotify.Client"
       ];
 
       programs.throne = {
