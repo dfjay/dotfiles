@@ -96,7 +96,12 @@ in
   imports = [
     (mkDarwinConfiguration {
       host = "dfjay-laptop";
-      inherit (laptop) system user homeModules darwinModules;
+      inherit (laptop)
+        system
+        user
+        homeModules
+        darwinModules
+        ;
       hostConfig = laptop.config;
     })
   ];

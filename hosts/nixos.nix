@@ -111,14 +111,26 @@ in
   imports = [
     (mkNixosConfiguration {
       host = "linode-vps";
-      inherit (vps) system user userdesc homeModules nixosModules;
+      inherit (vps)
+        system
+        user
+        userdesc
+        homeModules
+        nixosModules
+        ;
       hostConfig = vps.config;
       nixpkgs = inputs.nixpkgs-stable;
       home-manager = inputs.home-manager-stable;
     })
     (mkNixosConfiguration {
       host = "dfjay-desktop";
-      inherit (desktop) system user userdesc homeModules nixosModules;
+      inherit (desktop)
+        system
+        user
+        userdesc
+        homeModules
+        nixosModules
+        ;
       hostConfig = desktop.config;
     })
   ];
