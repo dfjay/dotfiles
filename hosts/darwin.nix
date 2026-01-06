@@ -88,7 +88,6 @@ let
       };
     };
 
-  # Import host configurations
   laptop = import ./dfjay-laptop { inherit modules; };
 
 in

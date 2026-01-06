@@ -142,6 +142,7 @@
         "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
+        "/var/lib/sbctl"
         "/etc/NetworkManager/system-connections"
         "/etc/nixos"
         "/var/lib/AccountsService"

@@ -43,6 +43,7 @@ let
           inputs.disko.nixosModules.disko
           inputs.preservation.nixosModules.preservation
           inputs.sops-nix.nixosModules.sops
+          inputs.lanzaboote.nixosModules.lanzaboote
         ]
         ++ getNixosModules nixosModules
         ++ (if hostConfig != null then [ hostConfig ] else [ ])
@@ -80,7 +81,6 @@ let
       };
     };
 
-  # Import host configurations
   vps = import ./linode-vps { inherit modules; };
   desktop = import ./dfjay-desktop { inherit modules; };
 

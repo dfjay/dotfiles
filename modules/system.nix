@@ -1,6 +1,6 @@
 {
   nixosModule =
-    { pkgs, hostname, ... }:
+    { pkgs, lib, hostname, ... }:
 
     {
       nixpkgs.config.allowUnfree = true;
@@ -49,6 +49,7 @@
         coolercontrol.coolercontrol-ui-data
 
         pinentry-gnome3
+        sbctl
         sops
       ];
 
@@ -87,8 +88,20 @@
 
       boot = {
         loader = {
-          systemd-boot.enable = true;
+          systemd-boot.enable = lib.mkForce false;
           efi.canTouchEfiVariables = true;
+        };
+
+        lanzaboote = {
+          enable = true;
+          pkiBundle = "/var/lib/sbctl";
+
+          autoGenerateKeys.enable = true;
+
+          autoEnrollKeys = {
+            enable = true;
+            autoReboot = true;
+          };
         };
 
         # Enable systemd in initrd (required for preservation)
