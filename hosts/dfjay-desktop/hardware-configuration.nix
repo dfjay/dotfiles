@@ -49,6 +49,7 @@
               type = "luks";
               name = "cryptroot";
               settings.allowDiscards = true;
+              settings.crypttabExtraOpts = [ "tpm2-device=auto" ];
               content = {
                 type = "btrfs";
                 extraArgs = [ "-f" ];
