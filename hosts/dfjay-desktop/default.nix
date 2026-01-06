@@ -98,6 +98,7 @@
         lunarvim
         prismlauncher
         qbittorrent
+        reaper
         spotify
         telegram-desktop
         tor-browser
