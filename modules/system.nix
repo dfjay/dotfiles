@@ -1,6 +1,11 @@
 {
   nixosModule =
-    { pkgs, lib, hostname, ... }:
+    {
+      pkgs,
+      lib,
+      hostname,
+      ...
+    }:
 
     {
       nixpkgs.config.allowUnfree = true;
