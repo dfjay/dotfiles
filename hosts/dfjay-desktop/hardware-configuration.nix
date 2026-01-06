@@ -1,3 +1,4 @@
+
 {
   config,
   lib,
@@ -46,36 +47,41 @@
           root = {
             size = "100%";
             content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ];
-              subvolumes = {
-                "@root" = {
-                  mountpoint = "/";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                  ];
-                };
-                "@home" = {
-                  mountpoint = "/home";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                  ];
-                };
-                "@persist" = {
-                  mountpoint = "/persist";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                  ];
-                };
-                "@nix" = {
-                  mountpoint = "/nix";
-                  mountOptions = [
-                    "compress=zstd"
-                    "noatime"
-                  ];
+              type = "luks";
+              name = "cryptroot";
+              settings.allowDiscards = true;
+              content = {
+                type = "btrfs";
+                extraArgs = [ "-f" ];
+                subvolumes = {
+                  "@root" = {
+                    mountpoint = "/";
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@home" = {
+                    mountpoint = "/home";
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@persist" = {
+                    mountpoint = "/persist";
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
                 };
               };
             };
@@ -95,14 +101,14 @@
     serviceConfig.Type = "oneshot";
     script = ''
       for i in {1..20}; do
-        if [ -b /dev/nvme0n1p2 ]; then
+        if [ -b /dev/mapper/cryptroot ]; then
           break
         fi
         sleep 0.1
       done
 
       mkdir -p /btrfs_tmp
-      mount -t btrfs -o subvol=/ /dev/nvme0n1p2 /btrfs_tmp
+      mount -t btrfs -o subvol=/ /dev/mapper/cryptroot /btrfs_tmp
 
       if [[ -e /btrfs_tmp/@root ]]; then
           mkdir -p /btrfs_tmp/old_roots
