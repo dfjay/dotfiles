@@ -27,6 +27,7 @@
     kitty
     lazydocker
     lazygit
+    librewolf
     nushell
     nvchad
     postgresql
@@ -131,7 +132,6 @@
           "android-studio"
           "audio-hijack"
           "balenaetcher"
-          "beekeeper-studio"
           "brave-browser"
           "chromium"
           "claude"
@@ -156,12 +156,11 @@
           "microsoft-word"
           "obs"
           "orion"
-          "rustrover"
+          "signal"
           "soundsource"
           "steam"
           "tor-browser"
           "tuta-mail"
-          "waterfox"
           "windows-app"
           "yubico-authenticator"
         ];
