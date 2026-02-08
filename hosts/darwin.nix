@@ -38,17 +38,6 @@ let
               nixpkgs.hostPlatform = system;
               nixpkgs.overlays = [
                 inputs.nix-vscode-extensions.overlays.default
-                (final: prev: {
-                  openfortivpn = prev.openfortivpn.overrideAttrs (old: rec {
-                    version = "1.24.1";
-                    src = final.fetchFromGitHub {
-                      owner = "adrienverge";
-                      repo = "openfortivpn";
-                      rev = "v${version}";
-                      hash = "sha256-zJSEBfhb2dFEOW/sJyB7xFLGGUQLjkz20V80L0ew7J8=";
-                    };
-                  });
-                })
               ];
               users.users.${user} = {
                 name = user;

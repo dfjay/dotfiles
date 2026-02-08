@@ -91,7 +91,7 @@
         bitwarden-desktop
         bruno
         cyberduck
-        element-desktop
+        #element-desktop
         iina
         keystore-explorer
         slack
