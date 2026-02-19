@@ -64,7 +64,7 @@ let
                 home = {
                   username = user;
                   homeDirectory = "/home/${user}";
-                  stateVersion = "25.11";
+                  stateVersion = "26.05";
                   packages = with pkgs; [
                     nerd-fonts.fira-code
                     nerd-fonts.droid-sans-mono
