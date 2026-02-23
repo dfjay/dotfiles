@@ -32,7 +32,7 @@
     lazydocker
     lazygit
     librewolf
-    nvchad
+    neovim
     postgresql
     ripgrep
     skim

@@ -29,7 +29,7 @@
     lazygit
     librewolf
     nushell
-    nvchad
+    neovim
     postgresql
     proto
     ripgrep
@@ -43,7 +43,7 @@
     zoxide
     zsh
     languages.erlang
-    languages.gleam
+    #languages.gleam
     languages.go
     languages.js
     languages.kotlin
@@ -79,6 +79,7 @@
         mkcert
         openfortivpn
         posting
+        qrencode
         rclone
         recode
         sing-box
@@ -102,7 +103,7 @@
         wireshark
         zotero
       ];
-      environment.variables.EDITOR = "nvim";
+      environment.variables.EDITOR = "hx";
 
       homebrew = {
         enable = true;

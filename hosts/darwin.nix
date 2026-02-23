@@ -54,7 +54,6 @@ let
           inputs.home-manager.darwinModules.home-manager
           {
             home-manager.sharedModules = [
-              inputs.nix4nvchad.homeManagerModules.default
               inputs.sops-nix.homeManagerModules.sops
             ];
             home-manager.backupFileExtension = "backup";
