@@ -56,6 +56,8 @@
                 vscodevim.vim
                 ms-kubernetes-tools.vscode-kubernetes-tools
                 github.vscode-pull-request-github
+                github.copilot
+                github.copilot-chat
                 humao.rest-client
 
                 sonarsource.sonarlint-vscode
@@ -108,7 +110,7 @@
             userSettings = {
               "files.autoSave" = "afterDelay";
               "editor.minimap.enabled" = false;
-              "editor.density.editorTabHeight" = "compact";
+              "window.density.editorTabHeight" = "compact";
               "editor.unicodeHighlight.allowedLocales" = {
                 "ru" = true;
               };
