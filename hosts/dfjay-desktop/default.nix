@@ -40,6 +40,7 @@
     translateshell
     vscode
     yazi
+    zellij
     zed
     zoxide
     zsh

@@ -47,7 +47,7 @@
             "$cmd_duration"
             "$line_break"
             "$character"
-            ''''${custom.space}''
+            "\${custom.space}"
           ];
           scan_timeout = 10;
           nix_shell = {
@@ -55,7 +55,7 @@
             format = "[${pad.left}](fg:white)[ ](bg:white fg:black)[${pad.right}](fg:white) ";
           };
           custom.space = {
-            when = ''! test $env'';
+            when = "! test $env";
             format = "  ";
           };
           status = {
