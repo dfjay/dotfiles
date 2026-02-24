@@ -36,14 +36,12 @@
     skim
     ssh
     starship
-    translateshell
     vscode
     yazi
-    zed
     zoxide
     zsh
     languages.erlang
-    #languages.gleam
+    languages.gleam
     languages.go
     languages.js
     languages.kotlin
@@ -60,7 +58,6 @@
         aria2
         colima
         colmena
-        cookiecutter
         dive
         docker
         docker-credential-helpers
@@ -74,7 +71,6 @@
         insomnia
         jmeter
         just
-        minio-client
         mkpasswd
         mkcert
         openfortivpn
@@ -84,6 +80,7 @@
         recode
         sing-box
         sops
+        squawk
         wabt
         xh
         zulu
@@ -92,7 +89,7 @@
         bitwarden-desktop
         bruno
         cyberduck
-        #element-desktop
+       # element-desktop
         iina
         keystore-explorer
         slack
