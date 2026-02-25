@@ -9,8 +9,7 @@ let
       user,
       useremail ? "mail@dfjay.com",
       system,
-      homeModules ? [ ],
-      darwinModules ? [ ],
+      hostModules ? [ ],
       hostConfig ? null,
     }:
     let
@@ -48,7 +47,7 @@ let
           inputs.stylix.darwinModules.stylix
           inputs.sops-nix.darwinModules.sops
         ]
-        ++ getDarwinModules darwinModules
+        ++ getDarwinModules hostModules
         ++ (if hostConfig != null then [ hostConfig ] else [ ])
         ++ [
           inputs.home-manager.darwinModules.home-manager
@@ -63,7 +62,7 @@ let
             home-manager.users.${user} =
               { ... }:
               {
-                imports = getHomeModules homeModules;
+                imports = getHomeModules hostModules;
                 home = {
                   username = user;
                   homeDirectory = "/Users/${user}";
@@ -83,12 +82,8 @@ in
   imports = [
     (mkDarwinConfiguration {
       host = "dfjay-laptop";
-      inherit (laptop)
-        system
-        user
-        homeModules
-        darwinModules
-        ;
+      inherit (laptop) system user;
+      hostModules = laptop.modules;
       hostConfig = laptop.config;
     })
   ];

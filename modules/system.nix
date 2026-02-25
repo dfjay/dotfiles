@@ -41,12 +41,8 @@
         wget
         curl
 
-        dmidecode
-        stress
-
         # browsers
-        firefox
-        chromium
+        librewolf
 
         # sensors
         lm_sensors

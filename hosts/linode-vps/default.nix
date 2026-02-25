@@ -6,11 +6,9 @@
   userdesc = "Pavel Yozhikov";
   useStable = true;
 
-  nixosModules = with modules; [
+  modules = with modules; [
     locale
-  ];
 
-  homeModules = with modules; [
     bat
     btop
     eza

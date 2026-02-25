@@ -4,15 +4,13 @@
   system = "aarch64-darwin";
   user = "dfjay";
 
-  darwinModules = with modules; [
+  modules = with modules; [
     darwin-system
     darwin-macos
     darwin-aerospace
-    stylix
-  ];
-
-  homeModules = with modules; [
     sops
+    stylix
+
     claude
     bat
     docker
@@ -41,9 +39,11 @@
     zellij
     zoxide
     zsh
+
     languages.erlang
     languages.gleam
     languages.go
+    languages.jdk
     languages.js
     languages.kotlin
     languages.python
@@ -68,7 +68,7 @@
         glab
         glow
         gopass
-        httpie
+
         insomnia
         jmeter
         just
@@ -92,14 +92,10 @@
         cyberduck
         # element-desktop
         iina
-        keystore-explorer
         slack
-        spotify
         syncthing
         telegram-desktop
-        visualvm
         wireshark
-        zotero
       ];
       environment.variables.EDITOR = "hx";
 
@@ -141,14 +137,14 @@
           "gpg-suite"
           "intellij-idea"
           "jan"
-          "jdk-mission-control"
+
           "libreoffice"
           "linearmouse"
           "logseq"
           "loopback"
           "mattermost"
           "melodics"
-          "memoryanalyzer"
+
           "microsoft-excel"
           "microsoft-powerpoint"
           "microsoft-teams"

@@ -5,7 +5,7 @@
   user = "dfjay";
   userdesc = "Pavel Yozhikov";
 
-  nixosModules = with modules; [
+  modules = with modules; [
     audio
     bluetooth
     de.cosmic
@@ -15,9 +15,7 @@
     sops
     system
     stylix
-  ];
 
-  homeModules = with modules; [
     bat
     btop
     eza
@@ -44,12 +42,13 @@
     zed
     zoxide
     zsh
+
     languages.go
-    languages.js
     languages.jdk
+    languages.js
     languages.kotlin
-    languages.rust
     languages.python
+    languages.rust
   ];
 
   config =

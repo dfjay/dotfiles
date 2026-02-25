@@ -10,8 +10,7 @@ let
       useremail ? "mail@dfjay.com",
       userdesc ? user,
       system,
-      homeModules ? [ ],
-      nixosModules ? [ ],
+      hostModules ? [ ],
       hostConfig ? null,
       nixpkgs ? inputs.nixpkgs,
       home-manager ? inputs.home-manager,
@@ -45,7 +44,7 @@ let
           inputs.sops-nix.nixosModules.sops
           inputs.lanzaboote.nixosModules.lanzaboote
         ]
-        ++ getNixosModules nixosModules
+        ++ getNixosModules hostModules
         ++ (if hostConfig != null then [ hostConfig ] else [ ])
         ++ [
           home-manager.nixosModules.home-manager
@@ -59,7 +58,7 @@ let
             home-manager.users.${user} =
               { pkgs, ... }:
               {
-                imports = getHomeModules homeModules;
+                imports = getHomeModules hostModules;
                 home = {
                   username = user;
                   homeDirectory = "/home/${user}";
@@ -109,26 +108,16 @@ in
   imports = [
     (mkNixosConfiguration {
       host = "linode-vps";
-      inherit (vps)
-        system
-        user
-        userdesc
-        homeModules
-        nixosModules
-        ;
+      inherit (vps) system user userdesc;
+      hostModules = vps.modules;
       hostConfig = vps.config;
       nixpkgs = inputs.nixpkgs-stable;
       home-manager = inputs.home-manager-stable;
     })
     (mkNixosConfiguration {
       host = "dfjay-desktop";
-      inherit (desktop)
-        system
-        user
-        userdesc
-        homeModules
-        nixosModules
-        ;
+      inherit (desktop) system user userdesc;
+      hostModules = desktop.modules;
       hostConfig = desktop.config;
     })
   ];
