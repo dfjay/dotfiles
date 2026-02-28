@@ -68,8 +68,6 @@
         glab
         glow
         gopass
-
-        insomnia
         jmeter
         just
         mkpasswd
@@ -90,7 +88,6 @@
         bitwarden-desktop
         bruno
         cyberduck
-        # element-desktop
         iina
         slack
         syncthing
@@ -110,6 +107,7 @@
 
         masApps = {
           #"Logic Pro" = 634148309;
+          "Shadowrocket" = 932747118;
           "Xcode" = 497799835;
         };
 
