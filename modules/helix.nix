@@ -8,7 +8,20 @@
         settings = {
           editor = {
             line-number = "relative";
-            lsp.display-messages = true;
+            cursorline = true;
+            color-modes = true;
+            bufferline = "multiple";
+            cursor-shape = {
+              insert = "bar";
+              normal = "block";
+              select = "underline";
+            };
+            indent-guides.render = true;
+            file-picker.hidden = false;
+            lsp = {
+              display-messages = true;
+              display-inlay-hints = true;
+            };
           };
 
           keys.normal = {
