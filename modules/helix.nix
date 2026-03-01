@@ -1,6 +1,6 @@
 {
   homeModule =
-    { ... }:
+    { config, lib, ... }:
 
     {
       programs.helix = {
@@ -24,26 +24,27 @@
             };
           };
 
-          keys.normal = {
-            # Yazi
-            "C-e" = [
-              ":sh rm -f /tmp/hx-yazi-chooser"
-              ":insert-output yazi %{buffer_name} --chooser-file=/tmp/hx-yazi-chooser"
-              '':sh printf '\x1b[?1049h\x1b[?2004h' > /dev/tty''
-              ":open %sh{cat /tmp/hx-yazi-chooser 2>/dev/null}"
-              ":redraw"
-            ];
-
-            # Lazygit
-            "C-g" = [
-              ":write-all"
-              ":new"
-              ":insert-output lazygit"
-              ":buffer-close!"
-              ":redraw"
-              ":reload-all"
-            ];
-          };
+          keys.normal = lib.mkMerge [
+            (lib.mkIf config.programs.yazi.enable {
+              "C-e" = [
+                ":sh rm -f /tmp/hx-yazi-chooser"
+                ":insert-output yazi %{buffer_name} --chooser-file=/tmp/hx-yazi-chooser"
+                '':sh printf '\x1b[?1049h\x1b[?2004h' > /dev/tty''
+                ":open %sh{cat /tmp/hx-yazi-chooser 2>/dev/null}"
+                ":redraw"
+              ];
+            })
+            (lib.mkIf config.programs.lazygit.enable {
+              "C-g" = [
+                ":write-all"
+                ":new"
+                ":insert-output lazygit"
+                ":buffer-close!"
+                ":redraw"
+                ":reload-all"
+              ];
+            })
+          ];
         };
       };
 
