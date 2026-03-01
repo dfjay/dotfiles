@@ -52,6 +52,7 @@
           scan_timeout = 10;
           nix_shell = {
             disabled = false;
+            heuristic = true;
             format = "[${pad.left}](fg:white)[ ](bg:white fg:black)[${pad.right}](fg:white) ";
           };
           custom.space = {

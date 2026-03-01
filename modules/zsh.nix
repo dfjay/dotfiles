@@ -32,7 +32,6 @@
             "vagrant"
             "pip"
           ];
-          theme = "robbyrussell";
         };
 
         shellAliases = {

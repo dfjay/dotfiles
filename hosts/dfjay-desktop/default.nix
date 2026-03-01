@@ -18,6 +18,7 @@
 
     bat
     btop
+    direnv
     eza
     fastfetch
     ghostty
@@ -41,6 +42,7 @@
     zellij
     zed
     zoxide
+    netrc
     zsh
 
     languages.go

@@ -13,6 +13,7 @@
 
     claude
     bat
+    direnv
     docker
     eza
     fastfetch
@@ -38,6 +39,7 @@
     yazi
     zellij
     zoxide
+    netrc
     zsh
 
     languages.erlang
