@@ -38,7 +38,6 @@
           ll = "eza -la --sort name --group-directories-first --no-permissions --no-filesize --no-user --no-time";
           edit = "sudo -e";
           tree = "eza --tree";
-          zd = "zellij --layout dev";
         };
 
         history = {

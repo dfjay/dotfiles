@@ -37,7 +37,6 @@
     starship
     vscode
     yazi
-    zellij
     zoxide
     netrc
     zsh

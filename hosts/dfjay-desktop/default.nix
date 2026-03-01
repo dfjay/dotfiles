@@ -39,7 +39,6 @@
     translateshell
     vscode
     yazi
-    zellij
     zed
     zoxide
     netrc
