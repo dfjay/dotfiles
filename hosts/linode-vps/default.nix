@@ -3,6 +3,7 @@
 {
   system = "x86_64-linux";
   user = "dfjay";
+  useremail = "mail@dfjay.com";
   userdesc = "Pavel Yozhikov";
   useStable = true;
 
@@ -141,11 +142,22 @@
         settings = {
           PermitRootLogin = lib.mkForce "no";
           PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+          MaxAuthTries = 3;
+          X11Forwarding = false;
+          AllowAgentForwarding = false;
         };
+      };
+
+      services.fail2ban = {
+        enable = true;
+        maxretry = 3;
+        bantime = "1h";
       };
 
       networking.firewall = {
         enable = true;
+        logRefusedConnections = true;
         allowedTCPPorts = [
           22 # SSH
           80 # HTTP / Caddy

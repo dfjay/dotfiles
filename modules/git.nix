@@ -15,13 +15,6 @@
         enable = true;
         lfs.enable = true;
 
-        includes = [
-          {
-            path = "~/spectrum/.gitconfig";
-            condition = "gitdir:~/spectrum/";
-          }
-        ];
-
         ignores = [
           ".claude/"
           ".claude-flow/"

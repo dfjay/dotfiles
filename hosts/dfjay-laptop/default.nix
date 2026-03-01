@@ -3,6 +3,7 @@
 {
   system = "aarch64-darwin";
   user = "dfjay";
+  useremail = "mail@dfjay.com";
 
   modules = with modules; [
     darwin-system
@@ -53,8 +54,15 @@
   ];
 
   config =
-    { pkgs, ... }:
+    { pkgs, username, ... }:
     {
+      home-manager.users.${username}.programs.git.includes = [
+        {
+          path = "~/spectrum/.gitconfig";
+          condition = "gitdir:~/spectrum/";
+        }
+      ];
+
       environment.systemPackages = with pkgs; [
         age
         aria2

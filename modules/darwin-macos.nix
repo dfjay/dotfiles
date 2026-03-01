@@ -1,6 +1,6 @@
 {
   darwinModule =
-    { username, ... }:
+    { ... }:
     {
       # https://daiderd.com/nix-darwin/manual/index.html#sec-options
       # https://github.com/yannbertrand/macos-defaults

@@ -7,7 +7,7 @@ let
     {
       host,
       user,
-      useremail ? "mail@dfjay.com",
+      useremail,
       system,
       hostModules ? [ ],
       hostConfig ? null,
@@ -82,7 +82,7 @@ in
   imports = [
     (mkDarwinConfiguration {
       host = "dfjay-laptop";
-      inherit (laptop) system user;
+      inherit (laptop) system user useremail;
       hostModules = laptop.modules;
       hostConfig = laptop.config;
     })

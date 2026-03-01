@@ -3,6 +3,7 @@
 {
   system = "x86_64-linux";
   user = "dfjay";
+  useremail = "mail@dfjay.com";
   userdesc = "Pavel Yozhikov";
 
   modules = with modules; [
@@ -62,6 +63,13 @@
     {
       imports = [
         ./hardware-configuration.nix
+      ];
+
+      home-manager.users.${username}.programs.git.includes = [
+        {
+          path = "~/spectrum/.gitconfig";
+          condition = "gitdir:~/spectrum/";
+        }
       ];
 
       users = {

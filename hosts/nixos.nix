@@ -7,7 +7,7 @@ let
     {
       host,
       user,
-      useremail ? "mail@dfjay.com",
+      useremail,
       userdesc ? user,
       system,
       hostModules ? [ ],
@@ -108,7 +108,12 @@ in
   imports = [
     (mkNixosConfiguration {
       host = "linode-vps";
-      inherit (vps) system user userdesc;
+      inherit (vps)
+        system
+        user
+        useremail
+        userdesc
+        ;
       hostModules = vps.modules;
       hostConfig = vps.config;
       nixpkgs = inputs.nixpkgs-stable;
@@ -116,7 +121,12 @@ in
     })
     (mkNixosConfiguration {
       host = "dfjay-desktop";
-      inherit (desktop) system user userdesc;
+      inherit (desktop)
+        system
+        user
+        useremail
+        userdesc
+        ;
       hostModules = desktop.modules;
       hostConfig = desktop.config;
     })
