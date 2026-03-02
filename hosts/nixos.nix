@@ -10,6 +10,8 @@ let
       useremail,
       userdesc ? user,
       system,
+      nixosStateVersion,
+      homeStateVersion,
       hostModules ? [ ],
       hostConfig ? null,
       nixpkgs ? inputs.nixpkgs,
@@ -35,6 +37,7 @@ let
           (
             { ... }:
             {
+              system.stateVersion = nixosStateVersion;
               nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
             }
           )
@@ -62,7 +65,7 @@ let
                 home = {
                   username = user;
                   homeDirectory = "/home/${user}";
-                  stateVersion = "26.05";
+                  stateVersion = homeStateVersion;
                   packages = with pkgs; [
                     nerd-fonts.fira-code
                     nerd-fonts.droid-sans-mono
@@ -79,7 +82,7 @@ let
       };
     };
 
-  vps = import ./linode-vps { inherit modules; };
+  vps = import ./vps { inherit modules; };
   desktop = import ./dfjay-desktop { inherit modules; };
 
 in
@@ -95,24 +98,26 @@ in
         nodeSpecialArgs = builtins.mapAttrs (name: value: value._module.specialArgs) conf;
       };
 
-      linode-vps = {
+      vps = {
         deployment = {
           targetHost = vps.colmena.targetHost;
           targetUser = vps.colmena.targetUser;
           buildOnTarget = true;
         };
-        imports = conf.linode-vps._module.args.modules;
+        imports = conf.vps._module.args.modules;
       };
     };
 
   imports = [
     (mkNixosConfiguration {
-      host = "linode-vps";
+      host = "vps";
       inherit (vps)
         system
         user
         useremail
         userdesc
+        nixosStateVersion
+        homeStateVersion
         ;
       hostModules = vps.modules;
       hostConfig = vps.config;
@@ -126,6 +131,8 @@ in
         user
         useremail
         userdesc
+        nixosStateVersion
+        homeStateVersion
         ;
       hostModules = desktop.modules;
       hostConfig = desktop.config;

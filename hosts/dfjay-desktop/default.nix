@@ -6,6 +6,9 @@
   useremail = "mail@dfjay.com";
   userdesc = "Pavel Yozhikov";
 
+  nixosStateVersion = "25.11";
+  homeStateVersion = "26.05";
+
   modules = with modules; [
     audio
     bluetooth

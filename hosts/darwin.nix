@@ -9,6 +9,8 @@ let
       user,
       useremail,
       system,
+      darwinStateVersion,
+      homeStateVersion,
       hostModules ? [ ],
       hostConfig ? null,
     }:
@@ -32,7 +34,7 @@ let
             { ... }:
             {
               system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-              system.stateVersion = 6;
+              system.stateVersion = darwinStateVersion;
               system.primaryUser = user;
               nixpkgs.hostPlatform = system;
               nixpkgs.overlays = [
@@ -66,7 +68,7 @@ let
                 home = {
                   username = user;
                   homeDirectory = "/Users/${user}";
-                  stateVersion = "26.05";
+                  stateVersion = homeStateVersion;
                 };
                 programs.home-manager.enable = true;
               };
@@ -82,7 +84,13 @@ in
   imports = [
     (mkDarwinConfiguration {
       host = "dfjay-laptop";
-      inherit (laptop) system user useremail;
+      inherit (laptop)
+        system
+        user
+        useremail
+        darwinStateVersion
+        homeStateVersion
+        ;
       hostModules = laptop.modules;
       hostConfig = laptop.config;
     })
