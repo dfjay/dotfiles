@@ -26,7 +26,7 @@
 
   # Colmena deployment settings
   colmena = {
-    targetHost = "46.226.105.135"; # update to dfjay.com once DNS is pointed
+    targetHost = "46.226.105.135";
     targetUser = "dfjay";
   };
 
@@ -64,7 +64,7 @@
                   type = "vless";
                   tag = "vless-reality-in";
                   listen = "::";
-                  listen_port = 443;
+                  listen_port = 8443;
                   users = [
                     {
                       uuid = config.sops.placeholder.vless_uuid_dfjay;
@@ -98,7 +98,7 @@
             };
           };
           "vless-reality-subscription" = {
-            content = "vless://${config.sops.placeholder.vless_uuid_dfjay}@dfjay.com:443?security=reality&sni=www.microsoft.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=abcdef12&flow=xtls-rprx-vision#dfjay-reality";
+            content = "vless://${config.sops.placeholder.vless_uuid_dfjay}@46.226.105.135:8443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=www.microsoft.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=abcdef12#dfjay-reality";
           };
         };
       };
@@ -142,20 +142,21 @@
         logRefusedConnections = true;
         allowedTCPPorts = [
           22 # SSH
-          80 # HTTP / Caddy (subscription + placeholder site)
-          443 # VLESS + Reality (sing-box)
+          80 # HTTP
+          443 # HTTPS / Caddy
+          8443 # VLESS + Reality (sing-box)
         ];
       };
 
-      # Caddy serves HTTP only — port 443 is taken by sing-box Reality
       services.caddy = {
         enable = true;
+        email = "mail@dfjay.com";
 
-        virtualHosts."http://dfjay.com".extraConfig = ''
+        virtualHosts."dfjay.com".extraConfig = ''
           respond "Welcome" 200
         '';
 
-        virtualHosts."http://subs.dfjay.com".extraConfig = ''
+        virtualHosts."subs.dfjay.com".extraConfig = ''
           root * /var/lib/caddy/subscription
           file_server
         '';
