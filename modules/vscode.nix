@@ -54,15 +54,16 @@
                 ms-azuretools.vscode-containers
                 eamodio.gitlens
                 vscodevim.vim
+                alefragnani.project-manager
                 ms-kubernetes-tools.vscode-kubernetes-tools
                 github.vscode-pull-request-github
-                github.copilot
                 github.copilot-chat
                 humao.rest-client
 
                 sonarsource.sonarlint-vscode
                 streetsidesoftware.code-spell-checker
                 streetsidesoftware.code-spell-checker-russian
+                usernamehw.errorlens
 
                 chrmarti.regex
 
@@ -111,14 +112,35 @@
               "files.autoSave" = "afterDelay";
               "editor.minimap.enabled" = false;
               "window.density.editorTabHeight" = "compact";
-              "editor.unicodeHighlight.allowedLocales" = {
-                "ru" = true;
-              };
+              "editor.unicodeHighlight.allowedLocales"."ru" = true;
               "cSpell.language" = "en,ru";
+
+              "editor.fontLigatures" = true;
+              "editor.lineHeight" = 1.6;
+
+              "editor.formatOnSave" = true;
+              "editor.formatOnPaste" = true;
+
+              # IntelliSense
+              "editor.inlayHints.enabled" = "on";
+              "editor.semanticHighlighting.enabled" = true;
+              "editor.suggestSelection" = "recentlyUsedByPrefix";
+              "editor.acceptSuggestionOnEnter" = "smart";
+
+              # Brackets & guides
+              "editor.bracketPairColorization.enabled" = true;
+              "editor.guides.bracketPairs" = "active";
+
+              # Navigation
+              "editor.stickyScroll.enabled" = true;
+              "explorer.compactFolders" = false;
 
               "python.analysis.typeCheckingMode" = "standard";
 
               "jdk.telemetry.enabled" = false;
+              "java.completion.importOrder" = [ "java" "javax" "org" "com" "" ];
+              "editor.codeActionsOnSave"."source.organizeImports" = true;
+              "java.configuration.updateBuildConfiguration" = "automatic";
             };
           };
         };
