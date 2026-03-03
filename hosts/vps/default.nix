@@ -371,7 +371,7 @@
             default_type application/json;
             try_files /$1/sing-box/config =404;
           '';
-          locations."~ ^/([a-f0-9]+)$".extraConfig = ''
+          locations."~ ^/([a-f0-9]+)/?$".extraConfig = ''
             default_type text/plain;
             add_header profile-update-interval "24";
             try_files /$1/base64 =404;
