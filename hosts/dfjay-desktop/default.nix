@@ -68,10 +68,8 @@
         ./hardware-configuration.nix
       ];
 
-      sops.gnupg.home = "/home/${username}/.gnupg";
-
       home-manager.users.${username} = {
-        sops.gnupg.home = "/home/${username}/.gnupg";
+        sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
         programs.git.includes = [
           {
             path = "~/spectrum/.gitconfig";
