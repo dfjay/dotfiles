@@ -40,7 +40,7 @@
       ...
     }:
     let
-      vpnUsers = [ "dfjay" ];
+      vpnUsers = [ "dfjay" "chu74" "chu52" ];
     in
     {
       imports = [
@@ -56,7 +56,6 @@
           warp_private_key = { };
           warp_ipv4 = { };
           warp_ipv6 = { };
-          subscription_token = { };
         } // builtins.listToAttrs (map (u: {
           name = "vless_uuid_${u}";
           value = { };
@@ -368,12 +367,14 @@
             { addr = "[::1]"; port = 8443; ssl = true; }
           ];
           root = "/var/lib/nginx/subscription";
-          locations."/".extraConfig = ''
+          locations."~ ^/([a-f0-9]+)/sing-box$".extraConfig = ''
+            default_type application/json;
+            try_files /$1/sing-box/config =404;
+          '';
+          locations."~ ^/([a-f0-9]+)$".extraConfig = ''
             default_type text/plain;
             add_header profile-update-interval "24";
-          '';
-          locations."~ /sing-box/".extraConfig = ''
-            default_type application/json;
+            try_files /$1/base64 =404;
           '';
         };
       };
@@ -402,17 +403,22 @@
           Type = "oneshot";
           RemainAfterExit = true;
         };
+        path = [ pkgs.coreutils ];
         script = ''
-          TOKEN=$(cat ${config.sops.secrets.subscription_token.path})
-          BASE="/var/lib/nginx/subscription/$TOKEN"
-          mkdir -p "$BASE/sing-box"
+          DEST="/var/lib/nginx/subscription"
+          STAGE=$(mktemp -d "$DEST.XXXXXX")
           ${lib.concatMapStringsSep "\n" (u: ''
-            ${pkgs.coreutils}/bin/base64 -w 0 ${config.sops.templates."vless-subscription-${u}".path} > "$BASE/${u}"
-            cp ${config.sops.templates."sing-box-client-${u}.json".path} "$BASE/sing-box/${u}"
+            USER_TOKEN=$(sha256sum ${config.sops.secrets."vless_uuid_${u}".path} | cut -c1-32)
+            BASE="$STAGE/$USER_TOKEN"
+            mkdir -p "$BASE/sing-box"
+            base64 -w 0 ${config.sops.templates."vless-subscription-${u}".path} > "$BASE/base64"
+            cp ${config.sops.templates."sing-box-client-${u}.json".path} "$BASE/sing-box/config"
+            echo "${u} $USER_TOKEN" >> "$STAGE/tokens.txt"
           '') vpnUsers}
-          chown -R nginx:nginx /var/lib/nginx/subscription
-          find "$BASE" -type d -exec chmod 755 {} \;
-          find "$BASE" -type f -exec chmod 644 {} \;
+          chown -R nginx:nginx "$STAGE"
+          chmod -R u=rwX,go=rX "$STAGE"
+          rm -rf "$DEST"
+          mv "$STAGE" "$DEST"
         '';
       };
 
