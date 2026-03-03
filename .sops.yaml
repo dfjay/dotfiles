@@ -3,7 +3,7 @@ keys:
 
   - &mac ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9W6B9WBu7PbMJWdKGFzBLMR1y2IK+kFuSsIWh2fwqg
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
-  # - &desktop ssh-ed25519 AAAAC3...
+  - &desktop-age age1hrxulzjncafyudtweejq6ncld3wsmur8d50v4ttgm09drat9ryesgj8eyd
   - &gandi-age age18awufzpczf7fphqwuesx00mtj9pxecwk625v92u70gx6t3p5nsrs9s4wl2
 
 creation_rules:
@@ -14,5 +14,5 @@ creation_rules:
         age:
           - *mac
           - *mac-age
-          # - *desktop
+          - *desktop-age
           - *gandi-age

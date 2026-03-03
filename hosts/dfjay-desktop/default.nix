@@ -69,7 +69,7 @@
       ];
 
       home-manager.users.${username} = {
-        sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
+        sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
         programs.git.includes = [
           {
             path = "~/spectrum/.gitconfig";
