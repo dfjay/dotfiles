@@ -40,7 +40,11 @@
       ...
     }:
     let
-      vpnUsers = [ "dfjay" "chu74" "chu52" ];
+      vpnUsers = [
+        "dfjay"
+        "chu74"
+        "chu52"
+      ];
     in
     {
       imports = [
@@ -56,10 +60,13 @@
           warp_private_key = { };
           warp_ipv4 = { };
           warp_ipv6 = { };
-        } // builtins.listToAttrs (map (u: {
-          name = "vless_uuid_${u}";
-          value = { };
-        }) vpnUsers);
+        }
+        // builtins.listToAttrs (
+          map (u: {
+            name = "vless_uuid_${u}";
+            value = { };
+          }) vpnUsers
+        );
         templates = {
           "sing-box-config.json" = {
             restartUnits = [ "sing-box.service" ];
@@ -145,137 +152,145 @@
               };
             };
           };
-        } // builtins.listToAttrs (map (u: {
-          name = "vless-subscription-${u}";
-          value = {
-            restartUnits = [ "subscription-generator.service" ];
-            content = "vless://${config.sops.placeholder."vless_uuid_${u}"}@directvpn.dfjay.com:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=www.samsung.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=1a3287df#${u}-reality";
-          };
-        }) vpnUsers) // builtins.listToAttrs (map (u: {
-          name = "sing-box-client-${u}.json";
-          value = {
-            restartUnits = [ "subscription-generator.service" ];
-            content = builtins.toJSON {
-              log = {
-                level = "info";
-                timestamp = true;
-              };
-              dns = {
-                servers = [
-                  {
-                    tag = "proxy-dns";
-                    type = "https";
-                    server = "dns.quad9.net";
-                    detour = "proxy-reality";
-                    domain_resolver = "bootstrap-dns";
-                  }
-                  {
-                    tag = "direct-dns";
-                    type = "udp";
-                    server = "77.88.8.8";
-                    detour = "direct";
-                  }
-                  {
-                    tag = "bootstrap-dns";
-                    type = "udp";
-                    server = "9.9.9.9";
-                    detour = "direct";
-                  }
-                ];
-                rules = [
-                  {
-                    rule_set = [ "geosite-category-ru" ];
-                    action = "route";
-                    server = "direct-dns";
-                  }
-                ];
-                final = "proxy-dns";
-                strategy = "prefer_ipv4";
-              };
-              inbounds = [
-                {
-                  type = "tun";
-                  tag = "tun-in";
-                  address = [
-                    "172.19.0.1/30"
-                    "fdfe:dcba:9876::1/126"
+        }
+        // builtins.listToAttrs (
+          map (u: {
+            name = "vless-subscription-${u}";
+            value = {
+              restartUnits = [ "subscription-generator.service" ];
+              content = "vless://${
+                config.sops.placeholder."vless_uuid_${u}"
+              }@directvpn.dfjay.com:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=www.samsung.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=1a3287df#${u}-reality";
+            };
+          }) vpnUsers
+        )
+        // builtins.listToAttrs (
+          map (u: {
+            name = "sing-box-client-${u}.json";
+            value = {
+              restartUnits = [ "subscription-generator.service" ];
+              content = builtins.toJSON {
+                log = {
+                  level = "info";
+                  timestamp = true;
+                };
+                dns = {
+                  servers = [
+                    {
+                      tag = "proxy-dns";
+                      type = "https";
+                      server = "dns.quad9.net";
+                      detour = "proxy-reality";
+                      domain_resolver = "bootstrap-dns";
+                    }
+                    {
+                      tag = "direct-dns";
+                      type = "udp";
+                      server = "77.88.8.8";
+                      detour = "direct";
+                    }
+                    {
+                      tag = "bootstrap-dns";
+                      type = "udp";
+                      server = "9.9.9.9";
+                      detour = "direct";
+                    }
                   ];
-                  auto_route = true;
-                  strict_route = true;
-                  sniff = true;
-                }
-              ];
-              outbounds = [
-                {
-                  type = "vless";
-                  tag = "proxy-reality";
-                  server = "directvpn.dfjay.com";
-                  server_port = 443;
-                  uuid = config.sops.placeholder."vless_uuid_${u}";
-                  flow = "xtls-rprx-vision";
-                  tls = {
-                    enabled = true;
-                    server_name = "www.samsung.com";
-                    reality = {
-                      enabled = true;
-                      public_key = config.sops.placeholder.reality_public_key;
-                      short_id = "1a3287df";
-                    };
-                    utls = {
-                      enabled = true;
-                      fingerprint = "chrome";
-                    };
-                  };
-                }
-                {
-                  type = "direct";
-                  tag = "direct";
-                }
-              ];
-              route = {
-                rules = [
+                  rules = [
+                    {
+                      rule_set = [ "geosite-category-ru" ];
+                      action = "route";
+                      server = "direct-dns";
+                    }
+                  ];
+                  final = "proxy-dns";
+                  strategy = "prefer_ipv4";
+                };
+                inbounds = [
                   {
-                    protocol = "dns";
-                    action = "hijack-dns";
-                  }
-                  {
-                    ip_is_private = true;
-                    action = "route";
-                    outbound = "direct";
-                  }
-                  {
-                    rule_set = [ "geosite-category-ru" ];
-                    action = "route";
-                    outbound = "direct";
-                  }
-                  {
-                    rule_set = [ "geoip-ru" ];
-                    action = "route";
-                    outbound = "direct";
+                    type = "tun";
+                    tag = "tun-in";
+                    address = [
+                      "172.19.0.1/30"
+                      "fdfe:dcba:9876::1/126"
+                    ];
+                    auto_route = true;
+                    strict_route = true;
+                    sniff = true;
                   }
                 ];
-                rule_set = [
+                outbounds = [
                   {
-                    tag = "geosite-category-ru";
-                    type = "remote";
-                    format = "binary";
-                    url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                    download_detour = "direct";
+                    type = "vless";
+                    tag = "proxy-reality";
+                    server = "directvpn.dfjay.com";
+                    server_port = 443;
+                    uuid = config.sops.placeholder."vless_uuid_${u}";
+                    flow = "xtls-rprx-vision";
+                    tls = {
+                      enabled = true;
+                      server_name = "www.samsung.com";
+                      reality = {
+                        enabled = true;
+                        public_key = config.sops.placeholder.reality_public_key;
+                        short_id = "1a3287df";
+                      };
+                      utls = {
+                        enabled = true;
+                        fingerprint = "chrome";
+                      };
+                    };
                   }
                   {
-                    tag = "geoip-ru";
-                    type = "remote";
-                    format = "binary";
-                    url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                    download_detour = "direct";
+                    type = "direct";
+                    tag = "direct";
                   }
                 ];
-                final = "proxy-reality";
-                default_domain_resolver = "bootstrap-dns";
+                route = {
+                  rules = [
+                    {
+                      protocol = "dns";
+                      action = "hijack-dns";
+                    }
+                    {
+                      ip_is_private = true;
+                      action = "route";
+                      outbound = "direct";
+                    }
+                    {
+                      rule_set = [ "geosite-category-ru" ];
+                      action = "route";
+                      outbound = "direct";
+                    }
+                    {
+                      rule_set = [ "geoip-ru" ];
+                      action = "route";
+                      outbound = "direct";
+                    }
+                  ];
+                  rule_set = [
+                    {
+                      tag = "geosite-category-ru";
+                      type = "remote";
+                      format = "binary";
+                      url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
+                      download_detour = "direct";
+                    }
+                    {
+                      tag = "geoip-ru";
+                      type = "remote";
+                      format = "binary";
+                      url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                      download_detour = "direct";
+                    }
+                  ];
+                  final = "proxy-reality";
+                  default_domain_resolver = "bootstrap-dns";
+                };
               };
             };
-          };
-        }) vpnUsers);
+          }) vpnUsers
+        );
       };
 
       security.sudo.wheelNeedsPassword = false;
@@ -349,10 +364,24 @@
           forceSSL = true;
           enableACME = true;
           listen = [
-            { addr = "0.0.0.0"; port = 80; }
-            { addr = "[::]"; port = 80; }
-            { addr = "127.0.0.1"; port = 8443; ssl = true; }
-            { addr = "[::1]"; port = 8443; ssl = true; }
+            {
+              addr = "0.0.0.0";
+              port = 80;
+            }
+            {
+              addr = "[::]";
+              port = 80;
+            }
+            {
+              addr = "127.0.0.1";
+              port = 8443;
+              ssl = true;
+            }
+            {
+              addr = "[::1]";
+              port = 8443;
+              ssl = true;
+            }
           ];
           locations."/".return = "200 'Welcome'";
         };
@@ -361,10 +390,24 @@
           forceSSL = true;
           enableACME = true;
           listen = [
-            { addr = "0.0.0.0"; port = 80; }
-            { addr = "[::]"; port = 80; }
-            { addr = "127.0.0.1"; port = 8443; ssl = true; }
-            { addr = "[::1]"; port = 8443; ssl = true; }
+            {
+              addr = "0.0.0.0";
+              port = 80;
+            }
+            {
+              addr = "[::]";
+              port = 80;
+            }
+            {
+              addr = "127.0.0.1";
+              port = 8443;
+              ssl = true;
+            }
+            {
+              addr = "[::1]";
+              port = 8443;
+              ssl = true;
+            }
           ];
           root = "/var/lib/nginx/subscription";
           locations."~ ^/([a-f0-9]+)/sing-box$".extraConfig = ''

@@ -138,7 +138,13 @@
               "python.analysis.typeCheckingMode" = "standard";
 
               "jdk.telemetry.enabled" = false;
-              "java.completion.importOrder" = [ "java" "javax" "org" "com" "" ];
+              "java.completion.importOrder" = [
+                "java"
+                "javax"
+                "org"
+                "com"
+                ""
+              ];
               "editor.codeActionsOnSave"."source.organizeImports" = true;
               "java.configuration.updateBuildConfiguration" = "automatic";
             };

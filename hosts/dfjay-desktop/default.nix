@@ -69,14 +69,16 @@
       ];
 
       sops.gnupg.home = "/home/${username}/.gnupg";
-      home-manager.users.${username}.sops.gnupg.home = "/home/${username}/.gnupg";
 
-      home-manager.users.${username}.programs.git.includes = [
-        {
-          path = "~/spectrum/.gitconfig";
-          condition = "gitdir:~/spectrum/";
-        }
-      ];
+      home-manager.users.${username} = {
+        sops.gnupg.home = "/home/${username}/.gnupg";
+        programs.git.includes = [
+          {
+            path = "~/spectrum/.gitconfig";
+            condition = "gitdir:~/spectrum/";
+          }
+        ];
+      };
 
       users = {
         defaultUserShell = pkgs.zsh;
