@@ -59,6 +59,8 @@
   config =
     { pkgs, username, ... }:
     {
+      home-manager.users.${username}.sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+
       home-manager.users.${username}.programs.git.includes = [
         {
           path = "~/spectrum/.gitconfig";

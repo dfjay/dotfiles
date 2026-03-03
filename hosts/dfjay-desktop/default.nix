@@ -68,6 +68,9 @@
         ./hardware-configuration.nix
       ];
 
+      sops.gnupg.home = "/home/${username}/.gnupg";
+      home-manager.users.${username}.sops.gnupg.home = "/home/${username}/.gnupg";
+
       home-manager.users.${username}.programs.git.includes = [
         {
           path = "~/spectrum/.gitconfig";
