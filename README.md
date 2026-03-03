@@ -8,7 +8,7 @@ Nix flake configuration for my machines.
 |------|----------|-------------|
 | `dfjay-laptop` | aarch64-darwin | MacBook Pro (nix-darwin) |
 | `dfjay-desktop` | x86_64-linux | NixOS desktop (COSMIC DE) |
-| `linode-vps` | x86_64-linux | NixOS VPS (Caddy, sing-box) |
+| `vps` | x86_64-linux | NixOS VPS (nginx, sing-box, WARP) |
 
 ## Stack
 
@@ -29,7 +29,7 @@ Nix flake configuration for my machines.
 ├── hosts/             # Per-machine configurations
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
-│   └── linode-vps/    # NixOS server
+│   └── vps/           # NixOS server
 ├── modules/           # Reusable NixOS/home-manager modules
 │   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)
 │   ├── languages/     # Dev toolchains (Go, Rust, Python, JS, ...)
