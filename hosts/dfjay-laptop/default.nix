@@ -59,14 +59,15 @@
   config =
     { pkgs, username, ... }:
     {
-      home-manager.users.${username}.sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
-
-      home-manager.users.${username}.programs.git.includes = [
-        {
-          path = "~/spectrum/.gitconfig";
-          condition = "gitdir:~/spectrum/";
-        }
-      ];
+      home-manager.users.${username} = {
+        sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+        programs.git.includes = [
+          {
+            path = "~/spectrum/.gitconfig";
+            condition = "gitdir:~/spectrum/";
+          }
+        ];
+      };
 
       environment.systemPackages = with pkgs; [
         age
@@ -155,6 +156,7 @@
           "linearmouse"
           "logseq"
           "loopback"
+          "lulu"
           "mattermost"
           "melodics"
 
