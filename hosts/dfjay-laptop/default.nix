@@ -151,7 +151,6 @@
           "gpg-suite"
           "intellij-idea"
           "jan"
-
           "libreoffice"
           "linearmouse"
           "logseq"
@@ -159,13 +158,13 @@
           "lulu"
           "mattermost"
           "melodics"
-
           "microsoft-excel"
           "microsoft-powerpoint"
           "microsoft-teams"
           "microsoft-word"
           "obs"
           "orion"
+          "proxyman"
           "signal"
           "soundsource"
           "steam"
