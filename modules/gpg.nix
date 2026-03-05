@@ -1,17 +1,9 @@
 {
   homeModule =
-    { pkgs, ... }:
+    { ... }:
 
     {
-      programs = {
-        gpg = {
-          enable = true;
-        };
-      };
-
-      services.gpg-agent = {
-        enable = true;
-        pinentry.package = pkgs.pinentry-curses;
-      };
+      programs.gpg.enable = true;
+      services.gpg-agent.enable = true;
     };
 }

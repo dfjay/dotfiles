@@ -24,6 +24,7 @@
     formats
     ghostty
     git
+    gpg
     helix
     htop
     k8s
@@ -62,6 +63,7 @@
     {
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+        services.gpg-agent.pinentry.package = pkgs.pinentry_mac;
         programs.git.settings = {
           commit.gpgSign = true;
           tag.gpgSign = true;

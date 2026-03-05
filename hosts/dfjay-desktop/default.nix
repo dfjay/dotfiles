@@ -129,6 +129,7 @@
 
       home-manager.users.${username} = {
         sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+        services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
         programs.git.settings = {
           commit.gpgSign = true;
           tag.gpgSign = true;
