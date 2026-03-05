@@ -21,7 +21,12 @@
   boot.loader.grub.device = lib.mkForce "/dev/xvda";
 
   boot.consoleLogLevel = 7;
-  boot.kernel.sysctl."kernel.printk" = "4 4 1 7";
+  boot.kernel.sysctl = {
+    "kernel.printk" = "4 4 1 7";
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
+  boot.kernelModules = [ "tcp_bbr" ];
   boot.kernelParams = [ "console=ttyS0" ];
 
   systemd.services."serial-getty@ttyS0" = {
