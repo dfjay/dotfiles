@@ -17,3 +17,14 @@ gc:
 [group('nix')]
 gcroot:
   ls -al /nix/var/nix/gcroots/auto/
+
+# Build OpenWrt sysupgrade image for GL-MT6000
+[group('router')]
+router-build:
+  hosts/router/build.sh
+
+# Deploy firmware to router via sysupgrade
+[group('router')]
+router-deploy:
+  scp result/sysupgrade.bin root@192.168.1.1:/tmp/firmware.bin
+  ssh root@192.168.1.1 'sysupgrade -n /tmp/firmware.bin'
