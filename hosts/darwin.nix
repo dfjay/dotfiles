@@ -37,12 +37,29 @@ let
               system.stateVersion = darwinStateVersion;
               system.primaryUser = user;
               nixpkgs.hostPlatform = system;
+              nixpkgs.config.allowUnfree = true;
               nixpkgs.overlays = [
                 inputs.nix-vscode-extensions.overlays.default
               ];
               users.users.${user} = {
                 name = user;
                 home = "/Users/${user}";
+              };
+
+              security.pam.services.sudo_local.touchIdAuth = true;
+
+              nix = {
+                gc = {
+                  automatic = true;
+                  interval = {
+                    Weekday = 7;
+                  };
+                  options = "--delete-older-than 14d";
+                };
+                settings.experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
               };
             }
           )

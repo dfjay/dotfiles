@@ -17,12 +17,12 @@
     locale
     shell.zsh
     sops
-    system
     stylix
 
     bat
     btop
     direnv
+    docker
     eza
     fastfetch
     ghostty
@@ -59,6 +59,8 @@
   config =
     {
       pkgs,
+      lib,
+      hostname,
       username,
       userdesc,
       ...
@@ -67,6 +69,61 @@
       imports = [
         ./hardware-configuration.nix
       ];
+
+      security.sudo.enable = false;
+      security.sudo-rs = {
+        enable = true;
+        execWheelOnly = false;
+      };
+
+      virtualisation.podman.enable = true;
+
+      programs.coolercontrol.enable = true;
+
+      security = {
+        pam.services = {
+          login.enableGnomeKeyring = true;
+          logind.enableGnomeKeyring = true;
+        };
+        polkit.enable = true;
+      };
+
+      # Suppress systemd-machine-id-commit.service since machine-id is persisted via preservation
+      systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+
+      services.printing.enable = true;
+
+      hardware = {
+        cpu.amd.updateMicrocode = true;
+        graphics = {
+          enable = true;
+          enable32Bit = true;
+        };
+      };
+
+      networking = {
+        hostName = hostname;
+        networkmanager.enable = true;
+        firewall.enable = false;
+      };
+
+      boot = {
+        loader = {
+          systemd-boot.enable = lib.mkForce false;
+          efi.canTouchEfiVariables = true;
+        };
+        lanzaboote = {
+          enable = true;
+          pkiBundle = "/var/lib/sbctl";
+          autoGenerateKeys.enable = true;
+          autoEnrollKeys = {
+            enable = true;
+            autoReboot = true;
+          };
+        };
+        initrd.systemd.enable = true;
+        kernelPackages = pkgs.linuxPackages_zen;
+      };
 
       home-manager.users.${username} = {
         sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
@@ -96,6 +153,16 @@
       services.v2raya.enable = true;
 
       environment.systemPackages = with pkgs; [
+        home-manager
+
+        # sensors
+        lm_sensors
+        coolercontrol.coolercontrold
+        coolercontrol.coolercontrol-ui-data
+
+        pinentry-gnome3
+        sbctl
+
         android-studio
         bitwarden-desktop
         brave

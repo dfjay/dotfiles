@@ -9,7 +9,6 @@
   homeStateVersion = "26.05";
 
   modules = with modules; [
-    darwin-system
     darwin-macos
     darwin-aerospace
     sops
