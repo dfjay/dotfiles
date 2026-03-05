@@ -20,6 +20,7 @@
     docker
     eza
     fastfetch
+    fd
     formats
     ghostty
     git
@@ -32,6 +33,7 @@
     librewolf
     nushell
     neovim
+    nix-index
     postgresql
     proto
     ripgrep
@@ -60,6 +62,11 @@
     {
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+        programs.git.settings = {
+          commit.gpgSign = true;
+          tag.gpgSign = true;
+          user.signingKey = "577260D68251AC22";
+        };
         programs.git.includes = [
           {
             path = "~/spectrum/.gitconfig";
