@@ -40,7 +40,10 @@
     fsType = "ext4";
   };
 
-  swapDevices = [ ];
+  swapDevices = [{
+    device = "/swapfile";
+    size = 2048;
+  }];
 
   # Required for IPv6 on GandiCloud
   networking.tempAddresses = "disabled";
