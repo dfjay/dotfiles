@@ -61,7 +61,5 @@
           remapCapsLockToEscape = true;
         };
       };
-
-      programs.zsh.enable = true;
     };
 }
