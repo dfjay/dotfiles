@@ -35,7 +35,9 @@
           };
 
           trackpad = {
-
+            Clicking = false;
+            TrackpadRightClick = true;
+            TrackpadThreeFingerDrag = true;
           };
 
           WindowManager = {
