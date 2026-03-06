@@ -304,7 +304,8 @@
           extraGroups = [ "wheel" ];
           initialPassword = "changeme"; # for console only, change after first login
           openssh.authorizedKeys.keys = [
-            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDE9M/4cz4CbBLjyZlTDaS+MXK5X4wx+Jbap3TN1dRyO9NbXhIkaxNf/FRjKWkuluOeX59m5MsUHccG5D5L5QCUxZigl5oHmWk4Gwc+WNx5R9rSwxiI6fhzWUzyduyKnHlz/UMTmGyvG0Xc/FGMS9TKNaz6lXSyRZtCWaDhsR12URJ7MxkYuU483UT/TS6jcO6k0w+WTCXbdBz4XsK7bKFMbh1Ed36VM4Y/UxCYP4W2VHrLd4+BvqX760bIab0PH5FWHl9Kzg0ff/7Q97atUeMd5r0GfZfS5+SEDORW07rjdeRailE0aq3xDwvugx27BcqCWbIDibSwPjrpZsG1oEfGZ41P+IxEYIIN5YCM4c8MT7hUZ9/ramhIK93pVl5tnlXHloi9VmYiXneGply43DyNw6aGtGquV6AxM7Lz/YtYxr9gK5rFO/L8ZaBmorDSKgROY9GxC7varnZxLb+t6zlSDCz035eH1/8bd0ak7p1TVZnPgx285DzuAcCTaPddLAc= dfjay@Pavels-MacBook-Pro.local"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9W6B9WBu7PbMJWdKGFzBLMR1y2IK+kFuSsIWh2fwqg dfjay@dfjay-laptop.local"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR cardno:20_488_896"
           ];
         };
       };
@@ -383,7 +384,10 @@
               ssl = true;
             }
           ];
-          locations."/".return = "200 'Welcome'";
+          locations."/" = {
+            extraConfig = "default_type text/plain;";
+            return = "200 'Welcome'";
+          };
         };
 
         virtualHosts."subs.dfjay.com" = {
