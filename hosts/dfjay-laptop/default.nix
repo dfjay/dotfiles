@@ -64,6 +64,9 @@
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
         services.gpg-agent.pinentry.package = pkgs.pinentry_mac;
+        services.gpg-agent.sshKeys = [
+          "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # YubiKey auth subkey
+        ];
         programs.git.settings = {
           commit.gpgSign = true;
           tag.gpgSign = true;
