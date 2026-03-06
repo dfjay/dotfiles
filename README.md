@@ -46,10 +46,10 @@ Nix flake configuration for my machines.
 just up
 
 # Apply configuration (macOS)
-sudo darwin-rebuild switch --flake .
+nh darwin switch .
 
 # Apply configuration (NixOS)
-sudo nixos-rebuild switch --flake .
+nh os switch .
 
 # Deploy to remote host
 colmena apply

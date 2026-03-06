@@ -29,8 +29,6 @@
             "rust"
             "ssh"
             "systemd"
-            "vagrant"
-            "pip"
           ];
         };
 

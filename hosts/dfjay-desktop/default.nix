@@ -158,9 +158,8 @@
         };
       };
 
-      services.v2raya.enable = true;
-
       environment.systemPackages = with pkgs; [
+        nh
         home-manager
 
         # sensors
@@ -185,17 +184,14 @@
         jmeter
         just
         libreoffice-qt
-        lunarvim
         prismlauncher
         qbittorrent
         reaper
         spotify
         telegram-desktop
         tor-browser
-        tuifimanager
         usbutils
         via
-        v2rayn
         winetricks
         wineWow64Packages.stable
         woeusb

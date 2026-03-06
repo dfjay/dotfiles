@@ -1,6 +1,7 @@
 {
   homeModule =
     {
+      pkgs,
       lib,
       username,
       useremail,
@@ -10,6 +11,8 @@
       home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
         rm -f ~/.gitconfig
       '';
+
+      home.packages = [ pkgs.git-absorb ];
 
       programs.git = {
         enable = true;

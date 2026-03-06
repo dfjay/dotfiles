@@ -26,7 +26,7 @@
     git
     gpg
     helix
-    htop
+    btop
     k8s
     kitty
     lazydocker
@@ -81,6 +81,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+        nh
         age
         aria2
         colima
@@ -102,18 +103,17 @@
         posting
         qrencode
         rclone
-        recode
         sing-box
         sops
         squawk
         wabt
         xh
+        yubikey-manager
         zulu
 
         # GUI
         bitwarden-desktop
         bruno
-        cyberduck
         iina
         slack
         syncthing
@@ -141,10 +141,7 @@
         taps = [ ];
 
         brews = [
-          "gnupg"
           "incus"
-          "pinentry-mac"
-          "ykman"
         ];
 
         casks = [
