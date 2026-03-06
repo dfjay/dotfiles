@@ -35,6 +35,7 @@
       pkgs,
       lib,
       config,
+      inputs,
       username,
       userdesc,
       ...
@@ -384,10 +385,8 @@
               ssl = true;
             }
           ];
-          locations."/" = {
-            extraConfig = "default_type text/plain;";
-            return = "200 'Welcome'";
-          };
+          root = "${inputs.portfolio}";
+          locations."/".tryFiles = "$uri $uri/ /index.html";
         };
 
         virtualHosts."subs.dfjay.com" = {

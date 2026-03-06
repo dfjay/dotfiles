@@ -431,11 +431,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1772810599,
-        "narHash": "sha256-uHSVEvbk/Dz7cdZBPCUuBIn/1aXLsWQTrxT1WpuAbVg=",
+        "lastModified": 1772819198,
+        "narHash": "sha256-8xPpCKDHJs9ncUB5CY/6+LZRqylpGkSZdezrorJxVNI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "16acb176369e4d85cd42f5e226d54bd72cba3ce1",
+        "rev": "a71c103d9706905a6328cfcd4d16ef697cac405c",
         "type": "github"
       },
       "original": {
@@ -502,6 +502,22 @@
         "type": "github"
       }
     },
+    "portfolio": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772819899,
+        "narHash": "sha256-Tx9DDnQ4NiHMsBum16CU6NzFse4psHMKuJoSwrqtm+I=",
+        "owner": "dfjay",
+        "repo": "dfjay.com",
+        "rev": "dcc3371ae0bb1dce0041451733db3c39c6e17afc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfjay",
+        "repo": "dfjay.com",
+        "type": "github"
+      }
+    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -553,6 +569,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
+        "portfolio": "portfolio",
         "preservation": "preservation",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
