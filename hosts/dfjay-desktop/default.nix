@@ -32,7 +32,6 @@
     gradle
     helix
     k8s
-    kitty
     lazydocker
     lazygit
     librewolf
