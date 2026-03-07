@@ -70,7 +70,8 @@
       ];
 
       imports = [
-        ./hosts/flake-module.nix
+        ./hosts/darwin.nix
+        ./hosts/nixos.nix
       ];
 
       perSystem =

@@ -1,6 +1,6 @@
 {
   homeModule =
-    { lib, ... }:
+    { lib, pkgs, ... }:
 
     let
       os = icon: fg: "[${icon} ](fg:${fg})";
@@ -16,6 +16,14 @@
       };
     in
     {
+      home.packages = with pkgs; [
+        nerd-fonts.fira-code
+        nerd-fonts.droid-sans-mono
+        nerd-fonts.noto
+        nerd-fonts.hack
+        nerd-fonts.ubuntu
+      ];
+
       programs.starship = {
         enable = true;
 

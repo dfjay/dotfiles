@@ -30,46 +30,39 @@ let
       flake.darwinConfigurations.${host} = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs;
         modules = [
-          (
-            { ... }:
-            {
-              system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-              system.stateVersion = darwinStateVersion;
-              system.primaryUser = user;
-              nixpkgs.hostPlatform = system;
-              nixpkgs.config.allowUnfree = true;
-              nixpkgs.overlays = [
-                inputs.nix-vscode-extensions.overlays.default
-              ]
-              ++ (import ../overlays);
-              users.users.${user} = {
-                name = user;
-                home = "/Users/${user}";
-              };
+          {
+            system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+            system.stateVersion = darwinStateVersion;
+            system.primaryUser = user;
+            nixpkgs.hostPlatform = system;
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays = [
+              inputs.nix-vscode-extensions.overlays.default
+            ]
+            ++ (import ../overlays);
+            users.users.${user} = {
+              name = user;
+              home = "/Users/${user}";
+            };
 
-              security.pam.services.sudo_local.touchIdAuth = true;
+            security.pam.services.sudo_local.touchIdAuth = true;
 
-              nix = {
-                gc = {
-                  automatic = true;
-                  interval = {
-                    Weekday = 7;
-                  };
-                  options = "--delete-older-than 14d";
+            nix = {
+              gc = {
+                automatic = true;
+                interval = {
+                  Weekday = 7;
                 };
-                settings.experimental-features = [
-                  "nix-command"
-                  "flakes"
-                ];
+                options = "--delete-older-than 14d";
               };
-            }
-          )
+              settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          }
           inputs.stylix.darwinModules.stylix
           inputs.sops-nix.darwinModules.sops
-        ]
-        ++ getDarwinModules hostModules
-        ++ (if hostConfig != null then [ hostConfig ] else [ ])
-        ++ [
           inputs.home-manager.darwinModules.home-manager
           {
             home-manager.sharedModules = [
@@ -88,10 +81,11 @@ let
                   homeDirectory = "/Users/${user}";
                   stateVersion = homeStateVersion;
                 };
-                programs.home-manager.enable = true;
               };
           }
-        ];
+        ]
+        ++ getDarwinModules hostModules
+        ++ lib.optional (hostConfig != null) hostConfig;
       };
     };
 

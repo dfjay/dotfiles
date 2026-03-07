@@ -34,41 +34,34 @@ let
       flake.nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
-          (
-            { ... }:
-            {
-              system.stateVersion = nixosStateVersion;
-              nixpkgs.config.allowUnfree = true;
-              nixpkgs.overlays = [
-                inputs.nix-vscode-extensions.overlays.default
-              ]
-              ++ (import ../overlays);
+          {
+            system.stateVersion = nixosStateVersion;
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays = [
+              inputs.nix-vscode-extensions.overlays.default
+            ]
+            ++ (import ../overlays);
 
-              nix = {
-                gc = {
-                  automatic = true;
-                  dates = "weekly";
-                  options = "--delete-older-than 14d";
-                };
-                settings = {
-                  auto-optimise-store = true;
-                  experimental-features = [
-                    "nix-command"
-                    "flakes"
-                  ];
-                };
+            nix = {
+              gc = {
+                automatic = true;
+                dates = "weekly";
+                options = "--delete-older-than 14d";
               };
-            }
-          )
+              settings = {
+                auto-optimise-store = true;
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+              };
+            };
+          }
           inputs.stylix.nixosModules.stylix
           inputs.disko.nixosModules.disko
           inputs.preservation.nixosModules.preservation
           inputs.sops-nix.nixosModules.sops
           inputs.lanzaboote.nixosModules.lanzaboote
-        ]
-        ++ getNixosModules hostModules
-        ++ (if hostConfig != null then [ hostConfig ] else [ ])
-        ++ [
           home-manager.nixosModules.home-manager
           {
             home-manager.sharedModules = [
@@ -85,19 +78,12 @@ let
                   username = user;
                   homeDirectory = "/home/${user}";
                   stateVersion = homeStateVersion;
-                  packages = with pkgs; [
-                    nerd-fonts.fira-code
-                    nerd-fonts.droid-sans-mono
-                    nerd-fonts.noto
-                    nerd-fonts.hack
-                    nerd-fonts.ubuntu
-                  ];
                 };
-                news.display = "show";
-                programs.home-manager.enable = true;
               };
           }
-        ];
+        ]
+        ++ getNixosModules hostModules
+        ++ lib.optional (hostConfig != null) hostConfig;
       };
     };
 

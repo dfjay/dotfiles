@@ -5,8 +5,6 @@
   user = "dfjay";
   useremail = "mail@dfjay.com";
   userdesc = "Pavel Yozhikov";
-  useStable = true;
-
   nixosStateVersion = "24.11";
   homeStateVersion = "25.11";
 
