@@ -40,7 +40,8 @@ let
               nixpkgs.config.allowUnfree = true;
               nixpkgs.overlays = [
                 inputs.nix-vscode-extensions.overlays.default
-              ];
+              ]
+              ++ (import ../overlays);
               users.users.${user} = {
                 name = user;
                 home = "/Users/${user}";
