@@ -42,6 +42,7 @@
     ripgrep
     skim
     starship
+    tealdeer
     translateshell
     vscode
     yazi

@@ -41,6 +41,7 @@
     skim
     ssh
     starship
+    tealdeer
     vscode
     yazi
     zoxide
@@ -88,6 +89,7 @@
         colmena
         dive
         docker
+        doggo
         docker-credential-helpers
         dua
         ffmpeg

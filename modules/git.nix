@@ -35,6 +35,12 @@
           push.rebase = true;
           pull.rebase = false;
 
+          branch.sort = "-committerdate";
+          fetch.prune = true;
+          diff.algorithm = "histogram";
+          merge.conflictstyle = "zdiff3";
+          rerere.enabled = true;
+
           alias = {
             ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
             ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
