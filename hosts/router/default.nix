@@ -31,7 +31,9 @@ pkgs.stdenv.mkDerivation {
   inherit version;
 
   src = pkgs.fetchurl {
-    url = "https://downloads.openwrt.org/releases/${version}/targets/${target}/openwrt-imagebuilder-${version}-${lib.replaceStrings [ "/" ] [ "-" ] target}.Linux-x86_64.tar.zst";
+    url = "https://downloads.openwrt.org/releases/${version}/targets/${target}/openwrt-imagebuilder-${version}-${
+      lib.replaceStrings [ "/" ] [ "-" ] target
+    }.Linux-x86_64.tar.zst";
     hash = "sha256-8h9lH6cLlDF/pTUxISE2VB/qA6UiJuzZLI7pAKf/ba8=";
   };
 
@@ -50,8 +52,9 @@ pkgs.stdenv.mkDerivation {
     getopt
   ];
 
-  sourceRoot = "openwrt-imagebuilder-${version}-${lib.replaceStrings [ "/" ] [ "-" ] target}.Linux-x86_64";
-
+  sourceRoot = "openwrt-imagebuilder-${version}-${
+    lib.replaceStrings [ "/" ] [ "-" ] target
+  }.Linux-x86_64";
 
   buildPhase = ''
     runHook preBuild
