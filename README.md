@@ -6,9 +6,10 @@ Nix flake configuration for my machines.
 
 | Host | Platform | Description |
 |------|----------|-------------|
-| `dfjay-laptop` | aarch64-darwin | MacBook Pro (nix-darwin) |
+| `dfjay-laptop` | aarch64-darwin | macOS (nix-darwin) |
 | `dfjay-desktop` | x86_64-linux | NixOS desktop (COSMIC DE) |
 | `vps` | x86_64-linux | NixOS VPS (nginx, sing-box, WARP) |
+| `router` | mediatek/filogic | OpenWrt GL-MT6000 (image builder) |
 
 ## Stack
 
@@ -29,7 +30,8 @@ Nix flake configuration for my machines.
 ├── hosts/             # Per-machine configurations
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
-│   └── vps/           # NixOS server
+│   ├── vps/           # NixOS server
+│   └── router/        # OpenWrt image builder
 ├── modules/           # Reusable NixOS/home-manager modules
 │   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)
 │   ├── languages/     # Dev toolchains (Go, Rust, Python, JS, ...)
@@ -53,6 +55,9 @@ nh os switch .
 
 # Deploy to remote host
 colmena apply
+
+# Build OpenWrt image
+hosts/router/build.sh
 
 # Garbage collect old generations
 just gc
