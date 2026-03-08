@@ -72,6 +72,7 @@
       imports = [
         ./hosts/darwin.nix
         ./hosts/nixos.nix
+        ./hosts/router/flake-module.nix
       ];
 
       perSystem =
