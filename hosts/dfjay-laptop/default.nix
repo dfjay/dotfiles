@@ -1,6 +1,7 @@
 { modules }:
 
 {
+  host = "dfjay-laptop";
   system = "aarch64-darwin";
   user = "dfjay";
   useremail = "mail@dfjay.com";

@@ -1,6 +1,7 @@
 { modules }:
 
 {
+  host = "vps";
   system = "x86_64-linux";
   user = "dfjay";
   useremail = "mail@dfjay.com";

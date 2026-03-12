@@ -115,8 +115,8 @@ in
 
   imports = [
     (mkNixosConfiguration {
-      host = "vps";
       inherit (vps)
+        host
         system
         user
         useremail
@@ -130,8 +130,8 @@ in
       home-manager = inputs.home-manager-stable;
     })
     (mkNixosConfiguration {
-      host = "dfjay-desktop";
       inherit (desktop)
+        host
         system
         user
         useremail

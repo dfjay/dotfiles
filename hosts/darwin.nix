@@ -95,8 +95,8 @@ in
 {
   imports = [
     (mkDarwinConfiguration {
-      host = "dfjay-laptop";
       inherit (laptop)
+        host
         system
         user
         useremail
