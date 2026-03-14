@@ -6,7 +6,6 @@
       programs.zed-editor = {
         enable = true;
         extensions = [
-          "catppuccin"
           "dockerfile"
           "docker-compose"
           "git-firefly"
@@ -22,10 +21,14 @@
           "golangci-lint"
           "justfile"
           "make"
-          "haskell"
           "elixir"
           "gleam"
+          "graphql"
           "proto"
+          "xml"
+
+          "colored-zed-icons-theme"
+          "ayu-darker-theme"
 
           # MCP
           "mcp-server-context7"
@@ -34,6 +37,7 @@
           telemetry = {
             metrics = false;
           };
+          icon_theme = "Colored Zed Icons Theme Dark";
           vim_mode = true;
           autosave = "on_focus_change";
           file_types = {
@@ -46,11 +50,12 @@
               "**/values*.yaml"
             ];
           };
-          lsp = {
-            rust-analyzer = {
-              binary = {
-                path = "/run/current-system/sw/bin/rust-analyzer";
-              };
+          git_panel = {
+            tree_view = true;
+          };
+          languages = {
+            Kotlin = {
+              language_servers = [ "kotlin-lsp" ];
             };
           };
         };
