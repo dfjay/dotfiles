@@ -84,10 +84,6 @@
       programs.coolercontrol.enable = true;
 
       security = {
-        pam.services = {
-          login.enableGnomeKeyring = true;
-          logind.enableGnomeKeyring = true;
-        };
         polkit.enable = true;
       };
 
@@ -131,6 +127,9 @@
       home-manager.users.${username} = {
         sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
         services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
+        services.gpg-agent.sshKeys = [
+          "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # YubiKey auth subkey
+        ];
         programs.git.settings = {
           commit.gpgSign = true;
           tag.gpgSign = true;
