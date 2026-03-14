@@ -8,6 +8,13 @@
       services.gpg-agent.enableSshSupport = true;
     };
 
+  nixosModule =
+    { ... }:
+    {
+      systemd.user.services.gcr-ssh-agent.enable = false;
+      systemd.user.sockets.gcr-ssh-agent.enable = false;
+    };
+
   darwinModule =
     { ... }:
     {
