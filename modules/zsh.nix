@@ -21,7 +21,6 @@
             "golang"
             "gradle"
             "helm"
-            "kitty"
             "kubectl"
             "macos"
             "npm"

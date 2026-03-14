@@ -29,7 +29,6 @@
     helix
     btop
     k8s
-    kitty
     lazydocker
     lazygit
     librewolf
@@ -43,10 +42,10 @@
     ssh
     starship
     tealdeer
-    vscode
     yazi
     zoxide
     netrc
+    zed
     zsh
 
     languages.erlang
@@ -176,6 +175,7 @@
           "obs"
           "orion"
           "proxyman"
+          "rustrover"
           "signal"
           "soundsource"
           "steam"

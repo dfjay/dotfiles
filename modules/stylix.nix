@@ -43,7 +43,7 @@
             applications = 11;
             desktop = fontSize;
             popups = fontSize;
-            terminal = 11.5;
+            terminal = 12;
           };
         };
       };
@@ -93,7 +93,7 @@
             applications = 11;
             desktop = fontSize;
             popups = fontSize;
-            terminal = 11.5;
+            terminal = 12;
           };
         };
       };

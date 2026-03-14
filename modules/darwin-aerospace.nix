@@ -98,6 +98,14 @@
             ];
           };
 
+          on-window-detected = [
+            {
+              "if".app-id = "com.mitchellh.ghostty";
+              check-further-callbacks = true;
+              run = "layout floating";
+            }
+          ];
+
           workspace-to-monitor-force-assignment = {
             "1" = "built-in";
             "2" = "built-in";
