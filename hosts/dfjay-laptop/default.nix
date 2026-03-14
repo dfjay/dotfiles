@@ -54,9 +54,11 @@
     languages.jdk
     languages.js
     languages.kotlin
+    languages.nix
     languages.python
     languages.rust
     languages.solidity
+    languages.zig
   ];
 
   config =

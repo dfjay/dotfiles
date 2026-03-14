@@ -26,6 +26,7 @@
           "graphql"
           "proto"
           "xml"
+          "zig"
 
           "colored-zed-icons-theme"
           "ayu-darker-theme"
@@ -39,6 +40,12 @@
           };
           icon_theme = "Colored Zed Icons Theme Dark";
           vim_mode = true;
+          cursor_blink = false;
+          relative_line_numbers = "enabled";
+          scroll_beyond_last_line = "off";
+          vim = {
+            toggle_relative_line_numbers = true;
+          };
           autosave = "on_focus_change";
           file_types = {
             Helm = [
@@ -56,6 +63,9 @@
           languages = {
             Kotlin = {
               language_servers = [ "kotlin-lsp" ];
+            };
+            Nix = {
+              language_servers = [ "nixd" "!nil" ];
             };
           };
         };
