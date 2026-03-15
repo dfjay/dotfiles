@@ -3,7 +3,10 @@
     { pkgs, ... }:
 
     {
-      home.packages = [ pkgs.python314 ];
+      home.packages = with pkgs; [
+        python314
+        ruff
+      ];
 
       programs.uv.enable = true;
     };

@@ -6,32 +6,34 @@
       programs.zed-editor = {
         enable = true;
         extensions = [
-          "dockerfile"
           "docker-compose"
-          "git-firefly"
-          "helm"
-          "nix"
-          "java"
-          "kotlin"
-          "html"
-          "sql"
-          "svelte"
-          "vue"
-          "toml"
-          "golangci-lint"
-          "justfile"
-          "make"
+          "dockerfile"
           "elixir"
           "gleam"
           "graphql"
+          "helm"
+          "html"
+          "java"
+          "justfile"
+          "kotlin"
+          "make"
+          "nix"
           "proto"
+          "sql"
+          "svelte"
+          "toml"
+          "vue"
           "xml"
           "zig"
 
-          "colored-zed-icons-theme"
-          "ayu-darker-theme"
+          "biome"
+          "git-firefly"
+          "gitlab-ci-ls"
+          "golangci-lint"
 
-          # MCP
+          "ayu-darker-theme"
+          "colored-zed-icons-theme"
+
           "mcp-server-context7"
         ];
         userSettings = {
@@ -40,6 +42,7 @@
           };
           icon_theme = "Colored Zed Icons Theme Dark";
           vim_mode = true;
+          helix_mode = true;
           cursor_blink = false;
           relative_line_numbers = "enabled";
           scroll_beyond_last_line = "off";

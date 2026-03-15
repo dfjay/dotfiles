@@ -14,6 +14,7 @@
       home.packages = with pkgs; [
         delve
         golangci-lint
+        golangci-lint-langserver
         gopls
         gosec
       ];
