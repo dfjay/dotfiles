@@ -37,6 +37,7 @@
     lazygit
     librewolf
     neovim
+    netrc
     nix-index
     postgresql
     ripgrep
@@ -48,7 +49,6 @@
     yazi
     zed
     zoxide
-    netrc
     zsh
 
     languages.go
@@ -170,7 +170,6 @@
         pinentry-gnome3
         sbctl
 
-        android-studio
         bitwarden-desktop
         brave
         claude-code
@@ -180,7 +179,6 @@
         gopass
         gpg-tui
         grimblast
-        jetbrains.idea
         jmeter
         just
         libreoffice-qt

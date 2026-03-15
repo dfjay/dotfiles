@@ -181,6 +181,7 @@
           "signal"
           "soundsource"
           "steam"
+          "tableplus"
           "tor-browser"
           "tuta-mail"
           "windows-app"
