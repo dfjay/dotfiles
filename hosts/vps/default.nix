@@ -242,13 +242,11 @@
                       tag = "direct-dns";
                       type = "udp";
                       server = "77.88.8.8";
-                      detour = "direct";
                     }
                     {
                       tag = "bootstrap-dns";
                       type = "udp";
                       server = "9.9.9.9";
-                      detour = "direct";
                     }
                   ];
                   rules = [
