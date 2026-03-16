@@ -47,6 +47,12 @@
       ];
     in
     {
+      nixpkgs.overlays = [
+        (final: prev: {
+          sing-box = inputs.nixpkgs.legacyPackages.${prev.system}.sing-box;
+        })
+      ];
+
       imports = [
         ./hardware-configuration.nix
       ];
@@ -57,6 +63,7 @@
         secrets = {
           reality_private_key = { };
           reality_public_key = { };
+          hy2_obfs_password = { };
           warp_private_key = { };
           warp_ipv4 = { };
           warp_ipv6 = { };
@@ -116,6 +123,42 @@
                     };
                   };
                 }
+                {
+                  type = "hysteria2";
+                  tag = "hy2-in";
+                  listen = "::";
+                  listen_port = 443;
+                  obfs = {
+                    type = "salamander";
+                    password = config.sops.placeholder.hy2_obfs_password;
+                  };
+                  users = map (u: {
+                    name = u;
+                    password = config.sops.placeholder."vless_uuid_${u}";
+                  }) vpnUsers;
+                  tls = {
+                    enabled = true;
+                    server_name = "directvpn.dfjay.com";
+                    certificate_path = "/var/lib/acme/directvpn.dfjay.com/fullchain.pem";
+                    key_path = "/var/lib/acme/directvpn.dfjay.com/key.pem";
+                  };
+                }
+                {
+                  type = "naive";
+                  tag = "naive-in";
+                  listen = "127.0.0.1";
+                  listen_port = 8445;
+                  users = map (u: {
+                    username = u;
+                    password = config.sops.placeholder."vless_uuid_${u}";
+                  }) vpnUsers;
+                  tls = {
+                    enabled = true;
+                    server_name = "naive.dfjay.com";
+                    certificate_path = "/var/lib/acme/naive.dfjay.com/fullchain.pem";
+                    key_path = "/var/lib/acme/naive.dfjay.com/key.pem";
+                  };
+                }
               ];
               endpoints = [
                 {
@@ -155,12 +198,14 @@
         }
         // builtins.listToAttrs (
           map (u: {
-            name = "vless-subscription-${u}";
+            name = "subscription-${u}";
             value = {
               restartUnits = [ "subscription-generator.service" ];
-              content = "vless://${
-                config.sops.placeholder."vless_uuid_${u}"
-              }@directvpn.dfjay.com:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=www.samsung.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=1a3287df#${u}-reality";
+              content = builtins.concatStringsSep "\n" [
+                "vless://${config.sops.placeholder."vless_uuid_${u}"}@directvpn.dfjay.com:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=www.samsung.com&fp=chrome&pbk=${config.sops.placeholder.reality_public_key}&sid=1a3287df#${u}-reality"
+                "hysteria2://${config.sops.placeholder."vless_uuid_${u}"}@directvpn.dfjay.com:443?sni=directvpn.dfjay.com&obfs=salamander&obfs-password=${config.sops.placeholder.hy2_obfs_password}#${u}-hy2"
+                "naive+https://${u}:${config.sops.placeholder."vless_uuid_${u}"}@naive.dfjay.com:443#${u}-naive"
+              ];
             };
           }) vpnUsers
         )
@@ -180,7 +225,7 @@
                       tag = "proxy-dns";
                       type = "https";
                       server = "dns.quad9.net";
-                      detour = "proxy-reality";
+                      detour = "proxy";
                       domain_resolver = "bootstrap-dns";
                     }
                     {
@@ -221,6 +266,17 @@
                 ];
                 outbounds = [
                   {
+                    type = "urltest";
+                    tag = "proxy";
+                    outbounds = [
+                      "proxy-reality"
+                      "proxy-hy2"
+                      "proxy-naive"
+                    ];
+                    interval = "5m";
+                    tolerance = 50;
+                  }
+                  {
                     type = "vless";
                     tag = "proxy-reality";
                     server = "directvpn.dfjay.com";
@@ -239,6 +295,33 @@
                         enabled = true;
                         fingerprint = "chrome";
                       };
+                    };
+                  }
+                  {
+                    type = "hysteria2";
+                    tag = "proxy-hy2";
+                    server = "directvpn.dfjay.com";
+                    server_port = 443;
+                    password = config.sops.placeholder."vless_uuid_${u}";
+                    obfs = {
+                      type = "salamander";
+                      password = config.sops.placeholder.hy2_obfs_password;
+                    };
+                    tls = {
+                      enabled = true;
+                      server_name = "directvpn.dfjay.com";
+                    };
+                  }
+                  {
+                    type = "naive";
+                    tag = "proxy-naive";
+                    server = "naive.dfjay.com";
+                    server_port = 443;
+                    username = u;
+                    password = config.sops.placeholder."vless_uuid_${u}";
+                    tls = {
+                      enabled = true;
+                      server_name = "naive.dfjay.com";
                     };
                   }
                   {
@@ -284,7 +367,7 @@
                       download_detour = "direct";
                     }
                   ];
-                  final = "proxy-reality";
+                  final = "proxy";
                   default_domain_resolver = "bootstrap-dns";
                 };
               };
@@ -336,11 +419,16 @@
           80 # HTTP (ACME + redirect)
           443 # nginx stream → SNI routing
         ];
+        allowedUDPPorts = [
+          443 # Hysteria2 (QUIC)
+        ];
       };
 
       security.acme = {
         acceptTerms = true;
         defaults.email = "mail@dfjay.com";
+        certs."directvpn.dfjay.com".reloadServices = [ "sing-box" ];
+        certs."naive.dfjay.com".reloadServices = [ "sing-box" ];
       };
 
       services.nginx = {
@@ -351,6 +439,7 @@
           map $ssl_preread_server_name $backend {
             dfjay.com       127.0.0.1:8443;
             subs.dfjay.com  127.0.0.1:8443;
+            naive.dfjay.com 127.0.0.1:8445;
             default         127.0.0.1:8444;
           }
           server {
@@ -386,6 +475,36 @@
           ];
           root = "${inputs.portfolio}";
           locations."/".tryFiles = "$uri $uri/ /index.html";
+        };
+
+        virtualHosts."directvpn.dfjay.com" = {
+          enableACME = true;
+          listen = [
+            {
+              addr = "0.0.0.0";
+              port = 80;
+            }
+            {
+              addr = "[::]";
+              port = 80;
+            }
+          ];
+          locations."/".return = "404";
+        };
+
+        virtualHosts."naive.dfjay.com" = {
+          enableACME = true;
+          listen = [
+            {
+              addr = "0.0.0.0";
+              port = 80;
+            }
+            {
+              addr = "[::]";
+              port = 80;
+            }
+          ];
+          locations."/".return = "404";
         };
 
         virtualHosts."subs.dfjay.com" = {
@@ -431,11 +550,18 @@
 
       # Override sing-box to use sops-generated config
       systemd.services.sing-box = {
+        after = [
+          "acme-directvpn.dfjay.com.service"
+          "acme-naive.dfjay.com.service"
+        ];
         serviceConfig = {
           ExecStart = lib.mkForce [
             "" # Clear the original ExecStart (required by systemd)
             "${pkgs.sing-box}/bin/sing-box run -c ${config.sops.templates."sing-box-config.json".path}"
           ];
+          AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+          CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+          SupplementaryGroups = [ "acme" ];
         };
       };
 
@@ -456,7 +582,7 @@
             USER_TOKEN=$(sha256sum ${config.sops.secrets."vless_uuid_${u}".path} | cut -c1-32)
             BASE="$STAGE/$USER_TOKEN"
             mkdir -p "$BASE/sing-box"
-            base64 -w 0 ${config.sops.templates."vless-subscription-${u}".path} > "$BASE/base64"
+            base64 -w 0 ${config.sops.templates."subscription-${u}".path} > "$BASE/base64"
             cp ${config.sops.templates."sing-box-client-${u}.json".path} "$BASE/sing-box/config"
             echo "${u} $USER_TOKEN" >> "$STAGE/tokens.txt"
           '') vpnUsers}
