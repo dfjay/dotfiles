@@ -190,6 +190,16 @@
                 }
               ];
               route = {
+                rules = [
+                  {
+                    domain_suffix = [
+                      "claude.ai"
+                      "anthropic.com"
+                    ];
+                    action = "route";
+                    outbound = "direct";
+                  }
+                ];
                 final = "warp";
                 default_domain_resolver = "bootstrap";
               };
@@ -337,6 +347,11 @@
                     }
                     {
                       ip_is_private = true;
+                      action = "route";
+                      outbound = "direct";
+                    }
+                    {
+                      domain_suffix = [ "bybit.com" ];
                       action = "route";
                       outbound = "direct";
                     }
