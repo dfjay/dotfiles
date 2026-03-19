@@ -44,14 +44,25 @@
             EnableStandardClickToShowDesktop = false;
           };
 
+          loginwindow = {
+            GuestEnabled = false;
+            DisableConsoleAccess = true;
+          };
+
           CustomUserPreferences = {
             "com.apple.desktopservices" = {
-              # Disable creating .DS_Store files in network an USB volumes
               DSDontWriteNetworkStores = true;
               DSDontWriteUSBStores = true;
             };
 
-            "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
+            "com.apple.AdLib" = {
+              allowApplePersonalizedAdvertising = false;
+              allowIdentifierForAdvertising = false;
+            };
+
+            "com.apple.assistant.support"."Assistant Enabled" = false;
+            "com.apple.Siri".StatusMenuVisible = false;
+            "com.apple.Siri".UserHasDeclinedEnable = true;
           };
         };
 
