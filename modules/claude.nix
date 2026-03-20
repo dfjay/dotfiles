@@ -102,15 +102,6 @@
             ];
             type = "stdio";
           };
-
-          taskmaster-ai = {
-            command = "npx";
-            args = [
-              "-y"
-              "task-master-ai"
-            ];
-            type = "stdio";
-          };
         };
       };
     };
