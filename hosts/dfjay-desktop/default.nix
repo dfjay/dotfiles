@@ -190,8 +190,6 @@
         tor-browser
         usbutils
         via
-        winetricks
-        wineWow64Packages.stable
         woeusb
       ];
 

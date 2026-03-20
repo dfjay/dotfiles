@@ -1,12 +1,27 @@
 {
-  nixosModule =
+  homeModule =
     { pkgs, ... }:
 
     {
-      environment.systemPackages = with pkgs; [
-        lutris
-      ];
+      programs.lutris = {
+        enable = true;
+        steamPackage = pkgs.steam;
+        winePackages = with pkgs; [
+          wineWow64Packages.stable
+        ];
+        protonPackages = with pkgs; [
+          proton-ge-bin
+        ];
+        extraPackages = with pkgs; [
+          winetricks
+        ];
+      };
+    };
 
+  nixosModule =
+    { ... }:
+
+    {
       programs.gamescope = {
         enable = true;
         capSysNice = true;
