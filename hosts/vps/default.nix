@@ -384,6 +384,7 @@
                       download_detour = "direct";
                     }
                   ];
+                  auto_detect_interface = true;
                   final = "select";
                   default_domain_resolver = "bootstrap-dns";
                 };
@@ -548,9 +549,16 @@
             }
           ];
           root = "/var/lib/nginx/subscription";
+          extraConfig = ''
+            add_header X-Robots-Tag "noindex, nofollow" always;
+          '';
           locations."~ ^/([a-f0-9]+)/sing-box$".extraConfig = ''
             default_type application/json;
             try_files /$1/sing-box/config =404;
+          '';
+          locations."~ ^/([a-f0-9]+)/qr$".extraConfig = ''
+            default_type text/html;
+            try_files /$1/index.html =404;
           '';
           locations."~ ^/([a-f0-9]+)/?$".extraConfig = ''
             default_type text/plain;
@@ -591,7 +599,7 @@
           Type = "oneshot";
           RemainAfterExit = true;
         };
-        path = [ pkgs.coreutils ];
+        path = [ pkgs.coreutils pkgs.qrencode ];
         script = ''
           DEST="/var/lib/nginx/subscription"
           STAGE=$(mktemp -d "$DEST.XXXXXX")
@@ -601,6 +609,21 @@
             mkdir -p "$BASE/sing-box"
             base64 -w 0 ${config.sops.templates."subscription-${u}".path} > "$BASE/base64"
             cp ${config.sops.templates."sing-box-client-${u}.json".path} "$BASE/sing-box/config"
+            SUB_URL="https://subs.dfjay.com/$USER_TOKEN/"
+            SINGBOX_URL="sing-box://import-remote-profile?url=https://subs.dfjay.com/$USER_TOKEN/sing-box#${u}"
+            qrencode -t SVG -o "$BASE/qr-sub.svg" "$SUB_URL"
+            qrencode -t SVG -o "$BASE/qr-singbox.svg" "$SINGBOX_URL"
+            cat > "$BASE/index.html" <<HTMLEOF
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${u}</title>
+<style>body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#111;color:#fff;font-family:system-ui;padding:2em 0}.qr{text-align:center;margin:1.5em 0}img{width:min(500px,90vw)}a{color:#7af;font-size:0.85em;word-break:break-all}h3{margin:0.5em 0;font-weight:400;opacity:0.7}</style>
+</head><body>
+<h2>${u}</h2>
+<div class="qr"><h3>Universal</h3><img src="qr-sub.svg" alt="QR"><br><a href="$SUB_URL">$SUB_URL</a></div>
+<div class="qr"><h3>sing-box</h3><img src="qr-singbox.svg" alt="QR"><br><a href="$SINGBOX_URL">$SINGBOX_URL</a></div>
+</body></html>
+HTMLEOF
             echo "${u} $USER_TOKEN" >> "$STAGE/tokens.txt"
           '') vpnUsers}
           chown -R nginx:nginx "$STAGE"
