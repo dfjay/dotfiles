@@ -235,7 +235,7 @@
                       tag = "proxy-dns";
                       type = "https";
                       server = "dns.quad9.net";
-                      detour = "proxy";
+                      detour = "select";
                       domain_resolver = "bootstrap-dns";
                     }
                     {
@@ -252,6 +252,11 @@
                   rules = [
                     {
                       rule_set = [ "geosite-category-ru" ];
+                      action = "route";
+                      server = "direct-dns";
+                    }
+                    {
+                      domain_suffix = [ "3gppnetwork.org" ];
                       action = "route";
                       server = "direct-dns";
                     }
@@ -274,15 +279,14 @@
                 ];
                 outbounds = [
                   {
-                    type = "urltest";
-                    tag = "proxy";
+                    type = "selector";
+                    tag = "select";
                     outbounds = [
                       "proxy-reality"
                       "proxy-hy2"
                       "proxy-naive"
                     ];
-                    interval = "5m";
-                    tolerance = 50;
+                    default = "proxy-reality";
                   }
                   {
                     type = "vless";
@@ -349,7 +353,7 @@
                       outbound = "direct";
                     }
                     {
-                      domain_suffix = [ "bybit.com" ];
+                      domain_suffix = [ "bybit.com" "3gppnetwork.org" ];
                       action = "route";
                       outbound = "direct";
                     }
@@ -380,7 +384,7 @@
                       download_detour = "direct";
                     }
                   ];
-                  final = "proxy";
+                  final = "select";
                   default_domain_resolver = "bootstrap-dns";
                 };
               };
@@ -616,6 +620,11 @@
         inetutils
         sysstat
         tcpdump
+        jq
+        dig
+        wireguard-tools
+        iperf3
+        nmap
       ];
 
       security.sudo.enable = true;
