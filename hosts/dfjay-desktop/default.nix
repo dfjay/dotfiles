@@ -20,6 +20,7 @@
     sops
     stylix
 
+    claude
     bat
     btop
     direnv
@@ -172,7 +173,6 @@
 
         bitwarden-desktop
         brave
-        claude-code
         discord
         element-desktop
         gnumake
