@@ -67,6 +67,7 @@ let
           {
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              inputs.nix-index-database.homeModules.nix-index
             ];
             home-manager.backupFileExtension = "backup";
             home-manager.useGlobalPkgs = true;

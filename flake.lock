@@ -295,11 +295,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773962693,
-        "narHash": "sha256-nf9pgktDE4E2TCavUT1vh3Nd/tfKixL1BK6P32Zp3hI=",
+        "lastModified": 1774007980,
+        "narHash": "sha256-FOnZjElEI8pqqCvB6K/1JRHTE8o4rer8driivTpq2uo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "9d3c1d636e7b8ab10f357cd9bee653cd400437de",
+        "rev": "9670de2921812bc4e0452f6e3efd8c859696c183",
         "type": "github"
       },
       "original": {
@@ -395,6 +395,26 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773552174,
+        "narHash": "sha256-mHSRNrT1rjeYBgkAlj07dW3+1nFEgAd8Gu6lgyfT9DU=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "8faeb68130df077450451b6734a221ba0d6cde42",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix-vscode-extensions": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -431,11 +451,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1774002631,
-        "narHash": "sha256-YGOI9k3Z0Uy68eWsLPcFt/8Su1pF8MgtQh7kyC6QVdw=",
+        "lastModified": 1774024870,
+        "narHash": "sha256-sY714A2nSxeHpnUcHxRP3MUFqN8u+8exKeOHxs7Lm2E=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8782ca90fbe694361313f528b0761a7c20475a63",
+        "rev": "6e083a90b396913570ec475a6e19250a53653bdf",
         "type": "github"
       },
       "original": {
@@ -565,6 +585,7 @@
         "home-manager-stable": "home-manager-stable",
         "lanzaboote": "lanzaboote",
         "nix-darwin": "nix-darwin",
+        "nix-index-database": "nix-index-database",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-master": "nixpkgs-master",

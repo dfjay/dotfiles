@@ -1,10 +1,10 @@
 {
   homeModule =
-    { pkgs, ... }:
+    { ... }:
     {
       programs.nix-index = {
         enable = true;
       };
-      home.packages = [ pkgs.comma ];
+      programs.nix-index-database.comma.enable = true;
     };
 }

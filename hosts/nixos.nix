@@ -66,6 +66,7 @@ let
           {
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              inputs.nix-index-database.homeModules.nix-index
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
