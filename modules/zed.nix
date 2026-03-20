@@ -68,7 +68,10 @@
               language_servers = [ "kotlin-lsp" ];
             };
             Nix = {
-              language_servers = [ "nixd" "!nil" ];
+              language_servers = [
+                "nixd"
+                "!nil"
+              ];
             };
           };
         };
