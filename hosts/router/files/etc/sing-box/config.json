@@ -9,7 +9,7 @@
         "tag": "proxy-dns",
         "type": "https",
         "server": "dns.quad9.net",
-        "detour": "proxy-reality",
+        "detour": "fr-reality",
         "domain_resolver": "bootstrap-dns"
       },
       {
@@ -55,8 +55,8 @@
   "outbounds": [
     {
       "type": "vless",
-      "tag": "proxy-reality",
-      "server": "directvpn.dfjay.com",
+      "tag": "fr-reality",
+      "server": "edge-fr.dfjay.com",
       "server_port": 443,
       "uuid": "%%VLESS_UUID%%",
       "flow": "xtls-rprx-vision",
@@ -122,7 +122,7 @@
         "download_detour": "direct"
       }
     ],
-    "final": "proxy-reality",
+    "final": "fr-reality",
     "default_domain_resolver": "bootstrap-dns"
   }
 }

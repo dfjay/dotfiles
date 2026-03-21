@@ -88,7 +88,8 @@ let
       };
     };
 
-  vps = import ./vps { inherit modules; };
+  gandi-vps = import ./gandi-vps { inherit modules; };
+  linode-vps = import ./linode-vps { inherit modules; };
   desktop = import ./dfjay-desktop { inherit modules; };
 
 in
@@ -104,19 +105,28 @@ in
         nodeSpecialArgs = builtins.mapAttrs (name: value: value._module.specialArgs) conf;
       };
 
-      vps = {
+      gandi-vps = {
         deployment = {
-          targetHost = vps.colmena.targetHost;
-          targetUser = vps.colmena.targetUser;
+          targetHost = gandi-vps.colmena.targetHost;
+          targetUser = gandi-vps.colmena.targetUser;
           buildOnTarget = true;
         };
-        imports = conf.vps._module.args.modules;
+        imports = conf.gandi-vps._module.args.modules;
+      };
+
+      linode-vps = {
+        deployment = {
+          targetHost = linode-vps.colmena.targetHost;
+          targetUser = linode-vps.colmena.targetUser;
+          buildOnTarget = true;
+        };
+        imports = conf.linode-vps._module.args.modules;
       };
     };
 
   imports = [
     (mkNixosConfiguration {
-      inherit (vps)
+      inherit (gandi-vps)
         host
         system
         user
@@ -125,8 +135,23 @@ in
         nixosStateVersion
         homeStateVersion
         ;
-      hostModules = vps.modules;
-      hostConfig = vps.config;
+      hostModules = gandi-vps.modules;
+      hostConfig = gandi-vps.config;
+      nixpkgs = inputs.nixpkgs-stable;
+      home-manager = inputs.home-manager-stable;
+    })
+    (mkNixosConfiguration {
+      inherit (linode-vps)
+        host
+        system
+        user
+        useremail
+        userdesc
+        nixosStateVersion
+        homeStateVersion
+        ;
+      hostModules = linode-vps.modules;
+      hostConfig = linode-vps.config;
       nixpkgs = inputs.nixpkgs-stable;
       home-manager = inputs.home-manager-stable;
     })

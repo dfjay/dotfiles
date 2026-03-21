@@ -8,7 +8,8 @@ Nix flake configuration for my machines.
 |------|----------|-------------|
 | `dfjay-laptop` | aarch64-darwin | macOS (nix-darwin) |
 | `dfjay-desktop` | x86_64-linux | NixOS desktop (COSMIC DE) |
-| `vps` | x86_64-linux | NixOS VPS (nginx, sing-box, WARP) |
+| `gandi-vps` | x86_64-linux | NixOS VPS — France (nginx, sing-box, WARP) |
+| `linode-vps` | x86_64-linux | NixOS VPS — US (sing-box, WARP) |
 | `router` | mediatek/filogic | OpenWrt GL-MT6000 (image builder) |
 
 ## Stack
@@ -30,7 +31,8 @@ Nix flake configuration for my machines.
 ├── hosts/             # Per-machine configurations
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
-│   ├── vps/           # NixOS server
+│   ├── gandi-vps/     # NixOS VPS (France)
+│   ├── linode-vps/    # NixOS VPS (US)
 │   └── router/        # OpenWrt image builder
 ├── modules/           # Reusable NixOS/home-manager modules
 │   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)
