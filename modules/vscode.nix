@@ -4,15 +4,15 @@
     let
       kotlin-lsp =
         let
-          version = "262.1817.0";
+          version = "262.2310.0";
           sources = {
             aarch64-darwin = {
               url = "https://download-cdn.jetbrains.com/kotlin-lsp/${version}/kotlin-lsp-${version}-mac-aarch64.vsix";
-              sha256 = "0kair47qlyr0v754vw37x6dh9725sllka6jp73a1i2v6xvqmbm1a";
+              sha256 = "1p686q829zzbs26g176na50xixnh93n6qn1xprn4f6i93bkjzab8";
             };
             x86_64-linux = {
               url = "https://download-cdn.jetbrains.com/kotlin-lsp/${version}/kotlin-lsp-${version}-linux-x64.vsix";
-              sha256 = "1m3nh3cmnjj5a8pp3l7jl656j78gmckdygyn3yrhh2lcxqjclc3m";
+              sha256 = "1dqfga7my437xm6m56pqwp2qpwwrjv5dnkhcr9imygdd15ciqvcn";
             };
           };
           src =
