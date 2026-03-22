@@ -120,7 +120,7 @@ in
             restartUnits = [ "sing-box.service" ];
             content = builtins.toJSON {
               log = {
-                level = "info";
+                level = "warn";
                 timestamp = true;
               };
               dns = {
@@ -232,6 +232,14 @@ in
               ];
               route = {
                 rules = [
+                  {
+                    port = [
+                      25
+                      587
+                      465
+                    ];
+                    action = "reject";
+                  }
                   {
                     domain_suffix = [
                       "claude.ai"
