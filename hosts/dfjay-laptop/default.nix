@@ -159,8 +159,6 @@
           "datagrip"
           "discord"
           "figma"
-          "ghostty"
-          "gpg-suite"
           "intellij-idea"
           "jan"
           "libreoffice"

@@ -1,6 +1,6 @@
 {
   homeModule =
-    { pkgs, ... }:
+    { ... }:
 
     {
       programs.neovim = {

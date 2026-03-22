@@ -8,4 +8,12 @@
         package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
       };
     };
+
+  darwinModule =
+    { ... }:
+    {
+      homebrew.casks = [
+        "ghostty"
+      ];
+    };
 }
