@@ -11,6 +11,7 @@
   homeStateVersion = "26.05";
 
   modules = with modules; [
+    # system
     audio
     bluetooth
     de.cosmic
@@ -20,9 +21,10 @@
     sops
     stylix
 
-    claude
+    # tools
     bat
     btop
+    claude
     direnv
     docker
     eza
@@ -38,7 +40,6 @@
     lazygit
     librewolf
     neovim
-    netrc
     nix-index
     postgresql
     ripgrep
@@ -52,6 +53,7 @@
     zoxide
     zsh
 
+    # languages
     languages.go
     languages.jdk
     languages.js
@@ -127,6 +129,7 @@
 
       home-manager.users.${username} = {
         sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+        sops.secrets."netrc".path = "/home/${username}/.netrc";
         services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
         services.gpg-agent.sshKeys = [
           "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # YubiKey auth subkey
@@ -160,27 +163,33 @@
       };
 
       environment.systemPackages = with pkgs; [
-        nh
+        # system
+        devenv
         home-manager
-
-        # sensors
-        lm_sensors
-        coolercontrol.coolercontrold
-        coolercontrol.coolercontrol-ui-data
-
+        nh
         pinentry-gnome3
         sbctl
 
-        bitwarden-desktop
-        brave
-        discord
-        element-desktop
+        # sensors
+        coolercontrol.coolercontrold
+        coolercontrol.coolercontrol-ui-data
+        lm_sensors
+
+        # CLI
         gnumake
         gopass
         gpg-tui
         grimblast
         jmeter
         just
+        usbutils
+        woeusb
+
+        # GUI
+        bitwarden-desktop
+        brave
+        discord
+        element-desktop
         libreoffice-qt
         prismlauncher
         qbittorrent
@@ -188,9 +197,7 @@
         spotify
         telegram-desktop
         tor-browser
-        usbutils
         via
-        woeusb
       ];
 
       programs.throne = {

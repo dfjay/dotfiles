@@ -10,13 +10,16 @@
   homeStateVersion = "26.05";
 
   modules = with modules; [
-    darwin-macos
+    # system
     darwin-aerospace
+    darwin-macos
     sops
     stylix
 
-    claude
+    # tools
     bat
+    btop
+    claude
     direnv
     docker
     eza
@@ -27,14 +30,13 @@
     git
     gpg
     helix
-    btop
     k8s
     lazydocker
     lazygit
     librewolf
-    nushell
     neovim
     nix-index
+    nushell
     postgresql
     proto
     ripgrep
@@ -43,11 +45,11 @@
     starship
     tealdeer
     yazi
-    zoxide
-    netrc
     zed
+    zoxide
     zsh
 
+    # languages
     languages.erlang
     languages.gleam
     languages.go
@@ -66,6 +68,7 @@
     {
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+        sops.secrets."netrc".path = "/Users/${username}/.netrc";
         services.gpg-agent.pinentry.package = pkgs.pinentry_mac;
         services.gpg-agent.sshKeys = [
           "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # YubiKey auth subkey
@@ -84,15 +87,20 @@
       };
 
       environment.systemPackages = with pkgs; [
+        # system
+        devenv
         nh
+        sops
+
+        # CLI
         age
         aria2
         colima
         colmena
         dive
         docker
-        doggo
         docker-credential-helpers
+        doggo
         dua
         ffmpeg
         gh
@@ -101,14 +109,13 @@
         gopass
         jmeter
         just
-        mkpasswd
         mkcert
+        mkpasswd
         openfortivpn
         posting
         qrencode
         rclone
         sing-box
-        sops
         squawk
         wabt
         xh
@@ -117,12 +124,12 @@
 
         # GUI
         bitwarden-desktop
-        yaak
         iina
         slack
         syncthing
         telegram-desktop
         wireshark
+        yaak
       ];
       environment.variables.EDITOR = "hx";
 
