@@ -36,7 +36,7 @@
         };
 
         history = {
-          size = 10000;
+          size = 30000;
           ignoreAllDups = true;
           ignorePatterns = [
             "rm *"

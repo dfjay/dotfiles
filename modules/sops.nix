@@ -6,14 +6,22 @@ let
 in
 {
   nixosModule =
-    { ... }:
+    { inputs, ... }:
     {
+      imports = [ inputs.sops-nix.nixosModules.sops ];
       sops = defaultSopsConfig;
     };
 
-  homeModule =
-    { ... }:
+  darwinModule =
+    { inputs, ... }:
     {
+      imports = [ inputs.sops-nix.darwinModules.sops ];
+    };
+
+  homeModule =
+    { inputs, ... }:
+    {
+      imports = [ inputs.sops-nix.homeManagerModules.sops ];
       sops = defaultSopsConfig;
     };
 }

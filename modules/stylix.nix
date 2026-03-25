@@ -1,11 +1,12 @@
 {
   nixosModule =
-    { pkgs, ... }:
+    { pkgs, inputs, ... }:
     let
       opacity = 0.95;
       fontSize = 12;
     in
     {
+      imports = [ inputs.stylix.nixosModules.stylix ];
       stylix = {
         enable = true;
 
@@ -50,12 +51,13 @@
     };
 
   darwinModule =
-    { pkgs, ... }:
+    { pkgs, inputs, ... }:
     let
       opacity = 0.95;
       fontSize = 12;
     in
     {
+      imports = [ inputs.stylix.darwinModules.stylix ];
       stylix = {
         enable = true;
 

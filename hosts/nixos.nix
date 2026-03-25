@@ -4,20 +4,23 @@ let
   inherit (self-lib) modules getHomeModules getNixosModules;
 
   mkNixosConfiguration =
-    {
-      host,
-      user,
-      useremail,
-      userdesc ? user,
-      system,
-      nixosStateVersion,
-      homeStateVersion,
-      hostModules ? [ ],
-      hostConfig ? null,
-      nixpkgs ? inputs.nixpkgs,
-      home-manager ? inputs.home-manager,
-    }:
+    hostCfg:
     let
+      nixpkgs = inputs.${hostCfg.nixpkgs or "nixpkgs"};
+      home-manager = inputs.${hostCfg.home-manager or "home-manager"};
+
+      inherit (hostCfg)
+        host
+        user
+        useremail
+        system
+        nixosStateVersion
+        homeStateVersion
+        ;
+      userdesc = hostCfg.userdesc or user;
+      hostModules = hostCfg.modules or [ ];
+      hostConfig = hostCfg.config or null;
+
       specialArgs = inputs // {
         inherit
           inputs
@@ -57,22 +60,16 @@ let
               };
             };
           }
-          inputs.stylix.nixosModules.stylix
           inputs.disko.nixosModules.disko
           inputs.preservation.nixosModules.preservation
-          inputs.sops-nix.nixosModules.sops
           inputs.lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
           {
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              inputs.nix-index-database.homeModules.nix-index
-            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users.${user} =
-              { pkgs, ... }:
+              { ... }:
               {
                 imports = getHomeModules hostModules;
                 home = {
@@ -125,48 +122,8 @@ in
     };
 
   imports = [
-    (mkNixosConfiguration {
-      inherit (gandi-vps)
-        host
-        system
-        user
-        useremail
-        userdesc
-        nixosStateVersion
-        homeStateVersion
-        ;
-      hostModules = gandi-vps.modules;
-      hostConfig = gandi-vps.config;
-      nixpkgs = inputs.nixpkgs-stable;
-      home-manager = inputs.home-manager-stable;
-    })
-    (mkNixosConfiguration {
-      inherit (linode-vps)
-        host
-        system
-        user
-        useremail
-        userdesc
-        nixosStateVersion
-        homeStateVersion
-        ;
-      hostModules = linode-vps.modules;
-      hostConfig = linode-vps.config;
-      nixpkgs = inputs.nixpkgs-stable;
-      home-manager = inputs.home-manager-stable;
-    })
-    (mkNixosConfiguration {
-      inherit (desktop)
-        host
-        system
-        user
-        useremail
-        userdesc
-        nixosStateVersion
-        homeStateVersion
-        ;
-      hostModules = desktop.modules;
-      hostConfig = desktop.config;
-    })
+    (mkNixosConfiguration gandi-vps)
+    (mkNixosConfiguration linode-vps)
+    (mkNixosConfiguration desktop)
   ];
 }

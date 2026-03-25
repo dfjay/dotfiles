@@ -117,7 +117,7 @@
 
         # GUI
         bitwarden-desktop
-        bruno
+        yaak
         iina
         slack
         syncthing

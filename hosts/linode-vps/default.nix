@@ -6,6 +6,8 @@
   user = "dfjay";
   useremail = "mail@dfjay.com";
   userdesc = "Pavel Yozhikov";
+  nixpkgs = "nixpkgs-stable";
+  home-manager = "home-manager-stable";
   nixosStateVersion = "25.11";
   homeStateVersion = "25.11";
 

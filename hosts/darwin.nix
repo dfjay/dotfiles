@@ -4,17 +4,19 @@ let
   inherit (self-lib) modules getHomeModules getDarwinModules;
 
   mkDarwinConfiguration =
-    {
-      host,
-      user,
-      useremail,
-      system,
-      darwinStateVersion,
-      homeStateVersion,
-      hostModules ? [ ],
-      hostConfig ? null,
-    }:
+    hostCfg:
     let
+      inherit (hostCfg)
+        host
+        user
+        useremail
+        system
+        darwinStateVersion
+        homeStateVersion
+        ;
+      hostModules = hostCfg.modules or [ ];
+      hostConfig = hostCfg.config or null;
+
       pkgs-master = import inputs.nixpkgs-master {
         inherit system;
         config.allowUnfree = true;
@@ -61,14 +63,8 @@ let
               ];
             };
           }
-          inputs.stylix.darwinModules.stylix
-          inputs.sops-nix.darwinModules.sops
           inputs.home-manager.darwinModules.home-manager
           {
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              inputs.nix-index-database.homeModules.nix-index
-            ];
             home-manager.backupFileExtension = "backup";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -95,17 +91,6 @@ let
 in
 {
   imports = [
-    (mkDarwinConfiguration {
-      inherit (laptop)
-        host
-        system
-        user
-        useremail
-        darwinStateVersion
-        homeStateVersion
-        ;
-      hostModules = laptop.modules;
-      hostConfig = laptop.config;
-    })
+    (mkDarwinConfiguration laptop)
   ];
 }
