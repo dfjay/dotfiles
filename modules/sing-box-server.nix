@@ -431,7 +431,6 @@ in
                       ];
                       auto_route = true;
                       strict_route = true;
-                      sniff = true;
                     }
                   ];
                   outbounds = [
@@ -504,6 +503,7 @@ in
                   ];
                   route = {
                     rules = [
+                      { action = "sniff"; }
                       {
                         protocol = "dns";
                         action = "hijack-dns";
