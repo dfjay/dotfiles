@@ -13,6 +13,7 @@
 
   modules = with modules; [
     locale
+    sops
 
     bat
     btop
