@@ -1,4 +1,10 @@
 {
+  nixosModule =
+    { ... }:
+    {
+      programs.zsh.enable = true;
+    };
+
   homeModule =
     { ... }:
     {

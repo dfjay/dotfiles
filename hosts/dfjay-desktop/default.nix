@@ -17,7 +17,6 @@
     de.cosmic
     games
     locale
-    shell.zsh
     sops
     stylix
 
@@ -199,6 +198,8 @@
         tor-browser
         via
       ];
+
+      environment.variables.EDITOR = "hx";
 
       programs.throne = {
         enable = true;
