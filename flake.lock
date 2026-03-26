@@ -415,47 +415,29 @@
         "type": "github"
       }
     },
-    "nix-vscode-extensions": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1774406959,
-        "narHash": "sha256-LvsvRER3uhSMPFXm3d51j1HKtNvT5uaxeU2GiGhTx2Y=",
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "rev": "8e7124f1592e7f2cc8f76ce2639255f478d58838",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1766025857,
-        "narHash": "sha256-Lav5jJazCW4mdg1iHcROpuXqmM94BWJvabLFWaJVJp0=",
-        "owner": "nixos",
+        "lastModified": 1774273680,
+        "narHash": "sha256-a++tZ1RQsDb1I0NHrFwdGuRlR5TORvCEUksM459wKUA=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "def3da69945bbe338c373fddad5a1bb49cf199ce",
+        "rev": "fdc7b8f7b30fdbedec91b71ed82f36e1637483ed",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
-        "rev": "def3da69945bbe338c373fddad5a1bb49cf199ce",
         "type": "github"
       }
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1774424529,
-        "narHash": "sha256-EjBrDUO5SjVQ+JtuLPYd6lb7Z11wamdU0awsReBxgn8=",
+        "lastModified": 1774523997,
+        "narHash": "sha256-RJd9tnc6E3jXvYDNNidxkgpnTtyPIeJvMR6kYpJrihk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6f8040e39672049c7b08a472e7df31ed7d40ee0f",
+        "rev": "4ef462ceb2afaf7f48738587ef9b667cafdaacb1",
         "type": "github"
       },
       "original": {
@@ -477,22 +459,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-25.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1774273680,
-        "narHash": "sha256-a++tZ1RQsDb1I0NHrFwdGuRlR5TORvCEUksM459wKUA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "fdc7b8f7b30fdbedec91b71ed82f36e1637483ed",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -586,8 +552,7 @@
         "lanzaboote": "lanzaboote",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
-        "nix-vscode-extensions": "nix-vscode-extensions",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "portfolio": "portfolio",

@@ -40,10 +40,7 @@ let
           {
             system.stateVersion = nixosStateVersion;
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = [
-              inputs.nix-vscode-extensions.overlays.default
-            ]
-            ++ (import ../overlays);
+            nixpkgs.overlays = (import ../overlays);
 
             nix = {
               gc = {

@@ -38,10 +38,7 @@ let
             system.primaryUser = user;
             nixpkgs.hostPlatform = system;
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = [
-              inputs.nix-vscode-extensions.overlays.default
-            ]
-            ++ (import ../overlays);
+            nixpkgs.overlays = (import ../overlays);
             users.users.${user} = {
               name = user;
               home = "/Users/${user}";

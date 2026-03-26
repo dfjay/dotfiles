@@ -46,7 +46,6 @@
     starship
     tealdeer
     translateshell
-    vscode
     yazi
     zed
     zoxide
