@@ -104,6 +104,7 @@
         dua
         ffmpeg
         gh
+        gitlab-ci-ls
         glab
         glow
         gopass
@@ -119,6 +120,7 @@
         squawk
         wabt
         xh
+        yq-go
         yubikey-manager
         zulu
 
@@ -163,7 +165,6 @@
           "brave-browser"
           "chromium"
           "claude"
-          "datagrip"
           "discord"
           "figma"
           "intellij-idea"
@@ -182,7 +183,6 @@
           "obs"
           "orion"
           "proxyman"
-          "rustrover"
           "signal"
           "soundsource"
           "steam"
