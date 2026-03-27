@@ -54,9 +54,12 @@
 
       services.sing-box-vpn = {
         enable = true;
+        tag = "us";
         edgeDomain = "edge-us.dfjay.com";
         naiveDomain = "naive-us.dfjay.com";
         realityShortId = "1a3287df";
+        realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
+        h2Port = 2443;
         vpnUsers = [
           "dfjay"
           "chu74"

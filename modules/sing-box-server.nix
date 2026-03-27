@@ -21,12 +21,59 @@ let
       };
       realityShortId = lib.mkOption { type = lib.types.str; };
       realityPublicKey = lib.mkOption { type = lib.types.str; };
+      h2Port = lib.mkOption {
+        type = lib.types.int;
+        default = 2443;
+      };
     };
   };
+
+  # ── Shared helpers ──────────────────────────────────────────────────
+
+  vlessUsers = map (u: {
+    uuid = config.sops.placeholder."vless_uuid_${u}";
+  }) cfg.vpnUsers;
+
+  vlessUsersWithFlow = map (u: u // { flow = "xtls-rprx-vision"; }) vlessUsers;
+
+  realityTls = {
+    enabled = true;
+    server_name = cfg.realityServerName;
+    reality = {
+      enabled = true;
+      handshake = {
+        server = cfg.realityServerName;
+        server_port = 443;
+      };
+      private_key = config.sops.placeholder.reality_private_key;
+      short_id = [ cfg.realityShortId ];
+    };
+  };
+
+  httpOnlyListen = [
+    { addr = "0.0.0.0"; port = 80; }
+    { addr = "[::]"; port = 80; }
+  ];
+
+  httpsListen = httpOnlyListen ++ [
+    { addr = "127.0.0.1"; port = 8443; ssl = true; }
+    { addr = "[::1]"; port = 8443; ssl = true; }
+  ];
+
+  selfServer = {
+    inherit (cfg) tag edgeDomain naiveDomain realityServerName realityShortId realityPublicKey h2Port;
+  };
+
+  allServers = [ selfServer ] ++ sub.servers;
 in
 {
   options.services.sing-box-vpn = {
     enable = lib.mkEnableOption "sing-box VPN server";
+
+    tag = lib.mkOption {
+      type = lib.types.str;
+      description = "Short tag for this server (e.g. fr, us)";
+    };
 
     edgeDomain = lib.mkOption {
       type = lib.types.str;
@@ -49,6 +96,11 @@ in
       description = "Reality short ID";
     };
 
+    realityPublicKey = lib.mkOption {
+      type = lib.types.str;
+      description = "Reality public key (for client configs)";
+    };
+
     vpnUsers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "List of VPN user names";
@@ -64,6 +116,12 @@ in
       description = "Path to server-specific sops secrets (reality, warp keys)";
     };
 
+    h2Port = lib.mkOption {
+      type = lib.types.int;
+      default = 2443;
+      description = "Public port for VLESS H2 Reality";
+    };
+
     subscription = {
       enable = lib.mkEnableOption "subscription generator";
 
@@ -76,7 +134,7 @@ in
       servers = lib.mkOption {
         type = lib.types.listOf serverSubmodule;
         default = [ ];
-        description = "All VPN servers (for multi-server client configs)";
+        description = "Additional remote VPN servers (this server is included automatically)";
       };
     };
 
@@ -146,23 +204,8 @@ in
                   tag = "vless-reality-in";
                   listen = "127.0.0.1";
                   listen_port = 8444;
-                  users = map (u: {
-                    uuid = config.sops.placeholder."vless_uuid_${u}";
-                    flow = "xtls-rprx-vision";
-                  }) cfg.vpnUsers;
-                  tls = {
-                    enabled = true;
-                    server_name = cfg.realityServerName;
-                    reality = {
-                      enabled = true;
-                      handshake = {
-                        server = cfg.realityServerName;
-                        server_port = 443;
-                      };
-                      private_key = config.sops.placeholder.reality_private_key;
-                      short_id = [ cfg.realityShortId ];
-                    };
-                  };
+                  users = vlessUsersWithFlow;
+                  tls = realityTls;
                 }
                 {
                   type = "hysteria2";
@@ -199,6 +242,18 @@ in
                     certificate_path = "/var/lib/acme/${cfg.naiveDomain}/fullchain.pem";
                     key_path = "/var/lib/acme/${cfg.naiveDomain}/key.pem";
                   };
+                }
+                {
+                  type = "vless";
+                  tag = "vless-h2-reality-in";
+                  listen = "::";
+                  listen_port = cfg.h2Port;
+                  users = vlessUsers;
+                  multiplex.enabled = true;
+                  transport = {
+                    type = "http";
+                  };
+                  tls = realityTls;
                 }
               ];
               endpoints = [
@@ -263,6 +318,7 @@ in
             22
             80
             443
+            cfg.h2Port
           ];
           allowedUDPPorts = [ 443 ];
         };
@@ -301,31 +357,13 @@ in
 
           virtualHosts."${cfg.edgeDomain}" = {
             enableACME = true;
-            listen = [
-              {
-                addr = "0.0.0.0";
-                port = 80;
-              }
-              {
-                addr = "[::]";
-                port = 80;
-              }
-            ];
+            listen = httpOnlyListen;
             locations."/".return = "404";
           };
 
           virtualHosts."${cfg.naiveDomain}" = {
             enableACME = true;
-            listen = [
-              {
-                addr = "0.0.0.0";
-                port = 80;
-              }
-              {
-                addr = "[::]";
-                port = 80;
-              }
-            ];
+            listen = httpOnlyListen;
             locations."/".return = "404";
           };
         };
@@ -365,13 +403,16 @@ in
                     "vless://${
                       config.sops.placeholder."vless_uuid_${u}"
                     }@${s.edgeDomain}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-reality"
+                    "vless://${
+                      config.sops.placeholder."vless_uuid_${u}"
+                    }@${s.edgeDomain}:${toString s.h2Port}?encryption=none&type=http&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-h2"
                     "hysteria2://${
                       config.sops.placeholder."vless_uuid_${u}"
                     }@${s.edgeDomain}:443?sni=${s.edgeDomain}&obfs=salamander&obfs-password=${config.sops.placeholder.hy2_obfs_password}#${u}-${s.tag}-hy2"
                     "naive+https://${u}:${
                       config.sops.placeholder."vless_uuid_${u}"
                     }@${s.naiveDomain}:443#${u}-${s.tag}-naive"
-                  ]) sub.servers
+                  ]) allServers
                 );
               };
             }) cfg.vpnUsers
@@ -439,10 +480,11 @@ in
                       tag = "select";
                       outbounds = lib.concatMap (s: [
                         "${s.tag}-reality"
+                        "${s.tag}-h2"
                         "${s.tag}-hy2"
                         "${s.tag}-naive"
-                      ]) sub.servers;
-                      default = "${(builtins.head sub.servers).tag}-reality";
+                      ]) allServers;
+                      default = "${(builtins.head allServers).tag}-reality";
                     }
                   ]
                   ++ lib.concatMap (s: [
@@ -494,7 +536,30 @@ in
                         server_name = s.naiveDomain;
                       };
                     }
-                  ]) sub.servers
+                    {
+                      type = "vless";
+                      tag = "${s.tag}-h2";
+                      server = s.edgeDomain;
+                      server_port = s.h2Port;
+                      uuid = config.sops.placeholder."vless_uuid_${u}";
+                      transport = {
+                        type = "http";
+                      };
+                      tls = {
+                        enabled = true;
+                        server_name = s.realityServerName;
+                        reality = {
+                          enabled = true;
+                          public_key = s.realityPublicKey;
+                          short_id = s.realityShortId;
+                        };
+                        utls = {
+                          enabled = true;
+                          fingerprint = "chrome";
+                        };
+                      };
+                    }
+                  ]) allServers
                   ++ [
                     {
                       type = "direct";
@@ -560,26 +625,7 @@ in
         services.nginx.virtualHosts."${sub.domain}" = {
           forceSSL = true;
           enableACME = true;
-          listen = [
-            {
-              addr = "0.0.0.0";
-              port = 80;
-            }
-            {
-              addr = "[::]";
-              port = 80;
-            }
-            {
-              addr = "127.0.0.1";
-              port = 8443;
-              ssl = true;
-            }
-            {
-              addr = "[::1]";
-              port = 8443;
-              ssl = true;
-            }
-          ];
+          listen = httpsListen;
           root = "/var/lib/nginx/subscription";
           extraConfig = ''
             add_header X-Robots-Tag "noindex, nofollow" always;
@@ -650,26 +696,7 @@ in
         services.nginx.virtualHosts."${pf.domain}" = {
           forceSSL = true;
           enableACME = true;
-          listen = [
-            {
-              addr = "0.0.0.0";
-              port = 80;
-            }
-            {
-              addr = "[::]";
-              port = 80;
-            }
-            {
-              addr = "127.0.0.1";
-              port = 8443;
-              ssl = true;
-            }
-            {
-              addr = "[::1]";
-              port = 8443;
-              ssl = true;
-            }
-          ];
+          listen = httpsListen;
           root = "${pf.root}";
           locations."/".tryFiles = "$uri $uri/ /index.html";
         };

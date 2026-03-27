@@ -55,9 +55,12 @@
 
       services.sing-box-vpn = {
         enable = true;
+        tag = "fr";
         edgeDomain = "edge-fr.dfjay.com";
         naiveDomain = "naive-fr.dfjay.com";
         realityShortId = "1a3287df";
+        realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
+        h2Port = 2443;
         vpnUsers = [
           "dfjay"
           "chu74"
@@ -72,18 +75,12 @@
           domain = "subs.dfjay.com";
           servers = [
             {
-              tag = "fr";
-              edgeDomain = "edge-fr.dfjay.com";
-              naiveDomain = "naive-fr.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
-            }
-            {
               tag = "us";
               edgeDomain = "edge-us.dfjay.com";
               naiveDomain = "naive-us.dfjay.com";
               realityShortId = "1a3287df";
               realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
+              h2Port = 2443;
             }
           ];
         };
