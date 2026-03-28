@@ -49,17 +49,39 @@ let
   };
 
   httpOnlyListen = [
-    { addr = "0.0.0.0"; port = 80; }
-    { addr = "[::]"; port = 80; }
+    {
+      addr = "0.0.0.0";
+      port = 80;
+    }
+    {
+      addr = "[::]";
+      port = 80;
+    }
   ];
 
   httpsListen = httpOnlyListen ++ [
-    { addr = "127.0.0.1"; port = 8443; ssl = true; }
-    { addr = "[::1]"; port = 8443; ssl = true; }
+    {
+      addr = "127.0.0.1";
+      port = 8443;
+      ssl = true;
+    }
+    {
+      addr = "[::1]";
+      port = 8443;
+      ssl = true;
+    }
   ];
 
   selfServer = {
-    inherit (cfg) tag edgeDomain naiveDomain realityServerName realityShortId realityPublicKey h2Port;
+    inherit (cfg)
+      tag
+      edgeDomain
+      naiveDomain
+      realityServerName
+      realityShortId
+      realityPublicKey
+      h2Port
+      ;
   };
 
   allServers = [ selfServer ] ++ sub.servers;

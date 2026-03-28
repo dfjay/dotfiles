@@ -91,10 +91,24 @@
         forceSSL = true;
         enableACME = true;
         listen = [
-          { addr = "0.0.0.0"; port = 80; }
-          { addr = "[::]"; port = 80; }
-          { addr = "127.0.0.1"; port = 8443; ssl = true; }
-          { addr = "[::1]"; port = 8443; ssl = true; }
+          {
+            addr = "0.0.0.0";
+            port = 80;
+          }
+          {
+            addr = "[::]";
+            port = 80;
+          }
+          {
+            addr = "127.0.0.1";
+            port = 8443;
+            ssl = true;
+          }
+          {
+            addr = "[::1]";
+            port = 8443;
+            ssl = true;
+          }
         ];
         root = "${inputs.portfolio}";
         locations."/".tryFiles = "$uri $uri/ /index.html";
