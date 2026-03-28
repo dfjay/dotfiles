@@ -35,7 +35,6 @@
     {
       pkgs,
       lib,
-      config,
       inputs,
       username,
       userdesc,
@@ -85,11 +84,20 @@
           ];
         };
 
-        portfolio = {
-          enable = true;
-          domain = "dfjay.com";
-          root = inputs.portfolio;
-        };
+        extraStreamHosts = [ "dfjay.com" ];
+      };
+
+      services.nginx.virtualHosts."dfjay.com" = {
+        forceSSL = true;
+        enableACME = true;
+        listen = [
+          { addr = "0.0.0.0"; port = 80; }
+          { addr = "[::]"; port = 80; }
+          { addr = "127.0.0.1"; port = 8443; ssl = true; }
+          { addr = "[::1]"; port = 8443; ssl = true; }
+        ];
+        root = "${inputs.portfolio}";
+        locations."/".tryFiles = "$uri $uri/ /index.html";
       };
 
       security.sudo.wheelNeedsPassword = false;

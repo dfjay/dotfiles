@@ -8,8 +8,6 @@
 let
   cfg = config.services.sing-box-vpn;
   sub = cfg.subscription;
-  pf = cfg.portfolio;
-
   serverSubmodule = lib.types.submodule {
     options = {
       tag = lib.mkOption { type = lib.types.str; };
@@ -138,18 +136,10 @@ in
       };
     };
 
-    portfolio = {
-      enable = lib.mkEnableOption "portfolio site";
-
-      domain = lib.mkOption {
-        type = lib.types.str;
-        default = "dfjay.com";
-      };
-
-      root = lib.mkOption {
-        type = lib.types.path;
-        description = "Root directory for portfolio site";
-      };
+    extraStreamHosts = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional SNI hostnames to route to nginx HTTPS (8443)";
     };
   };
 
@@ -336,7 +326,7 @@ in
           streamConfig =
             let
               entries =
-                lib.optional pf.enable "${pf.domain} 127.0.0.1:8443;"
+                map (h: "${h} 127.0.0.1:8443;") cfg.extraStreamHosts
                 ++ lib.optional sub.enable "${sub.domain} 127.0.0.1:8443;"
                 ++ [
                   "${cfg.naiveDomain} 127.0.0.1:8445;"
@@ -691,16 +681,6 @@ in
         };
       })
 
-      # ── Portfolio site ───────────────────────────────────────────────
-      (lib.mkIf pf.enable {
-        services.nginx.virtualHosts."${pf.domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          listen = httpsListen;
-          root = "${pf.root}";
-          locations."/".tryFiles = "$uri $uri/ /index.html";
-        };
-      })
     ]
   );
 }
