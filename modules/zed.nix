@@ -3,6 +3,8 @@
     { ... }:
 
     {
+      stylix.targets.zed.colors.enable = false;
+
       programs.zed-editor = {
         enable = true;
         extensions = [
@@ -37,6 +39,7 @@
           "mcp-server-context7"
         ];
         userSettings = {
+          theme = "Ayu Dark";
           telemetry = {
             metrics = false;
           };
