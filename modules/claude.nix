@@ -1,6 +1,11 @@
 {
   homeModule =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      inputs,
+      ...
+    }:
     {
       sops.secrets.context7_api_key = { };
 
@@ -23,24 +28,8 @@
         enable = true;
 
         marketplaces = {
-          claude-plugins-official = pkgs.fetchFromGitHub {
-            owner = "anthropics";
-            repo = "claude-plugins-official";
-            rev = "183a6ca35d5f6b4ba99bf89777bd0aa432fa3d2e";
-            hash = "sha256-IUrfycw/bzuuuTTYNZGWnOE5vSygGa+ORCqbEo6/J0k=";
-          };
-          claude-code-workflows = pkgs.fetchFromGitHub {
-            owner = "wshobson";
-            repo = "agents";
-            rev = "91fe43e152e96a55a264fc1afdf44cd4db2a38d4";
-            hash = "sha256-YKheSAfB9aTG55dAhlNP2R8MAw4OPt6JVQPtR0Fh5YQ=";
-          };
-          goland-claude-marketplace = pkgs.fetchFromGitHub {
-            owner = "JetBrains";
-            repo = "go-modern-guidelines";
-            rev = "3a7f3eecd29f45e341f4e258d38fe8548ca05050";
-            hash = "sha256-NJBwg3Ok5I2POZzQZZ1v+l7rfAidxNvLjnOR6bR0wNg=";
-          };
+          claude-plugins-official = inputs.claude-plugins-official;
+          goland-claude-marketplace = inputs.go-modern-guidelines;
         };
 
         settings = {
@@ -77,7 +66,6 @@
             command = ''input=$(cat); MODEL=$(echo "$input" | jq -r '.model.display_name // "Claude"'); DIR=$(basename "$(echo "$input" | jq -r '.workspace.current_dir')"); BRANCH=$(cd "$(echo "$input" | jq -r '.workspace.current_dir')" 2>/dev/null && git branch --show-current 2>/dev/null); printf "\033[1m%s\033[0m in \033[36m%s\033[0m" "$MODEL" "$DIR"; [ -n "$BRANCH" ] && printf " on \033[33m⎇ %s\033[0m" "$BRANCH"; echo'';
           };
           enabledPlugins = {
-            "developer-essentials@claude-code-workflows" = true;
             "modern-go-guidelines@goland-claude-marketplace" = true;
             "gopls-lsp@claude-plugins-official" = true;
             "typescript-lsp@claude-plugins-official" = true;

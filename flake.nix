@@ -53,14 +53,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
+    # Non-flake sources
     portfolio = {
       url = "github:dfjay/dfjay.com";
       flake = false;
     };
 
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+    claude-plugins-official = {
+      url = "github:anthropics/claude-plugins-official";
+      flake = false;
+    };
+
+    go-modern-guidelines = {
+      url = "github:JetBrains/go-modern-guidelines";
+      flake = false;
     };
   };
 
