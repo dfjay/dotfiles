@@ -2,7 +2,6 @@
   nixosModule =
     { ... }:
     {
-      programs.nushell.enable = true;
     };
 
   homeModule =
