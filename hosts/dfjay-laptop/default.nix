@@ -50,8 +50,7 @@
     zsh
 
     # languages
-    languages.erlang
-    languages.gleam
+    languages.beam
     languages.go
     languages.jdk
     languages.js

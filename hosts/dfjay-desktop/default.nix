@@ -52,6 +52,7 @@
     zsh
 
     # languages
+    languages.beam
     languages.go
     languages.jdk
     languages.js
