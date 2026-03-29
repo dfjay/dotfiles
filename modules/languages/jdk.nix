@@ -5,6 +5,7 @@
     {
       programs.java = {
         enable = true;
+        package = pkgs.zulu;
       };
 
       home.packages = with pkgs; [

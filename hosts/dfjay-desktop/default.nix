@@ -29,10 +29,10 @@
     eza
     fastfetch
     fd
+    formats
     ghostty
     git
     gpg
-    gradle
     helix
     k8s
     lazydocker
@@ -40,12 +40,14 @@
     librewolf
     neovim
     nix-index
+    nushell
     postgresql
+    proto
     ripgrep
     skim
+    ssh
     starship
     tealdeer
-    translateshell
     yazi
     zed
     zoxide
@@ -57,6 +59,7 @@
     languages.jdk
     languages.js
     languages.kotlin
+    languages.nix
     languages.python
     languages.rust
   ];
@@ -178,11 +181,9 @@
         gnumake
         gopass
         gpg-tui
-        grimblast
-        jmeter
         just
+        k6
         usbutils
-        woeusb
 
         # GUI
         bitwarden-desktop

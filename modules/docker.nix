@@ -11,6 +11,17 @@
       };
     };
 
+  darwinModule =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = with pkgs; [
+        colima
+        docker
+        docker-credential-helpers
+        dive
+      ];
+    };
+
   homeModule =
     { pkgs, ... }:
     {

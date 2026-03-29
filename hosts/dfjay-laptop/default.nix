@@ -58,8 +58,6 @@
     languages.nix
     languages.python
     languages.rust
-    languages.solidity
-    languages.zig
   ];
 
   config =
@@ -94,11 +92,7 @@
         # CLI
         age
         aria2
-        colima
         colmena
-        dive
-        docker
-        docker-credential-helpers
         doggo
         dua
         ffmpeg
@@ -107,21 +101,18 @@
         glab
         glow
         gopass
-        jmeter
         just
+        k6
         mkcert
         mkpasswd
         openfortivpn
-        posting
         qrencode
         rclone
         sing-box
         squawk
-        wabt
         xh
         yq-go
         yubikey-manager
-        zulu
 
         # GUI
         bitwarden-desktop
@@ -162,12 +153,10 @@
           "audio-hijack"
           "balenaetcher"
           "brave-browser"
-          "chromium"
           "claude"
           "discord"
           "figma"
           "intellij-idea"
-          "jan"
           "libreoffice"
           "linearmouse"
           "logseq"
