@@ -3,17 +3,13 @@
     { pkgs, ... }:
 
     {
-      home.packages =
-        with pkgs;
-        [
-          biome
-          bun
-          nodejs_24
-          typescript-language-server
-        ]
-        ++ (with pkgs.nodePackages; [
-          npm-check-updates
-          tsx
-        ]);
+      home.packages = with pkgs; [
+        biome
+        bun
+        nodejs_24
+        npm-check-updates
+        tsx
+        typescript-language-server
+      ];
     };
 }
