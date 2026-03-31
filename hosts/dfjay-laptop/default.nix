@@ -135,7 +135,7 @@
         };
 
         masApps = {
-          #"Logic Pro" = 634148309;
+          "Logic Pro" = 634148309;
           "Shadowrocket" = 932747118;
           "TestFlight" = 899247664;
           "Xcode" = 497799835;

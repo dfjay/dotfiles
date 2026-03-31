@@ -34,6 +34,7 @@
 
         settings = {
           env = { };
+          enableVimMode = true;
           includeCoAuthoredBy = true;
           permissions = {
             allow = [
