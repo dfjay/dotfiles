@@ -52,9 +52,8 @@
     # languages
     languages.beam
     languages.go
-    languages.jdk
     languages.js
-    languages.kotlin
+    languages.jvm
     languages.nix
     languages.python
     languages.rust

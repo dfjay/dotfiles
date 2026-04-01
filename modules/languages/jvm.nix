@@ -11,6 +11,8 @@
       home.packages = with pkgs; [
         jdt-language-server
         keystore-explorer
+        kotlin
+        ktlint
         visualvm
       ];
     };
