@@ -1,11 +1,14 @@
 {
+  workspaceMonitorAssignment ? { },
+  onWindowDetected ? [ ],
+}:
+{
   darwinModule =
-    { ... }:
+    { lib, ... }:
     {
       services.aerospace = {
         enable = true;
         settings = {
-          #start-at-login = true;
           enable-normalization-flatten-containers = true;
           enable-normalization-opposite-orientation-for-nested-containers = true;
           on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
@@ -98,39 +101,10 @@
             ];
           };
 
-          on-window-detected = [
-            {
-              "if".app-id = "com.mitchellh.ghostty";
-              check-further-callbacks = true;
-              run = "layout floating";
-            }
-          ];
-
-          workspace-to-monitor-force-assignment = {
-            "1" = "built-in";
-            "2" = "built-in";
-            "3" = "built-in";
-            "4" = "built-in";
-            "5" = "built-in";
-            "6" = [
-              "1"
-              "built-in"
-            ];
-            "7" = [
-              "1"
-              "built-in"
-            ];
-            "8" = [
-              "3"
-              "2"
-              "built-in"
-            ];
-            "9" = [
-              "3"
-              "2"
-              "built-in"
-            ];
-          };
+          on-window-detected = onWindowDetected;
+        }
+        // lib.optionalAttrs (workspaceMonitorAssignment != { }) {
+          workspace-to-monitor-force-assignment = workspaceMonitorAssignment;
         };
       };
     };

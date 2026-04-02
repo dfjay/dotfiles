@@ -11,7 +11,64 @@
 
   modules = with modules; [
     # system
-    darwin-aerospace
+    (darwin-aerospace {
+      onWindowDetected = [
+        {
+          "if".app-id = "com.mitchellh.ghostty";
+          check-further-callbacks = true;
+          run = "layout floating";
+        }
+      ];
+      workspaceMonitorAssignment = {
+        "1" = [
+          "DELL U4025QW"
+          "built-in"
+          "main"
+        ];
+        "2" = [
+          "DELL U4025QW"
+          "built-in"
+          "main"
+        ];
+        "3" = [
+          "DELL U4025QW"
+          "DELL U2725QE"
+          "main"
+        ];
+        "4" = [
+          "DELL U4025QW"
+          "DELL U2725QE"
+          "main"
+        ];
+        "5" = [
+          "DELL U4025QW"
+          "DELL U2725QE"
+          "main"
+        ];
+        "6" = [
+          "DELL U4025QW"
+          "DELL U2725QE"
+          "main"
+        ];
+        "7" = [
+          "DELL U4025QW"
+          "DELL U2725QE"
+          "main"
+        ];
+        "8" = [
+          "SU13TO"
+          "SSN-24"
+          "DELL U2725QE"
+          "built-in"
+        ];
+        "9" = [
+          "SU13TO"
+          "SSN-24"
+          "DELL U2725QE"
+          "built-in"
+        ];
+      };
+    })
     darwin-macos
     sops
     stylix
