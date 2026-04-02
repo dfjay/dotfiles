@@ -224,7 +224,6 @@
           "microsoft-powerpoint"
           "microsoft-teams"
           "microsoft-word"
-          "obs"
           "orion"
           "proxyman"
           "signal"
