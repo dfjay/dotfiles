@@ -26,6 +26,19 @@ let
     };
   };
 
+  relaySubmodule = lib.types.submodule {
+    options = {
+      tag = lib.mkOption { type = lib.types.str; };
+      server = lib.mkOption { type = lib.types.str; };
+      realityServerName = lib.mkOption {
+        type = lib.types.str;
+        default = "console.cloud.yandex.ru";
+      };
+      realityShortId = lib.mkOption { type = lib.types.str; };
+      realityPublicKey = lib.mkOption { type = lib.types.str; };
+    };
+  };
+
   # ── Shared helpers ──────────────────────────────────────────────────
 
   vlessUsers = map (u: {
@@ -155,6 +168,12 @@ in
         type = lib.types.listOf serverSubmodule;
         default = [ ];
         description = "Additional remote VPN servers (this server is included automatically)";
+      };
+
+      relays = lib.mkOption {
+        type = lib.types.listOf relaySubmodule;
+        default = [ ];
+        description = "Relay servers (VLESS Reality only, for 2-hop chains)";
       };
     };
 
@@ -425,6 +444,11 @@ in
                       config.sops.placeholder."vless_uuid_${u}"
                     }@${s.naiveDomain}:443#${u}-${s.tag}-naive"
                   ]) allServers
+                  ++ map (r:
+                    "vless://${
+                      config.sops.placeholder."vless_uuid_${u}"
+                    }@${r.server}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${r.realityServerName}&fp=chrome&pbk=${r.realityPublicKey}&sid=${r.realityShortId}#${u}-${r.tag}-reality"
+                  ) sub.relays
                 );
               };
             }) cfg.vpnUsers
@@ -456,7 +480,7 @@ in
                       {
                         tag = "bootstrap-dns";
                         type = "udp";
-                        server = "9.9.9.9";
+                        server = "77.88.8.8";
                       }
                     ];
                     rules = [
@@ -495,7 +519,8 @@ in
                         "${s.tag}-h2"
                         "${s.tag}-hy2"
                         "${s.tag}-naive"
-                      ]) allServers;
+                      ]) allServers
+                      ++ map (r: "${r.tag}-reality") sub.relays;
                       default = "${(builtins.head allServers).tag}-reality";
                     }
                   ]
@@ -572,6 +597,27 @@ in
                       };
                     }
                   ]) allServers
+                  ++ map (r: {
+                    type = "vless";
+                    tag = "${r.tag}-reality";
+                    server = r.server;
+                    server_port = 443;
+                    uuid = config.sops.placeholder."vless_uuid_${u}";
+                    flow = "xtls-rprx-vision";
+                    tls = {
+                      enabled = true;
+                      server_name = r.realityServerName;
+                      reality = {
+                        enabled = true;
+                        public_key = r.realityPublicKey;
+                        short_id = r.realityShortId;
+                      };
+                      utls = {
+                        enabled = true;
+                        fingerprint = "chrome";
+                      };
+                    };
+                  }) sub.relays
                   ++ [
                     {
                       type = "direct";

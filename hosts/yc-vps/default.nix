@@ -1,7 +1,7 @@
 { modules }:
 
 {
-  host = "gandi-vps";
+  host = "yc-vps";
   system = "x86_64-linux";
   user = "dfjay";
   useremail = "mail@dfjay.com";
@@ -27,7 +27,7 @@
   ];
 
   colmena = {
-    targetHost = "edge-fr.dfjay.com";
+    targetHost = "edge-ru.dfjay.com";
     targetUser = "dfjay";
   };
 
@@ -49,17 +49,13 @@
 
       imports = [
         ./hardware-configuration.nix
-        ../../modules/sing-box-server.nix
+        ../../modules/sing-box-relay.nix
       ];
 
-      services.sing-box-vpn = {
+      services.sing-box-relay = {
         enable = true;
-        tag = "fr";
-        edgeDomain = "edge-fr.dfjay.com";
-        naiveDomain = "naive-fr.dfjay.com";
         realityShortId = "1a3287df";
-        realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
-        h2Port = 2443;
+        realityPublicKey = "654efZ1tti1w3gLBRnGOA2gUPT11tjz7zXoNm8ZuwjU";
         vpnUsers = [
           "dfjay"
           "chu74"
@@ -67,59 +63,17 @@
           "gladiolus"
         ];
         sharedSecretsFile = ../../secrets/vpn-shared.yaml;
-        serverSecretsFile = ../../secrets/vpn-gandi.yaml;
+        serverSecretsFile = ../../secrets/vpn-yc.yaml;
 
-        subscription = {
-          enable = true;
-          domain = "subs.dfjay.com";
-          servers = [
-            {
-              tag = "us";
-              edgeDomain = "edge-us.dfjay.com";
-              naiveDomain = "naive-us.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
-              h2Port = 2443;
-            }
-          ];
-          relays = [
-            {
-              tag = "ru-fr";
-              server = "edge-ru.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "654efZ1tti1w3gLBRnGOA2gUPT11tjz7zXoNm8ZuwjU";
-            }
-          ];
-        };
-
-        extraStreamHosts = [ "dfjay.com" ];
-      };
-
-      services.nginx.virtualHosts."dfjay.com" = {
-        forceSSL = true;
-        enableACME = true;
-        listen = [
+        upstreams = [
           {
-            addr = "0.0.0.0";
-            port = 80;
-          }
-          {
-            addr = "[::]";
-            port = 80;
-          }
-          {
-            addr = "127.0.0.1";
-            port = 8443;
-            ssl = true;
-          }
-          {
-            addr = "[::1]";
-            port = 8443;
-            ssl = true;
+            tag = "fr";
+            edgeDomain = "edge-fr.dfjay.com";
+            realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
+            realityShortId = "1a3287df";
           }
         ];
-        root = "${inputs.portfolio}";
-        locations."/".tryFiles = "$uri $uri/ /index.html";
+        defaultUpstream = "fr-reality";
       };
 
       security.sudo.wheelNeedsPassword = false;

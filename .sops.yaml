@@ -7,9 +7,10 @@ keys:
   - &desktop-age age1hrxulzjncafyudtweejq6ncld3wsmur8d50v4ttgm09drat9ryesgj8eyd
   - &gandi-age age18awufzpczf7fphqwuesx00mtj9pxecwk625v92u70gx6t3p5nsrs9s4wl2
   - &linode-age age1w4c6ynjc5zk9y74k4y8mgr4hyspsx04ztnha220893kc882pdccsu7lds7
+  - &yc-age age16uw6p3hl63624szemeuhmv45xkyl6mnuey63zsxjthpezl4afc5quudflf
 
 creation_rules:
-  # Shared VPN secrets (UUIDs, hy2 password) — both servers need access
+  # Shared VPN secrets (UUIDs, hy2 password) — all servers need access
   - path_regex: secrets/vpn-shared\.yaml$
     key_groups:
       - pgp:
@@ -21,6 +22,7 @@ creation_rules:
           - *desktop-age
           - *gandi-age
           - *linode-age
+          - *yc-age
 
   # Gandi-specific VPN secrets (reality, warp keys)
   - path_regex: secrets/vpn-gandi\.yaml$
@@ -45,6 +47,18 @@ creation_rules:
           - *mac-age
           - *desktop-age
           - *linode-age
+
+  # YC-specific VPN secrets (reality key)
+  - path_regex: secrets/vpn-yc\.yaml$
+    key_groups:
+      - pgp:
+          - *yubikey
+        age:
+          - *yubikey-ssh
+          - *mac
+          - *mac-age
+          - *desktop-age
+          - *yc-age
 
   # Desktop and other secrets
   - path_regex: secrets/secret\.yaml$

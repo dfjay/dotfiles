@@ -49,6 +49,28 @@
   "outbounds": [
     {
       "type": "vless",
+      "tag": "ru-relay",
+      "server": "158.160.60.146",
+      "server_port": 443,
+      "domain_resolver": "direct-dns",
+      "uuid": "%%VLESS_UUID%%",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "console.cloud.yandex.ru",
+        "reality": {
+          "enabled": true,
+          "public_key": "%%RU_REALITY_PUBLIC_KEY%%",
+          "short_id": "1a3287df"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "vless",
       "tag": "fr-reality",
       "server": "edge-fr.dfjay.com",
       "server_port": 443,
