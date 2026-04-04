@@ -24,6 +24,8 @@
     starship
     yazi
     zoxide
+
+    sing-box-server
   ];
 
   colmena = {
@@ -49,7 +51,6 @@
 
       imports = [
         ./hardware-configuration.nix
-        ../../modules/sing-box-server.nix
       ];
 
       services.sing-box-vpn = {

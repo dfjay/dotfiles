@@ -24,6 +24,8 @@
     starship
     yazi
     zoxide
+
+    sing-box-relay
   ];
 
   colmena = {
@@ -49,7 +51,6 @@
 
       imports = [
         ./hardware-configuration.nix
-        ../../modules/sing-box-relay.nix
       ];
 
       services.sing-box-relay = {

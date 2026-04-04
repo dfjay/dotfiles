@@ -1,11 +1,9 @@
 {
   homeModule =
-    { pkgs, ... }:
-
+    { ... }:
     {
       programs.ghostty = {
         enable = true;
-        package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
         settings = {
           cursor-style-blink = false;
         };
@@ -13,10 +11,12 @@
     };
 
   darwinModule =
-    { ... }:
+    { username, ... }:
     {
       homebrew.casks = [
         "ghostty"
       ];
+
+      home-manager.users.${username}.programs.ghostty.package = null;
     };
 }
