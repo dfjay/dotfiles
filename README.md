@@ -7,10 +7,11 @@ Nix flake configuration for my machines.
 | Host | Platform | Description |
 |------|----------|-------------|
 | `dfjay-laptop` | aarch64-darwin | macOS (nix-darwin) |
-| `dfjay-desktop` | x86_64-linux | NixOS desktop (COSMIC DE) |
-| `gandi-vps` | x86_64-linux | NixOS VPS — France (nginx, sing-box, WARP) |
-| `linode-vps` | x86_64-linux | NixOS VPS — US (sing-box, WARP) |
-| `router` | mediatek/filogic | OpenWrt GL-MT6000 (image builder) |
+| `dfjay-desktop` | x86_64-linux | NixOS desktop |
+| `gandi-vps` | x86_64-linux | NixOS VPS |
+| `linode-vps` | x86_64-linux | NixOS VPS |
+| `yc-vps` | x86_64-linux | NixOS VPS |
+| `router` | mediatek/filogic | OpenWrt router |
 
 ## Stack
 
@@ -31,9 +32,10 @@ Nix flake configuration for my machines.
 ├── hosts/             # Per-machine configurations
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
-│   ├── gandi-vps/     # NixOS VPS (France)
-│   ├── linode-vps/    # NixOS VPS (US)
-│   └── router/        # OpenWrt image builder
+│   ├── gandi-vps/     # NixOS VPS
+│   ├── linode-vps/    # NixOS VPS
+│   ├── yc-vps/        # NixOS VPS
+│   └── router/        # OpenWrt router
 ├── modules/           # Reusable NixOS/home-manager modules
 │   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)
 │   ├── languages/     # Dev toolchains (Go, Rust, Python, JS, ...)
