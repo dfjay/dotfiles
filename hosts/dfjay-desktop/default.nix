@@ -68,6 +68,7 @@
     {
       pkgs,
       lib,
+      inputs,
       hostname,
       username,
       userdesc,
@@ -75,8 +76,11 @@
     }:
     {
       imports = [
-        ./hardware-configuration.nix
+        inputs.nixos-facter-modules.nixosModules.facter
+        ./storage.nix
       ];
+
+      facter.reportPath = ./facter.json;
 
       security.sudo.enable = false;
       security.sudo-rs = {
