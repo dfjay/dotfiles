@@ -70,6 +70,7 @@
       };
     })
     darwin-macos
+    firewall
     sops
     stylix
 

@@ -15,6 +15,7 @@
     audio
     bluetooth
     de.cosmic
+    firewall
     games
     locale
     sops
@@ -107,7 +108,6 @@
       networking = {
         hostName = hostname;
         networkmanager.enable = true;
-        firewall.enable = false;
       };
 
       boot = {
