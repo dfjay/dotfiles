@@ -1,12 +1,7 @@
-{
-  lib,
-  modulesPath,
-  ...
-}:
+{ ... }:
 
 {
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
-
+  # Bootloader — Linode uses BIOS with serial console (LISH)
   boot.loader.grub = {
     enable = true;
     device = "/dev/sda";
@@ -18,22 +13,14 @@
     '';
   };
   boot.loader.timeout = 10;
-
   boot.kernelParams = [ "console=ttyS0,19200n8" ];
 
+  # TCP BBR for better throughput
   boot.kernel.sysctl = {
     "net.core.default_qdisc" = "fq";
     "net.ipv4.tcp_congestion_control" = "bbr";
   };
   boot.kernelModules = [ "tcp_bbr" ];
-
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "xen_blkfront"
-    "vmw_pvscsi"
-  ];
-  boot.initrd.kernelModules = [ "nvme" ];
 
   fileSystems."/" = {
     device = "/dev/sda";
@@ -48,10 +35,8 @@
     }
   ];
 
-  # Linode networking
+  # Linode networking — classic interface names, DHCP on eth0
   networking.usePredictableInterfaceNames = false;
   networking.useDHCP = false;
   networking.interfaces.eth0.useDHCP = true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

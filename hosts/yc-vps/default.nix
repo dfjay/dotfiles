@@ -50,8 +50,11 @@
       ];
 
       imports = [
-        ./hardware-configuration.nix
+        inputs.nixos-facter-modules.nixosModules.facter
+        ./storage.nix
       ];
+
+      facter.reportPath = ./facter.json;
 
       services.sing-box-relay = {
         enable = true;
