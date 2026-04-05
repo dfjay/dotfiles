@@ -31,7 +31,8 @@ bootstrap host target:
 # Usage: just facter dfjay-desktop
 [group('nix')]
 facter host:
-  nix run github:numtide/nixos-facter -- -o hosts/{{host}}/facter.json
+  sudo nix run github:numtide/nixos-facter -- -o hosts/{{host}}/facter.json
+  sudo chown $(id -u):$(id -g) hosts/{{host}}/facter.json
   @echo "✓ hosts/{{host}}/facter.json updated"
 
 # Build OpenWrt sysupgrade image for GL-MT6000
