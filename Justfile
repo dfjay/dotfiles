@@ -18,6 +18,22 @@ gc:
 gcroot:
   ls -al /nix/var/nix/gcroots/auto/
 
+# Bootstrap a fresh VPS into NixOS via nixos-anywhere
+# Usage: just bootstrap yc-vps root@89.23.45.67
+[group('vps')]
+bootstrap host target:
+  nix run github:nix-community/nixos-anywhere -- \
+    --flake .#{{host}} \
+    --generate-hardware-config nixos-facter hosts/{{host}}/facter.json \
+    --target-host {{target}}
+
+# Regenerate facter.json for the current host
+# Usage: just facter dfjay-desktop
+[group('nix')]
+facter host:
+  nix run github:numtide/nixos-facter -- -o hosts/{{host}}/facter.json
+  @echo "✓ hosts/{{host}}/facter.json updated"
+
 # Build OpenWrt sysupgrade image for GL-MT6000
 [group('router')]
 router-build:

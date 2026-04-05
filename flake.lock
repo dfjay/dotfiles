@@ -445,6 +445,21 @@
         "type": "github"
       }
     },
+    "nixos-facter-modules": {
+      "locked": {
+        "lastModified": 1773858690,
+        "narHash": "sha256-oW0/lC0oRG5H5LaK6Rmh9L1wmkn9TbenM4bXwnIEDKA=",
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "rev": "139dcef4dfc97009629c445806f197883351ab4a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1775126147,
@@ -463,11 +478,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1775381897,
-        "narHash": "sha256-bvEewhfWAxB4dS3trexdjzgw2yMMntUd1Lf7SvVkQXI=",
+        "lastModified": 1775385086,
+        "narHash": "sha256-A2xAJfyXlFPWNRcPzA4sO6qzmZ4qW2AFUvQX+p8Cquc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fd7138dafa5464514ce88b55cf2c517a862a538c",
+        "rev": "450286e3cbe5199e62d6fdf0e1dbc4aa90eab78e",
         "type": "github"
       },
       "original": {
@@ -584,6 +599,7 @@
         "lanzaboote": "lanzaboote",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
+        "nixos-facter-modules": "nixos-facter-modules",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",

@@ -76,6 +76,7 @@
     {
       imports = [
         ./hardware-configuration.nix
+        ./storage.nix
       ];
 
       security.sudo.enable = false;
