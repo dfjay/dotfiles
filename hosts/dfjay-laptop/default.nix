@@ -173,7 +173,10 @@
 
         # GUI
         bitwarden-desktop
+        brave
+        discord
         iina
+        logseq
         slack
         syncthing
         telegram-desktop
@@ -209,14 +212,11 @@
           "android-studio"
           "audio-hijack"
           "balenaetcher"
-          "brave-browser"
           "claude"
-          "discord"
           "figma"
           "intellij-idea"
           "libreoffice"
           "linearmouse"
-          "logseq"
           "loopback"
           "lulu"
           "mattermost"
@@ -227,7 +227,6 @@
           "microsoft-word"
           "orion"
           "proxyman"
-          "signal"
           "soundsource"
           "steam"
           "tableplus"
