@@ -5,6 +5,7 @@
   disko.devices.disk.main = {
     device = "/dev/sda";
     type = "disk";
+    imageSize = "25G";
     content = {
       type = "gpt";
       partitions = {

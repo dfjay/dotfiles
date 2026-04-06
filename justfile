@@ -28,12 +28,20 @@ bootstrap host target *args:
     --target-host {{target}} \
     {{args}}
 
-# Deploy the age private key to a VPS (extracted from its sops-encrypted vpn secrets)
-# Usage: just deploy-key linode-vps dfjay@edge-us.dfjay.com
+# Build a disk image with embedded age key and deploy it to a VPS via dd over SSH
 [group('vps')]
-deploy-key host target:
-  sops decrypt --extract '["age_key"]' secrets/vpn-{{host}}.yaml | \
-    ssh {{target}} 'sudo mkdir -p /var/lib/sops-nix && sudo tee /var/lib/sops-nix/key.txt > /dev/null && sudo chmod 600 /var/lib/sops-nix/key.txt'
+deploy-image host target:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  tmpdir=$(mktemp -d)
+  trap 'rm -rf "$tmpdir"' EXIT
+  mkdir -p "$tmpdir/var/lib/sops-nix"
+  sops decrypt --extract '["age_key"]' "secrets/vpn-{{host}}.yaml" > "$tmpdir/var/lib/sops-nix/key.txt"
+  chmod 600 "$tmpdir/var/lib/sops-nix/key.txt"
+  nix build ".#nixosConfigurations.{{host}}.config.system.build.diskoImagesScript"
+  sudo ./result --post-format-files "$tmpdir/var/lib/sops-nix/key.txt" /var/lib/sops-nix/key.txt
+  zstd -d main.raw.zst --stdout | ssh {{target}} "dd of=/dev/sda bs=4M"
+  ssh {{target}} "reboot"
 
 # Regenerate facter.json for the current host
 # Usage: just facter dfjay-desktop
