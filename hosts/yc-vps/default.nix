@@ -64,7 +64,6 @@
           "dfjay"
           "chu74"
           "chu52"
-          "gladiolus"
         ];
         sharedSecretsFile = ../../secrets/vpn-shared.yaml;
         serverSecretsFile = ../../secrets/vpn-yc.yaml;

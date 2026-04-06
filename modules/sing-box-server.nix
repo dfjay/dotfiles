@@ -511,6 +511,7 @@
                           ];
                           auto_route = true;
                           strict_route = true;
+                          route_exclude_address_set = [ "geoip-ru" ];
                         }
                       ];
                       outbounds = [

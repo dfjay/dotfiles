@@ -6,7 +6,7 @@ keys:
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
   - &desktop-age age1hrxulzjncafyudtweejq6ncld3wsmur8d50v4ttgm09drat9ryesgj8eyd
   - &gandi-age age18awufzpczf7fphqwuesx00mtj9pxecwk625v92u70gx6t3p5nsrs9s4wl2
-  - &linode-age age1w4c6ynjc5zk9y74k4y8mgr4hyspsx04ztnha220893kc882pdccsu7lds7
+  - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
   - &yc-age age16uw6p3hl63624szemeuhmv45xkyl6mnuey63zsxjthpezl4afc5quudflf
 
 creation_rules:

@@ -1,10 +1,36 @@
 { ... }:
 
 {
-  # Bootloader — Linode uses BIOS with serial console (LISH)
+  # Disk layout — activated during `just bootstrap linode-vps root@<ip>`
+  disko.devices.disk.main = {
+    device = "/dev/sda";
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        # BIOS boot partition — Linode boots via BIOS (serial console via LISH)
+        bios = {
+          size = "1M";
+          type = "EF02";
+          priority = 0;
+        };
+        root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
+          };
+        };
+      };
+    };
+  };
+
+  # Bootloader — Linode uses BIOS with serial console (LISH).
+  # disko.nix configures boot.loader.grub.devices automatically;
+  # we only override the serial console settings here.
   boot.loader.grub = {
     enable = true;
-    device = "/dev/sda";
     forceInstall = true;
     extraConfig = ''
       serial --speed=19200 --unit=0 --word=8 --parity=no --stop=1;
@@ -22,13 +48,7 @@
   };
   boot.kernelModules = [ "tcp_bbr" ];
 
-  fileSystems."/" = {
-    device = "/dev/sda";
-    fsType = "ext4";
-  };
-
   swapDevices = [
-    { device = "/dev/sdb"; }
     {
       device = "/swapfile";
       size = 2048;

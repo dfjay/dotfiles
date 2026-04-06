@@ -21,11 +21,19 @@ gcroot:
 # Bootstrap a fresh VPS into NixOS via nixos-anywhere
 # Usage: just bootstrap yc-vps root@89.23.45.67
 [group('vps')]
-bootstrap host target:
+bootstrap host target *args:
   nix run github:nix-community/nixos-anywhere -- \
     --flake .#{{host}} \
     --generate-hardware-config nixos-facter hosts/{{host}}/facter.json \
-    --target-host {{target}}
+    --target-host {{target}} \
+    {{args}}
+
+# Deploy the age private key to a VPS (extracted from its sops-encrypted vpn secrets)
+# Usage: just deploy-key linode-vps dfjay@edge-us.dfjay.com
+[group('vps')]
+deploy-key host target:
+  sops decrypt --extract '["age_key"]' secrets/vpn-{{host}}.yaml | \
+    ssh {{target}} 'sudo mkdir -p /var/lib/sops-nix && sudo tee /var/lib/sops-nix/key.txt > /dev/null && sudo chmod 600 /var/lib/sops-nix/key.txt'
 
 # Regenerate facter.json for the current host
 # Usage: just facter dfjay-desktop

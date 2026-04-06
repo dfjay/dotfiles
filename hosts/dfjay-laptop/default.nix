@@ -173,7 +173,6 @@
 
         # GUI
         bitwarden-desktop
-        brave
         discord
         iina
         logseq
@@ -212,6 +211,7 @@
           "android-studio"
           "audio-hijack"
           "balenaetcher"
+          "brave-browser"
           "claude"
           "figma"
           "intellij-idea"
