@@ -208,6 +208,11 @@
               templates."sing-box-config.json" = {
                 restartUnits = [ "sing-box.service" ];
                 content = builtins.toJSON {
+                  experimental = {
+                    cache_file = {
+                      enabled = true;
+                    };
+                  };
                   log = {
                     level = "warn";
                     timestamp = true;
@@ -345,6 +350,7 @@
                         type = "remote";
                         format = "binary";
                         url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                        download_detour = "direct";
                       }
                     ];
                     final = "warp";
