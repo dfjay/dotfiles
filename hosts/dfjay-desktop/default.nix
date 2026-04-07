@@ -181,6 +181,7 @@
         lm_sensors
 
         # CLI
+        colmena
         gnumake
         gopass
         gpg-tui

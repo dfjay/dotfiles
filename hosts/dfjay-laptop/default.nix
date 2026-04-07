@@ -144,7 +144,6 @@
         # system
         devenv
         nh
-        sops
 
         # CLI
         age

@@ -119,8 +119,6 @@
 
       config = lib.mkIf cfg.enable {
         sops = {
-          age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
           secrets = {
             reality_private_key.sopsFile = cfg.serverSecretsFile;
           }

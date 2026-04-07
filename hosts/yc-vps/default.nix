@@ -56,6 +56,9 @@
 
       facter.reportPath = ./facter.json;
 
+      sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+      sops.age.sshKeyPaths = [ ];
+
       services.sing-box-relay = {
         enable = true;
         realityShortId = "1a3287df";
@@ -65,8 +68,8 @@
           "chu74"
           "chu52"
         ];
-        sharedSecretsFile = ../../secrets/vpn-shared.yaml;
-        serverSecretsFile = ../../secrets/vpn-yc.yaml;
+        sharedSecretsFile = ../../secrets/shared.yaml;
+        serverSecretsFile = ../../secrets/yc-vps.yaml;
 
         upstreams = [
           {

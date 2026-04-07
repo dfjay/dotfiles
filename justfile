@@ -18,30 +18,47 @@ gc:
 gcroot:
   ls -al /nix/var/nix/gcroots/auto/
 
-# Bootstrap a fresh VPS into NixOS via nixos-anywhere
-# Usage: just bootstrap yc-vps root@89.23.45.67
+# Convert a fresh Ubuntu VPS into NixOS, provision secrets and generate facter.json
+# Usage: just infect linode-vps root@89.23.45.67
 [group('vps')]
-bootstrap host target *args:
-  nix run github:nix-community/nixos-anywhere -- \
-    --flake .#{{host}} \
-    --generate-hardware-config nixos-facter hosts/{{host}}/facter.json \
-    --target-host {{target}} \
-    {{args}}
-
-# Build a disk image with embedded age key and deploy it to a VPS via dd over SSH
-[group('vps')]
-deploy-image host target:
+infect host target:
   #!/usr/bin/env bash
   set -euo pipefail
-  tmpdir=$(mktemp -d)
-  trap 'rm -rf "$tmpdir"' EXIT
-  mkdir -p "$tmpdir/var/lib/sops-nix"
-  sops decrypt --extract '["age_key"]' "secrets/vpn-{{host}}.yaml" > "$tmpdir/var/lib/sops-nix/key.txt"
-  chmod 600 "$tmpdir/var/lib/sops-nix/key.txt"
-  nix build ".#nixosConfigurations.{{host}}.config.system.build.diskoImagesScript"
-  sudo ./result --post-format-files "$tmpdir/var/lib/sops-nix/key.txt" /var/lib/sops-nix/key.txt
-  zstd -d main.raw.zst --stdout | ssh {{target}} "dd of=/dev/sda bs=4M"
-  ssh {{target}} "reboot"
+  ssh {{target}} 'hostnamectl set-hostname nixos'
+  ssh {{target}} 'curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NO_REBOOT=1 NIX_CHANNEL=nixos-25.11 bash -x' || true
+  ssh {{target}} 'grep -q forceInstall /etc/nixos/configuration.nix || sed -i "/boot.tmp.cleanOnBoot/a\  boot.loader.grub.forceInstall = true;" /etc/nixos/configuration.nix'
+  ssh {{target}} 'curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-25.11 bash -x' || true
+  echo "Waiting for reboot..."
+  sleep 30
+  until ssh -o ConnectTimeout=5 {{target}} true 2>/dev/null; do sleep 5; done
+  just provision-keys {{host}} {{target}}
+  just facter-remote {{host}} {{target}}
+
+# Provision sops age key to a remote host
+# Usage: just provision-keys linode-vps root@89.23.45.67
+[group('vps')]
+provision-keys host target:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  sops decrypt --extract '["age_key"]' "secrets/{{host}}.yaml" \
+    | ssh {{target}} 'sudo mkdir -p /var/lib/sops-nix && sudo tee /var/lib/sops-nix/key.txt > /dev/null && sudo chmod 600 /var/lib/sops-nix/key.txt'
+  echo "✓ age key provisioned on {{target}}"
+
+# Generate facter.json from a remote host
+# Usage: just facter-remote linode-vps root@89.23.45.67
+[group('vps')]
+facter-remote host target:
+  ssh {{target}} 'nix --extra-experimental-features "nix-command flakes" run github:numtide/nixos-facter -- -o /tmp/facter.json'
+  scp {{target}}:/tmp/facter.json hosts/{{host}}/facter.json
+  echo "✓ hosts/{{host}}/facter.json updated"
+
+# Deploy config to VPS via colmena and copy age key
+# Usage: just deploy linode-vps
+[group('vps')]
+deploy host *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  colmena apply --on {{host}} {{args}}
 
 # Regenerate facter.json for the current host
 # Usage: just facter dfjay-desktop

@@ -56,6 +56,9 @@
 
       facter.reportPath = ./facter.json;
 
+      sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+      sops.age.sshKeyPaths = [ ];
+
       services.sing-box-vpn = {
         enable = true;
         tag = "us";
@@ -69,8 +72,8 @@
           "chu74"
           "chu52"
         ];
-        sharedSecretsFile = ../../secrets/vpn-shared.yaml;
-        serverSecretsFile = ../../secrets/vpn-linode.yaml;
+        sharedSecretsFile = ../../secrets/shared.yaml;
+        serverSecretsFile = ../../secrets/linode-vps.yaml;
       };
 
       security.sudo.wheelNeedsPassword = false;
