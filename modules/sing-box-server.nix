@@ -334,6 +334,18 @@
                         action = "route";
                         outbound = "direct";
                       }
+                      {
+                        rule_set = [ "geoip-ru" ];
+                        action = "reject";
+                      }
+                    ];
+                    rule_set = [
+                      {
+                        tag = "geoip-ru";
+                        type = "remote";
+                        format = "binary";
+                        url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                      }
                     ];
                     final = "warp";
                     default_domain_resolver = "bootstrap";
