@@ -67,6 +67,7 @@
           "dfjay"
           "chu74"
           "chu52"
+          "vdv7"
         ];
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/yc-vps.yaml;
