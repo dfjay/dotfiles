@@ -666,6 +666,11 @@
                             outbound = "direct";
                           }
                           {
+                            rule_set = [ "geosite-category-ip-geo-detect" ];
+                            action = "route";
+                            outbound = "direct";
+                          }
+                          {
                             rule_set = [ "geosite-category-ru" ];
                             action = "route";
                             outbound = "direct";
@@ -677,6 +682,13 @@
                           }
                         ];
                         rule_set = [
+                          {
+                            tag = "geosite-category-ip-geo-detect";
+                            type = "remote";
+                            format = "binary";
+                            url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ip-geo-detect.srs";
+                            download_detour = "direct";
+                          }
                           {
                             tag = "geosite-category-ru";
                             type = "remote";
