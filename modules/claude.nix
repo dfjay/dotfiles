@@ -1,11 +1,6 @@
 {
   homeModule =
-    {
-      config,
-      pkgs,
-      inputs,
-      ...
-    }:
+    { config, pkgs, inputs, ... }:
     {
       sops.secrets.context7_api_key = { };
 
@@ -38,28 +33,67 @@
           includeCoAuthoredBy = true;
           permissions = {
             allow = [
-              "Bash(npm run lint)"
-              "Bash(npm run test:*)"
-              "Bash(npm test:*)"
-              "Bash(git status)"
-              "Bash(git diff:*)"
-              "Bash(git log:*)"
-              "Bash(git add:*)"
-              "Bash(git commit:*)"
-              "Bash(git push)"
-              "Bash(git config:*)"
-              "Bash(git tag:*)"
-              "Bash(git branch:*)"
-              "Bash(git checkout:*)"
-              "Bash(git stash:*)"
-              "Bash(jq:*)"
-              "Bash(node:*)"
-              "Bash(which:*)"
+              # git
+              "Bash(git status *)"
+              "Bash(git diff *)"
+              "Bash(git log *)"
+              "Bash(git show *)"
+              "Bash(git blame *)"
+              "Bash(git branch *)"
+              "Bash(git stash *)"
+              "Bash(git fetch *)"
+              "Bash(git rev-parse *)"
+              "Bash(git remote *)"
+              "Bash(git add *)"
+
+              # go
+              "Bash(go build *)"
+              "Bash(go test *)"
+              "Bash(go vet *)"
+              "Bash(go fmt *)"
+              "Bash(go list *)"
+              "Bash(go env *)"
+              "Bash(go mod *)"
+              "Bash(golangci-lint *)"
+              "Bash(gofumpt *)"
+
+              # kotlin/jvm
+              "Bash(gradle build *)"
+              "Bash(gradle test *)"
+              "Bash(./gradlew build *)"
+              "Bash(./gradlew test *)"
+
+              # node
+              "Bash(npm run *)"
+              "Bash(npm test *)"
+
+              # nix
+              "Bash(nix build *)"
+              "Bash(nix eval *)"
+              "Bash(nix flake *)"
+              "Bash(nixfmt *)"
+
+              # utilities
+              "Bash(jq *)"
+              "Bash(which *)"
+              "Bash(ls *)"
               "Bash(pwd)"
-              "Bash(ls:*)"
+              "Bash(cat *)"
+              "Bash(head *)"
+              "Bash(tail *)"
+              "Bash(find *)"
+              "Bash(grep *)"
+              "Bash(rg *)"
+              "Bash(wc *)"
+              "Bash(sort *)"
+              "Bash(env *)"
+              "Bash(mkdir *)"
+              "Bash(echo *)"
             ];
             deny = [
               "Bash(rm -rf /)"
+              "Bash(rm -rf /*)"
+              "Bash(sudo *)"
             ];
           };
           statusLine = {
@@ -79,6 +113,48 @@
             "superpowers@claude-plugins-official" = true;
             "frontend-design@claude-plugins-official" = true;
           };
+          hooks = {
+            PostToolUse = [
+              {
+                matcher = "Edit|Write";
+                hooks = [
+                  {
+                    type = "command";
+                    command = ''
+                      input=$(cat)
+                      file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+                      case "$file" in
+                        *.go)
+                          gofumpt -w "$file" 2>/dev/null
+                          goimports -w "$file" 2>/dev/null
+                          ;;
+                        *.nix)
+                          nixfmt "$file" 2>/dev/null
+                          ;;
+                        *.kt|*.kts)
+                          ktlint --format "$file" 2>/dev/null
+                          ;;
+                      esac
+                    '';
+                    statusMessage = "Formatting...";
+                  }
+                  {
+                    type = "command";
+                    command = ''
+                      input=$(cat)
+                      file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+                      if [[ "$file" == *.go ]]; then
+                        dir=$(dirname "$file")
+                        cd "$dir" && go vet ./... 2>&1 | head -20
+                      fi
+                    '';
+                    statusMessage = "Running go vet...";
+                  }
+                ];
+              }
+            ];
+          };
+
           skipDangerousModePermissionPrompt = true;
         };
 
