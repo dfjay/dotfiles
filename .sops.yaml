@@ -1,16 +1,14 @@
 keys:
   - &yubikey A82705DF08BC95859FF5CB7E577260D68251AC22
-
   - &yubikey-ssh ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR
   - &mac ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9W6B9WBu7PbMJWdKGFzBLMR1y2IK+kFuSsIWh2fwqg
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
-  - &desktop-age age1hrxulzjncafyudtweejq6ncld3wsmur8d50v4ttgm09drat9ryesgj8eyd
   - &gandi-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
   - &yc-age age1ds88zwfjwkdl4rhql0e3mhhkw56l3ytt473m4w0ep58jy03573cqkcdat5
 
 creation_rules:
-  # Shared secrets (UUIDs, hy2 password) — all servers need access
+  # Shared secrets — all servers need access
   - path_regex: secrets/shared\.yaml$
     key_groups:
       - pgp:
@@ -19,12 +17,11 @@ creation_rules:
           - *yubikey-ssh
           - *mac
           - *mac-age
-          - *desktop-age
           - *gandi-age
           - *linode-age
           - *yc-age
 
-  # Gandi-specific secrets (reality, warp keys)
+  # Gandi-specific secrets
   - path_regex: secrets/gandi-vps\.yaml$
     key_groups:
       - pgp:
@@ -33,10 +30,9 @@ creation_rules:
           - *yubikey-ssh
           - *mac
           - *mac-age
-          - *desktop-age
           - *gandi-age
 
-  # Linode-specific secrets (reality, warp keys)
+  # Linode-specific secrets
   - path_regex: secrets/linode-vps\.yaml$
     key_groups:
       - pgp:
@@ -45,10 +41,9 @@ creation_rules:
           - *yubikey-ssh
           - *mac
           - *mac-age
-          - *desktop-age
           - *linode-age
 
-  # YC-specific secrets (reality key)
+  # YC-specific secrets
   - path_regex: secrets/yc-vps\.yaml$
     key_groups:
       - pgp:
@@ -57,7 +52,6 @@ creation_rules:
           - *yubikey-ssh
           - *mac
           - *mac-age
-          - *desktop-age
           - *yc-age
 
   # Desktop and other secrets
@@ -69,4 +63,3 @@ creation_rules:
           - *yubikey-ssh
           - *mac
           - *mac-age
-          - *desktop-age
