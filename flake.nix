@@ -71,6 +71,11 @@
       flake = false;
     };
 
+    claude-superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
+
     go-modern-guidelines = {
       url = "github:JetBrains/go-modern-guidelines";
       flake = false;

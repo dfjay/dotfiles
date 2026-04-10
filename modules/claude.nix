@@ -1,6 +1,6 @@
 {
   homeModule =
-    { config, pkgs, inputs, ... }:
+    { config, pkgs, pkgs-master, inputs, ... }:
     {
       sops.secrets.context7_api_key = { };
 
@@ -21,10 +21,12 @@
 
       programs.claude-code = {
         enable = true;
+        package = pkgs-master.claude-code-bin;
 
         marketplaces = {
           claude-plugins-official = inputs.claude-plugins-official;
           goland-claude-marketplace = inputs.go-modern-guidelines;
+          superpowers-dev = inputs.claude-superpowers;
         };
 
         settings = {
@@ -106,11 +108,10 @@
             "typescript-lsp@claude-plugins-official" = true;
             "rust-analyzer-lsp@claude-plugins-official" = true;
             "pyright-lsp@claude-plugins-official" = true;
-            "elixir-ls-lsp@claude-plugins-official" = true;
             "kotlin-lsp@claude-plugins-official" = true;
             "code-review@claude-plugins-official" = true;
             "security-guidance@claude-plugins-official" = true;
-            "superpowers@claude-plugins-official" = true;
+            "superpowers@superpowers-dev" = true;
             "frontend-design@claude-plugins-official" = true;
           };
           hooks = {

@@ -21,6 +21,11 @@ let
       hostModules = hostCfg.modules or [ ];
       hostConfig = hostCfg.config or null;
 
+      pkgs-master = import inputs.nixpkgs-master {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
       specialArgs = inputs // {
         inherit
           inputs
@@ -28,6 +33,7 @@ let
           useremail
           userdesc
           host
+          pkgs-master
           ;
         username = user;
         hostname = host;
