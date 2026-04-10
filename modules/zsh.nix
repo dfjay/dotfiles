@@ -43,6 +43,7 @@
 
         history = {
           size = 30000;
+          extended = true;
           ignoreAllDups = true;
           ignorePatterns = [
             "rm *"
