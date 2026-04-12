@@ -340,11 +340,22 @@
                         outbound = "direct";
                       }
                       {
+                        rule_set = [ "geosite-category-ru" ];
+                        action = "reject";
+                      }
+                      {
                         rule_set = [ "geoip-ru" ];
                         action = "reject";
                       }
                     ];
                     rule_set = [
+                      {
+                        tag = "geosite-category-ru";
+                        type = "remote";
+                        format = "binary";
+                        url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
+                        download_detour = "direct";
+                      }
                       {
                         tag = "geoip-ru";
                         type = "remote";
