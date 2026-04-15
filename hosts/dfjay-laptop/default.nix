@@ -212,6 +212,7 @@
           "balenaetcher"
           "brave-browser"
           "claude"
+          "draw-things"
           "figma"
           "intellij-idea"
           "libreoffice"
