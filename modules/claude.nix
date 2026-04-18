@@ -1,6 +1,12 @@
 {
   homeModule =
-    { config, pkgs, pkgs-master, inputs, ... }:
+    {
+      config,
+      pkgs,
+      pkgs-master,
+      inputs,
+      ...
+    }:
     {
       sops.secrets.context7_api_key = { };
 

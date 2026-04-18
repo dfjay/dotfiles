@@ -68,8 +68,8 @@
           character = {
             format = "$symbol ";
             success_symbol = "[◎](bold italic fg:yellow)";
-            error_symbol   = "[○](italic fg:purple)";
-            vimcmd_symbol  = "[■](italic fg:green)";
+            error_symbol = "[○](italic fg:purple)";
+            vimcmd_symbol = "[■](italic fg:green)";
           };
 
           sudo = {
@@ -143,7 +143,10 @@
             style = "italic fg:cyan";
             truncation_symbol = "⋯";
             truncation_length = 11;
-            ignore_branches = [ "main" "master" ];
+            ignore_branches = [
+              "main"
+              "master"
+            ];
             only_attached = true;
           };
 
@@ -159,15 +162,15 @@
             style = "bold italic fg:cyan";
             format = "([⎪$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed⎥]($style))";
             conflicted = "[◪◦](italic fg:purple)";
-            ahead      = "[▴│[\${count}](bold fg:base05)│](italic fg:green)";
-            behind     = "[▿│[\${count}](bold fg:base05)│](italic fg:red)";
-            diverged   = "[◇ ▴┤[\${ahead_count}](fg:base05)│▿┤[\${behind_count}](fg:base05)│](italic fg:purple)";
-            untracked  = "[◌◦](italic fg:yellow)";
-            stashed    = "[◃◈](italic fg:base05)";
-            modified   = "[●◦](italic fg:yellow)";
-            staged     = "[▪┤[$count](bold fg:base05)│](italic fg:cyan)";
-            renamed    = "[◎◦](italic fg:blue)";
-            deleted    = "[✕](italic fg:red)";
+            ahead = "[▴│[\${count}](bold fg:base05)│](italic fg:green)";
+            behind = "[▿│[\${count}](bold fg:base05)│](italic fg:red)";
+            diverged = "[◇ ▴┤[\${ahead_count}](fg:base05)│▿┤[\${behind_count}](fg:base05)│](italic fg:purple)";
+            untracked = "[◌◦](italic fg:yellow)";
+            stashed = "[◃◈](italic fg:base05)";
+            modified = "[●◦](italic fg:yellow)";
+            staged = "[▪┤[$count](bold fg:base05)│](italic fg:cyan)";
+            renamed = "[◎◦](italic fg:blue)";
+            deleted = "[✕](italic fg:red)";
           };
 
           git_state = {
@@ -236,16 +239,16 @@
             disabled = false;
             format = " $symbol";
             symbols = {
-              Macos       = os "" "base05";
-              NixOS       = os "" "blue";
-              Arch        = os "" "blue";
-              Alpine      = os "" "blue";
-              Debian      = os "" "red";
+              Macos = os "" "base05";
+              NixOS = os "" "blue";
+              Arch = os "" "blue";
+              Alpine = os "" "blue";
+              Debian = os "" "red";
               EndeavourOS = os "" "purple";
-              Fedora      = os "" "blue";
-              openSUSE    = os "" "green";
-              SUSE        = os "" "green";
-              Ubuntu      = os "" "orange";
+              Fedora = os "" "blue";
+              openSUSE = os "" "green";
+              SUSE = os "" "green";
+              Ubuntu = os "" "orange";
             };
           };
 
@@ -258,7 +261,10 @@
           nodejs = {
             format = " [node](italic) [◫ $version](bold italic fg:green)";
             version_format = "\${raw}";
-            detect_files = [ "package-lock.json" "yarn.lock" ];
+            detect_files = [
+              "package-lock.json"
+              "yarn.lock"
+            ];
             detect_folders = [ "node_modules" ];
             detect_extensions = [ ];
           };

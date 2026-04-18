@@ -35,6 +35,7 @@
     git
     gpg
     helix
+    just
     k8s
     lazydocker
     lazygit
@@ -185,7 +186,6 @@
         gnumake
         gopass
         gpg-tui
-        just
         k6
         usbutils
 

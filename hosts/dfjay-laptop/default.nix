@@ -88,6 +88,7 @@
     git
     gpg
     helix
+    just
     k8s
     lazydocker
     lazygit
@@ -157,7 +158,6 @@
         glab
         glow
         gopass
-        just
         k6
         mkcert
         mkpasswd
