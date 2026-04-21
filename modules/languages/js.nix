@@ -8,8 +8,10 @@
         bun
         nodejs_24
         npm-check-updates
+        svelte-language-server
         tsx
         typescript-language-server
+        vue-language-server
       ];
     };
 }

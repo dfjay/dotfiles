@@ -20,8 +20,7 @@
 
         ignores = [
           ".claude/"
-          ".claude-flow/"
-          ".swarm/"
+          ".mcp.json"
         ];
 
         settings = {

@@ -108,6 +108,9 @@
     zoxide
     zsh
 
+    # work
+    spectrum
+
     # languages
     languages.beam
     languages.go
@@ -133,12 +136,6 @@
           tag.gpgSign = true;
           user.signingKey = "577260D68251AC22";
         };
-        programs.git.includes = [
-          {
-            path = "~/spectrum/.gitconfig";
-            condition = "gitdir:~/spectrum/";
-          }
-        ];
       };
 
       environment.systemPackages = with pkgs; [
