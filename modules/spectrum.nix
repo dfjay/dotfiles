@@ -83,8 +83,16 @@
 
       programs.git.includes = [
         {
-          path = "~/spectrum/.gitconfig";
           condition = "gitdir:~/spectrum/";
+          contents = {
+            user = {
+              name = "Pavel Yozhikov";
+              email = "ezhikov.p@spectrumdata.ru";
+            };
+            url."git@gitlab.spectrumdata.tech:" = {
+              insteadOf = "https://gitlab.spectrumdata.tech/";
+            };
+          };
         }
       ];
 
