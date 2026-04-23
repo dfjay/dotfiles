@@ -27,7 +27,7 @@
 
       programs.claude-code = {
         enable = true;
-        package = pkgs-master.claude-code-bin;
+        package = pkgs-master.claude-code;
 
         marketplaces = {
           claude-plugins-official = inputs.claude-plugins-official;
