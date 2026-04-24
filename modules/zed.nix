@@ -55,6 +55,20 @@
               type = "registry";
             };
           };
+          project_panel = {
+            dock = "right";
+          };
+          outline_panel = {
+            dock = "right";
+          };
+          collaboration_panel = {
+            dock = "right";
+          };
+          agent = {
+            dock = "left";
+            favorite_models = [ ];
+            model_parameters = [ ];
+          };
           context_servers = {
             "mcp-server-context7" = {
               enabled = true;
