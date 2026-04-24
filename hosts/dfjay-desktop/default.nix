@@ -134,7 +134,7 @@
       };
 
       home-manager.users.${username} = {
-        sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+        sops.gnupg.home = "/home/${username}/.gnupg";
         sops.secrets."netrc".path = "/home/${username}/.netrc";
         services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
         services.gpg-agent.sshKeys = [
