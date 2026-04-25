@@ -7,9 +7,10 @@
     "servers": [
       {
         "tag": "proxy-dns",
-        "type": "udp",
-        "server": "9.9.9.9",
-        "detour": "fr-reality"
+        "type": "https",
+        "server": "dns.quad9.net",
+        "detour": "fr-reality",
+        "domain_resolver": "direct-dns"
       },
       {
         "tag": "direct-dns",
@@ -18,6 +19,10 @@
       }
     ],
     "rules": [
+      {
+        "rule_set": ["geosite-category-ads-all"],
+        "action": "reject"
+      },
       {
         "rule_set": ["geosite-category-ru"],
         "action": "route",
@@ -104,7 +109,12 @@
       },
       {
         "ip_is_private": true,
-        "action": "route",
+        "action": "bypass",
+        "outbound": "direct"
+      },
+      {
+        "network": "icmp",
+        "action": "bypass",
         "outbound": "direct"
       },
       {
@@ -124,7 +134,7 @@
       },
       {
         "rule_set": ["geoip-ru"],
-        "action": "route",
+        "action": "bypass",
         "outbound": "direct"
       }
     ],
@@ -141,6 +151,13 @@
         "type": "remote",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
         "download_detour": "direct"
       },
       {

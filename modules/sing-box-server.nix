@@ -669,6 +669,11 @@
                             outbound = "direct";
                           }
                           {
+                            network = "icmp";
+                            action = "route";
+                            outbound = "direct";
+                          }
+                          {
                             domain_suffix = [
                               "bybit.com"
                               "3gppnetwork.org"

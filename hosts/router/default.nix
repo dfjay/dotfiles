@@ -13,7 +13,6 @@ let
 
   packages = [
     "sing-box"
-    "adguardhome"
     "luci"
     "luci-ssl"
     "ttyd"
