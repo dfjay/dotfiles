@@ -43,7 +43,6 @@
     neovim
     nix-index
     nushell
-    postgresql
     proto
     ripgrep
     skim
@@ -187,6 +186,7 @@
         gopass
         gpg-tui
         k6
+        postgresql
         usbutils
 
         # GUI

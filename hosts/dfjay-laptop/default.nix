@@ -78,6 +78,7 @@
     bat
     btop
     claude
+    codex
     direnv
     docker
     eza
@@ -96,7 +97,6 @@
     neovim
     nix-index
     nushell
-    postgresql
     proto
     ripgrep
     skim
@@ -155,10 +155,12 @@
         glab
         glow
         gopass
+        jan
         k6
         mkcert
         mkpasswd
         openfortivpn
+        postgresql
         qrencode
         rclone
         sing-box
