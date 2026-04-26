@@ -21,10 +21,6 @@
           };
           realityShortId = lib.mkOption { type = lib.types.str; };
           realityPublicKey = lib.mkOption { type = lib.types.str; };
-          h2Port = lib.mkOption {
-            type = lib.types.int;
-            default = 2443;
-          };
         };
       };
 
@@ -95,7 +91,6 @@
           realityServerName
           realityShortId
           realityPublicKey
-          h2Port
           ;
       };
 
@@ -149,12 +144,6 @@
         serverSecretsFile = lib.mkOption {
           type = lib.types.path;
           description = "Path to server-specific sops secrets (reality, warp keys)";
-        };
-
-        h2Port = lib.mkOption {
-          type = lib.types.int;
-          default = 2443;
-          description = "Public port for VLESS H2 Reality";
         };
 
         subscription = {
@@ -279,18 +268,6 @@
                         key_path = "/var/lib/acme/${cfg.naiveDomain}/key.pem";
                       };
                     }
-                    {
-                      type = "vless";
-                      tag = "vless-h2-reality-in";
-                      listen = "::";
-                      listen_port = cfg.h2Port;
-                      users = vlessUsers;
-                      multiplex.enabled = true;
-                      transport = {
-                        type = "http";
-                      };
-                      tls = realityTls;
-                    }
                   ];
                   endpoints = [
                     {
@@ -375,10 +352,8 @@
               enable = true;
               logRefusedConnections = true;
               allowedTCPPorts = [
-                22
                 80
                 443
-                cfg.h2Port
               ];
               allowedUDPPorts = [ 443 ];
             };
@@ -463,9 +438,6 @@
                         "vless://${
                           config.sops.placeholder."vless_uuid_${u}"
                         }@${s.edgeDomain}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-reality"
-                        "vless://${
-                          config.sops.placeholder."vless_uuid_${u}"
-                        }@${s.edgeDomain}:${toString s.h2Port}?encryption=none&type=http&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-h2"
                         "hysteria2://${
                           config.sops.placeholder."vless_uuid_${u}"
                         }@${s.edgeDomain}:443?sni=${s.edgeDomain}&obfs=salamander&obfs-password=${config.sops.placeholder.hy2_obfs_password}#${u}-${s.tag}-hy2"
@@ -548,7 +520,6 @@
                           outbounds =
                             lib.concatMap (s: [
                               "${s.tag}-reality"
-                              "${s.tag}-h2"
                               "${s.tag}-hy2"
                               "${s.tag}-naive"
                             ]) allServers
@@ -603,29 +574,6 @@
                           tls = {
                             enabled = true;
                             server_name = s.naiveDomain;
-                          };
-                        }
-                        {
-                          type = "vless";
-                          tag = "${s.tag}-h2";
-                          server = s.edgeDomain;
-                          server_port = s.h2Port;
-                          uuid = config.sops.placeholder."vless_uuid_${u}";
-                          transport = {
-                            type = "http";
-                          };
-                          tls = {
-                            enabled = true;
-                            server_name = s.realityServerName;
-                            reality = {
-                              enabled = true;
-                              public_key = s.realityPublicKey;
-                              short_id = s.realityShortId;
-                            };
-                            utls = {
-                              enabled = true;
-                              fingerprint = "chrome";
-                            };
                           };
                         }
                       ]) allServers

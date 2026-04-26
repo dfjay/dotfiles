@@ -22,6 +22,7 @@
     helix
     ripgrep
     starship
+    tailscale
     yazi
     zoxide
 
@@ -29,7 +30,7 @@
   ];
 
   colmena = {
-    targetHost = "edge-ru.dfjay.com";
+    targetHost = "yc-vps";
     targetUser = "dfjay";
   };
 
@@ -38,6 +39,7 @@
       pkgs,
       lib,
       inputs,
+      hostname,
       username,
       userdesc,
       ...
@@ -55,6 +57,8 @@
       ];
 
       facter.reportPath = ./facter.json;
+
+      networking.hostName = hostname;
 
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];

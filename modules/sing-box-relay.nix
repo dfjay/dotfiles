@@ -185,7 +185,6 @@
           enable = true;
           logRefusedConnections = true;
           allowedTCPPorts = [
-            22
             443
           ];
         };

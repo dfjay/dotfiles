@@ -22,6 +22,7 @@
     helix
     ripgrep
     starship
+    tailscale
     yazi
     zoxide
 
@@ -29,7 +30,7 @@
   ];
 
   colmena = {
-    targetHost = "edge-us.dfjay.com";
+    targetHost = "linode-vps";
     targetUser = "dfjay";
   };
 
@@ -38,6 +39,7 @@
       pkgs,
       lib,
       inputs,
+      hostname,
       username,
       userdesc,
       ...
@@ -48,6 +50,8 @@
           sing-box = inputs.nixpkgs.legacyPackages.${prev.system}.sing-box;
         })
       ];
+
+      networking.hostName = hostname;
 
       imports = [
         inputs.nixos-facter-modules.nixosModules.facter
@@ -66,7 +70,6 @@
         naiveDomain = "naive-us.dfjay.com";
         realityShortId = "1a3287df";
         realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
-        h2Port = 2443;
         vpnUsers = [
           "dfjay"
           "chu74"
