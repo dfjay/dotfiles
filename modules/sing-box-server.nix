@@ -350,7 +350,7 @@
 
             networking.firewall = {
               enable = true;
-              logRefusedConnections = true;
+              logRefusedConnections = false;
               allowedTCPPorts = [
                 80
                 443

@@ -34,7 +34,7 @@
         tag = "${s.tag}-reality";
         server = s.edgeDomain;
         server_port = 443;
-        domain_resolver = "dns-direct";
+        domain_resolver = "quad9";
         uuid = config.sops.placeholder."vless_uuid_${cfg.relayUser}";
         flow = "xtls-rprx-vision";
         tls = {
@@ -139,12 +139,18 @@
               dns = {
                 servers = [
                   {
-                    tag = "dns-direct";
+                    tag = "quad9";
+                    type = "https";
+                    server = "dns.quad9.net";
+                    domain_resolver = "bootstrap";
+                  }
+                  {
+                    tag = "bootstrap";
                     type = "udp";
-                    server = "9.9.9.9";
+                    server = "77.88.8.8";
                   }
                 ];
-                final = "dns-direct";
+                final = "quad9";
                 strategy = "prefer_ipv4";
               };
               inbounds = [
@@ -175,7 +181,7 @@
                   }
                 ];
                 final = cfg.defaultUpstream;
-                default_domain_resolver = "dns-direct";
+                default_domain_resolver = "quad9";
               };
             };
           };
@@ -183,7 +189,7 @@
 
         networking.firewall = {
           enable = true;
-          logRefusedConnections = true;
+          logRefusedConnections = false;
           allowedTCPPorts = [
             443
           ];
