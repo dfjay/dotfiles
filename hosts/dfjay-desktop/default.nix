@@ -23,6 +23,7 @@
 
     # tools
     bat
+    beam
     btop
     claude
     direnv
@@ -33,18 +34,22 @@
     formats
     ghostty
     git
+    go
     gpg
     helix
+    js
     just
+    jvm
     k8s
     lazydocker
     lazygit
     librewolf
-    neovim
+    nix
     nix-index
     nushell
-    proto
+    python
     ripgrep
+    rust
     skim
     ssh
     starship
@@ -53,15 +58,6 @@
     zed
     zoxide
     zsh
-
-    # languages
-    languages.beam
-    languages.go
-    languages.js
-    languages.jvm
-    languages.nix
-    languages.python
-    languages.rust
   ];
 
   config =
@@ -193,12 +189,9 @@
         bitwarden-desktop
         brave
         discord
-        element-desktop
         libreoffice-qt
         prismlauncher
         qbittorrent
-        reaper
-        spotify
         telegram-desktop
         tor-browser
         via

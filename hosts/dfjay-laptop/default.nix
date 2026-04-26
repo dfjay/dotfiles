@@ -76,6 +76,7 @@
 
     # tools
     bat
+    beam
     btop
     claude
     codex
@@ -87,18 +88,22 @@
     formats
     ghostty
     git
+    go
     gpg
     helix
+    js
     just
+    jvm
     k8s
     lazydocker
     lazygit
     librewolf
-    neovim
+    nix
     nix-index
     nushell
-    proto
+    python
     ripgrep
+    rust
     skim
     ssh
     starship
@@ -110,15 +115,6 @@
 
     # work
     spectrum
-
-    # languages
-    languages.beam
-    languages.go
-    languages.js
-    languages.jvm
-    languages.nix
-    languages.python
-    languages.rust
   ];
 
   config =
@@ -145,23 +141,15 @@
 
         # CLI
         age
-        aria2
         colmena
-        doggo
-        dua
-        ffmpeg
         gh
         gitlab-ci-ls
         glab
-        glow
         gopass
         jan
         k6
-        mkcert
-        mkpasswd
         openfortivpn
         postgresql
-        qrencode
         rclone
         sing-box
         squawk
@@ -177,7 +165,6 @@
         slack
         syncthing
         telegram-desktop
-        wireshark
         yaak
       ];
       environment.variables.EDITOR = "hx";
@@ -193,7 +180,6 @@
 
         masApps = {
           "Logic Pro" = 634148309;
-          "Shadowrocket" = 932747118;
           "TestFlight" = 899247664;
           "Xcode" = 497799835;
         };
