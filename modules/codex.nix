@@ -2,7 +2,6 @@
   homeModule =
     {
       config,
-      pkgs-master,
       ...
     }:
     {
@@ -22,7 +21,6 @@
 
       programs.codex = {
         enable = true;
-        package = pkgs-master.codex;
       };
     };
 }

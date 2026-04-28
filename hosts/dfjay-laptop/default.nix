@@ -147,7 +147,6 @@
         gitlab-ci-ls
         glab
         gopass
-        jan
         k6
         openfortivpn
         postgresql
@@ -162,6 +161,7 @@
         bitwarden-desktop
         discord
         iina
+        jan
         logseq
         slack
         syncthing
@@ -192,9 +192,7 @@
         ];
 
         casks = [
-          "amneziavpn"
           "android-studio"
-          "audio-hijack"
           "balenaetcher"
           "brave-browser"
           "claude"
