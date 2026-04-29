@@ -195,6 +195,7 @@
           "android-studio"
           "balenaetcher"
           "brave-browser"
+          "chatgpt"
           "claude"
           "draw-things"
           "figma"
