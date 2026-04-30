@@ -54,6 +54,9 @@
             "claude-acp" = {
               type = "registry";
             };
+            "codex-acp" = {
+              type = "registry";
+            };
           };
           project_panel = {
             dock = "right";
@@ -95,7 +98,7 @@
             ];
           };
           git_panel = {
-            tree_view = true;
+            tree_view = false;
           };
           languages = {
             Kotlin = {
