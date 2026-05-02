@@ -38,7 +38,9 @@ let
             system.primaryUser = user;
             nixpkgs.hostPlatform = system;
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = (import ../overlays);
+            nixpkgs.overlays = (import ../overlays) ++ [
+              inputs.firefox-addons.overlays.default
+            ];
             users.users.${user} = {
               name = user;
               home = "/Users/${user}";
