@@ -188,7 +188,6 @@
 
         # GUI
         bitwarden-desktop
-        brave
         discord
         libreoffice-qt
         prismlauncher
