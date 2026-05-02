@@ -153,7 +153,6 @@
         glab
         gopass
         k6
-        openfortivpn
         postgresql
         rclone
         sing-box
@@ -211,10 +210,8 @@
           "linearmouse"
           "loopback"
           "lulu"
-          "mattermost"
           "melodics"
           "microsoft-powerpoint"
-          "microsoft-teams"
           "microsoft-word"
           "orion"
           "proxyman"

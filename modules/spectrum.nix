@@ -1,4 +1,20 @@
 {
+  darwinModule =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = [ pkgs.openfortivpn ];
+      homebrew.casks = [ "mattermost" ];
+    };
+
+  nixosModule =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = with pkgs; [
+        openfortivpn
+        mattermost-desktop
+      ];
+    };
+
   homeModule =
     {
       config,
