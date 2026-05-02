@@ -18,6 +18,11 @@
           check-further-callbacks = true;
           run = "layout floating";
         }
+        {
+          "if".app-id = "org.torproject.torbrowser";
+          check-further-callbacks = true;
+          run = "layout floating";
+        }
       ];
       workspaceMonitorAssignment = {
         "1" = [
@@ -180,7 +185,10 @@
         };
 
         masApps = {
+          "Keynote" = 361285480;
           "Logic Pro" = 634148309;
+          "Numbers" = 361304891;
+          "Pages" = 361309726;
           "TestFlight" = 899247664;
           "Xcode" = 497799835;
         };
@@ -210,6 +218,7 @@
           "microsoft-word"
           "orion"
           "proxyman"
+          "signal"
           "soundsource"
           "steam"
           "tableplus"
