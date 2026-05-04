@@ -11,23 +11,26 @@
   nixosStateVersion = "25.11";
   homeStateVersion = "25.11";
 
-  modules = with modules; [
-    locale
-    sops
+  modules =
+    with modules;
+    [
+      locale
+      sops
 
-    bat
-    btop
-    eza
-    git
-    helix
-    ripgrep
-    starship
-    tailscale
-    yazi
-    zoxide
-
-    sing-box-server
-  ];
+      bat
+      btop
+      eza
+      git
+      helix
+      ripgrep
+      starship
+      tailscale
+      yazi
+      zoxide
+    ]
+    ++ [
+      (import ../../singbox/server.nix)
+    ];
 
   colmena = {
     targetHost = "linode-vps";
@@ -44,6 +47,9 @@
       userdesc,
       ...
     }:
+    let
+      vpn = import ../../singbox/users.nix { inherit lib; };
+    in
     {
       nixpkgs.overlays = [
         (final: prev: {
@@ -70,12 +76,7 @@
         naiveDomain = "naive-us.dfjay.com";
         realityShortId = "1a3287df";
         realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
-        vpnUsers = [
-          "dfjay"
-          "chu74"
-          "chu52"
-          "vdv7"
-        ];
+        vpnUsers = vpn.serverUsers "us";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/linode-vps.yaml;
       };

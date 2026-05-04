@@ -11,23 +11,26 @@
   nixosStateVersion = "24.11";
   homeStateVersion = "25.11";
 
-  modules = with modules; [
-    locale
-    sops
+  modules =
+    with modules;
+    [
+      locale
+      sops
 
-    bat
-    btop
-    eza
-    git
-    helix
-    ripgrep
-    starship
-    tailscale
-    yazi
-    zoxide
-
-    sing-box-server
-  ];
+      bat
+      btop
+      eza
+      git
+      helix
+      ripgrep
+      starship
+      tailscale
+      yazi
+      zoxide
+    ]
+    ++ [
+      (import ../../singbox/server.nix)
+    ];
 
   colmena = {
     targetHost = "gandi-vps";
@@ -44,6 +47,9 @@
       userdesc,
       ...
     }:
+    let
+      vpn = import ../../singbox/users.nix { inherit lib; };
+    in
     {
       nixpkgs.overlays = [
         (final: prev: {
@@ -70,12 +76,7 @@
         naiveDomain = "naive-fr.dfjay.com";
         realityShortId = "1a3287df";
         realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
-        vpnUsers = [
-          "dfjay"
-          "chu74"
-          "chu52"
-          "vdv7"
-        ];
+        vpnUsers = vpn.serverUsers "fr";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/gandi-vps.yaml;
 
@@ -99,6 +100,8 @@
               realityPublicKey = "654efZ1tti1w3gLBRnGOA2gUPT11tjz7zXoNm8ZuwjU";
             }
           ];
+          subscribers = vpn.allUsers;
+          userServers = vpn.users;
         };
 
         extraStreamHosts = [ "dfjay.com" ];

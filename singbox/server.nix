@@ -95,6 +95,26 @@
       };
 
       allServers = [ selfServer ] ++ sub.servers;
+
+      userServersFor =
+        u:
+        let
+          o = sub.userServers.${u} or { };
+          allowedServers = o.servers or null;
+          allowedRelays = o.relays or null;
+        in
+        {
+          servers =
+            if allowedServers == null then
+              allServers
+            else
+              lib.filter (s: lib.elem s.tag allowedServers) allServers;
+          relays =
+            if allowedRelays == null then
+              sub.relays
+            else
+              lib.filter (r: lib.elem r.tag allowedRelays) sub.relays;
+        };
     in
     {
       options.services.sing-box-vpn = {
@@ -166,6 +186,41 @@
             default = [ ];
             description = "Relay servers (VLESS Reality only, for 2-hop chains)";
           };
+
+          subscribers = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = cfg.vpnUsers;
+            description = ''
+              Users for whom subscription files are generated.
+              Defaults to vpnUsers. Set explicitly to include users that
+              are not accepted on this host's inbounds (e.g. routed only
+              through other servers).
+            '';
+          };
+
+          userServers = lib.mkOption {
+            type = lib.types.attrsOf (
+              lib.types.submodule {
+                options = {
+                  servers = lib.mkOption {
+                    type = lib.types.nullOr (lib.types.listOf lib.types.str);
+                    default = null;
+                    description = ''
+                      Server tags to include in this user's subscription.
+                      null = all servers (selfServer + subscription.servers).
+                    '';
+                  };
+                  relays = lib.mkOption {
+                    type = lib.types.nullOr (lib.types.listOf lib.types.str);
+                    default = null;
+                    description = "Relay tags to include. null = all.";
+                  };
+                };
+              }
+            );
+            default = { };
+            description = "Per-user filter of servers/relays in their subscription.";
+          };
         };
 
         extraStreamHosts = lib.mkOption {
@@ -191,7 +246,7 @@
                 map (u: {
                   name = "vless_uuid_${u}";
                   value.sopsFile = cfg.sharedSecretsFile;
-                }) cfg.vpnUsers
+                }) (lib.unique (cfg.vpnUsers ++ (lib.optionals sub.enable sub.subscribers)))
               );
 
               templates."sing-box-config.json" = {
@@ -429,252 +484,264 @@
           (lib.mkIf sub.enable {
             sops.templates =
               builtins.listToAttrs (
-                map (u: {
-                  name = "subscription-${u}";
-                  value = {
-                    restartUnits = [ "subscription-generator.service" ];
-                    content = builtins.concatStringsSep "\n" (
-                      lib.concatMap (s: [
-                        "vless://${
-                          config.sops.placeholder."vless_uuid_${u}"
-                        }@${s.edgeDomain}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-reality"
-                        "hysteria2://${
-                          config.sops.placeholder."vless_uuid_${u}"
-                        }@${s.edgeDomain}:443?sni=${s.edgeDomain}&obfs=salamander&obfs-password=${config.sops.placeholder.hy2_obfs_password}#${u}-${s.tag}-hy2"
-                        "naive+https://${u}:${
-                          config.sops.placeholder."vless_uuid_${u}"
-                        }@${s.naiveDomain}:443#${u}-${s.tag}-naive"
-                      ]) allServers
-                      ++ map (
-                        r:
-                        "vless://${
-                          config.sops.placeholder."vless_uuid_${u}"
-                        }@${r.server}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${r.realityServerName}&fp=chrome&pbk=${r.realityPublicKey}&sid=${r.realityShortId}#${u}-${r.tag}-reality"
-                      ) sub.relays
-                    );
-                  };
-                }) cfg.vpnUsers
+                map (
+                  u:
+                  let
+                    us = userServersFor u;
+                  in
+                  {
+                    name = "subscription-${u}";
+                    value = {
+                      restartUnits = [ "subscription-generator.service" ];
+                      content = builtins.concatStringsSep "\n" (
+                        lib.concatMap (s: [
+                          "vless://${
+                            config.sops.placeholder."vless_uuid_${u}"
+                          }@${s.edgeDomain}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${s.realityServerName}&fp=chrome&pbk=${s.realityPublicKey}&sid=${s.realityShortId}#${u}-${s.tag}-reality"
+                          "hysteria2://${
+                            config.sops.placeholder."vless_uuid_${u}"
+                          }@${s.edgeDomain}:443?sni=${s.edgeDomain}&obfs=salamander&obfs-password=${config.sops.placeholder.hy2_obfs_password}#${u}-${s.tag}-hy2"
+                          "naive+https://${u}:${
+                            config.sops.placeholder."vless_uuid_${u}"
+                          }@${s.naiveDomain}:443#${u}-${s.tag}-naive"
+                        ]) us.servers
+                        ++ map (
+                          r:
+                          "vless://${
+                            config.sops.placeholder."vless_uuid_${u}"
+                          }@${r.server}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${r.realityServerName}&fp=chrome&pbk=${r.realityPublicKey}&sid=${r.realityShortId}#${u}-${r.tag}-reality"
+                        ) us.relays
+                      );
+                    };
+                  }
+                ) sub.subscribers
               )
               // builtins.listToAttrs (
-                map (u: {
-                  name = "sing-box-client-${u}.json";
-                  value = {
-                    restartUnits = [ "subscription-generator.service" ];
-                    content = builtins.toJSON {
-                      log = {
-                        level = "info";
-                        timestamp = true;
-                      };
-                      dns = {
-                        servers = [
-                          {
-                            tag = "proxy-dns";
-                            type = "https";
-                            server = "dns.quad9.net";
-                            detour = "select";
-                            domain_resolver = "bootstrap-dns";
-                          }
-                          {
-                            tag = "direct-dns";
-                            type = "udp";
-                            server = "77.88.8.8";
-                          }
-                          {
-                            tag = "bootstrap-dns";
-                            type = "udp";
-                            server = "77.88.8.8";
-                          }
-                        ];
-                        rules = [
-                          {
-                            rule_set = [ "geosite-category-ru" ];
-                            action = "route";
-                            server = "direct-dns";
-                          }
-                          {
-                            domain_suffix = [ "3gppnetwork.org" ];
-                            action = "route";
-                            server = "direct-dns";
-                          }
-                        ];
-                        final = "proxy-dns";
-                        strategy = "prefer_ipv4";
-                      };
-                      inbounds = [
-                        {
-                          type = "tun";
-                          tag = "tun-in";
-                          address = [
-                            "172.19.0.1/30"
-                            "fdfe:dcba:9876::1/126"
+                map (
+                  u:
+                  let
+                    us = userServersFor u;
+                  in
+                  {
+                    name = "sing-box-client-${u}.json";
+                    value = {
+                      restartUnits = [ "subscription-generator.service" ];
+                      content = builtins.toJSON {
+                        log = {
+                          level = "info";
+                          timestamp = true;
+                        };
+                        dns = {
+                          servers = [
+                            {
+                              tag = "proxy-dns";
+                              type = "https";
+                              server = "dns.quad9.net";
+                              detour = "select";
+                              domain_resolver = "bootstrap-dns";
+                            }
+                            {
+                              tag = "direct-dns";
+                              type = "udp";
+                              server = "77.88.8.8";
+                            }
+                            {
+                              tag = "bootstrap-dns";
+                              type = "udp";
+                              server = "77.88.8.8";
+                            }
                           ];
-                          auto_route = true;
-                          strict_route = true;
-                          route_exclude_address_set = [ "geoip-ru" ];
-                        }
-                      ];
-                      outbounds = [
-                        {
-                          type = "selector";
-                          tag = "select";
-                          outbounds =
-                            lib.concatMap (s: [
-                              "${s.tag}-reality"
-                              "${s.tag}-hy2"
-                              "${s.tag}-naive"
-                            ]) allServers
-                            ++ map (r: "${r.tag}-reality") sub.relays;
-                          default = "${(builtins.head allServers).tag}-reality";
-                        }
-                      ]
-                      ++ lib.concatMap (s: [
-                        {
+                          rules = [
+                            {
+                              rule_set = [ "geosite-category-ru" ];
+                              action = "route";
+                              server = "direct-dns";
+                            }
+                            {
+                              domain_suffix = [ "3gppnetwork.org" ];
+                              action = "route";
+                              server = "direct-dns";
+                            }
+                          ];
+                          final = "proxy-dns";
+                          strategy = "prefer_ipv4";
+                        };
+                        inbounds = [
+                          {
+                            type = "tun";
+                            tag = "tun-in";
+                            address = [
+                              "172.19.0.1/30"
+                              "fdfe:dcba:9876::1/126"
+                            ];
+                            auto_route = true;
+                            strict_route = true;
+                            route_exclude_address_set = [ "geoip-ru" ];
+                          }
+                        ];
+                        outbounds = [
+                          {
+                            type = "selector";
+                            tag = "select";
+                            outbounds =
+                              lib.concatMap (s: [
+                                "${s.tag}-reality"
+                                "${s.tag}-hy2"
+                                "${s.tag}-naive"
+                              ]) us.servers
+                              ++ map (r: "${r.tag}-reality") us.relays;
+                            default = "${(builtins.head us.servers).tag}-reality";
+                          }
+                        ]
+                        ++ lib.concatMap (s: [
+                          {
+                            type = "vless";
+                            tag = "${s.tag}-reality";
+                            server = s.edgeDomain;
+                            server_port = 443;
+                            uuid = config.sops.placeholder."vless_uuid_${u}";
+                            flow = "xtls-rprx-vision";
+                            tls = {
+                              enabled = true;
+                              server_name = s.realityServerName;
+                              reality = {
+                                enabled = true;
+                                public_key = s.realityPublicKey;
+                                short_id = s.realityShortId;
+                              };
+                              utls = {
+                                enabled = true;
+                                fingerprint = "chrome";
+                              };
+                            };
+                          }
+                          {
+                            type = "hysteria2";
+                            tag = "${s.tag}-hy2";
+                            server = s.edgeDomain;
+                            server_port = 443;
+                            password = config.sops.placeholder."vless_uuid_${u}";
+                            obfs = {
+                              type = "salamander";
+                              password = config.sops.placeholder.hy2_obfs_password;
+                            };
+                            tls = {
+                              enabled = true;
+                              server_name = s.edgeDomain;
+                            };
+                          }
+                          {
+                            type = "naive";
+                            tag = "${s.tag}-naive";
+                            server = s.naiveDomain;
+                            server_port = 443;
+                            username = u;
+                            password = config.sops.placeholder."vless_uuid_${u}";
+                            tls = {
+                              enabled = true;
+                              server_name = s.naiveDomain;
+                            };
+                          }
+                        ]) us.servers
+                        ++ map (r: {
                           type = "vless";
-                          tag = "${s.tag}-reality";
-                          server = s.edgeDomain;
+                          tag = "${r.tag}-reality";
+                          server = r.server;
                           server_port = 443;
                           uuid = config.sops.placeholder."vless_uuid_${u}";
                           flow = "xtls-rprx-vision";
                           tls = {
                             enabled = true;
-                            server_name = s.realityServerName;
+                            server_name = r.realityServerName;
                             reality = {
                               enabled = true;
-                              public_key = s.realityPublicKey;
-                              short_id = s.realityShortId;
+                              public_key = r.realityPublicKey;
+                              short_id = r.realityShortId;
                             };
                             utls = {
                               enabled = true;
                               fingerprint = "chrome";
                             };
                           };
-                        }
-                        {
-                          type = "hysteria2";
-                          tag = "${s.tag}-hy2";
-                          server = s.edgeDomain;
-                          server_port = 443;
-                          password = config.sops.placeholder."vless_uuid_${u}";
-                          obfs = {
-                            type = "salamander";
-                            password = config.sops.placeholder.hy2_obfs_password;
-                          };
-                          tls = {
-                            enabled = true;
-                            server_name = s.edgeDomain;
-                          };
-                        }
-                        {
-                          type = "naive";
-                          tag = "${s.tag}-naive";
-                          server = s.naiveDomain;
-                          server_port = 443;
-                          username = u;
-                          password = config.sops.placeholder."vless_uuid_${u}";
-                          tls = {
-                            enabled = true;
-                            server_name = s.naiveDomain;
-                          };
-                        }
-                      ]) allServers
-                      ++ map (r: {
-                        type = "vless";
-                        tag = "${r.tag}-reality";
-                        server = r.server;
-                        server_port = 443;
-                        uuid = config.sops.placeholder."vless_uuid_${u}";
-                        flow = "xtls-rprx-vision";
-                        tls = {
-                          enabled = true;
-                          server_name = r.realityServerName;
-                          reality = {
-                            enabled = true;
-                            public_key = r.realityPublicKey;
-                            short_id = r.realityShortId;
-                          };
-                          utls = {
-                            enabled = true;
-                            fingerprint = "chrome";
-                          };
+                        }) us.relays
+                        ++ [
+                          {
+                            type = "direct";
+                            tag = "direct";
+                          }
+                        ];
+                        route = {
+                          rules = [
+                            { action = "sniff"; }
+                            {
+                              protocol = "dns";
+                              action = "hijack-dns";
+                            }
+                            {
+                              ip_is_private = true;
+                              action = "route";
+                              outbound = "direct";
+                            }
+                            {
+                              network = "icmp";
+                              action = "route";
+                              outbound = "direct";
+                            }
+                            {
+                              domain_suffix = [
+                                "bybit.com"
+                                "3gppnetwork.org"
+                              ];
+                              action = "route";
+                              outbound = "direct";
+                            }
+                            {
+                              rule_set = [ "geosite-category-ip-geo-detect" ];
+                              action = "route";
+                              outbound = "direct";
+                            }
+                            {
+                              rule_set = [ "geosite-category-ru" ];
+                              action = "route";
+                              outbound = "direct";
+                            }
+                            {
+                              rule_set = [ "geoip-ru" ];
+                              action = "route";
+                              outbound = "direct";
+                            }
+                          ];
+                          rule_set = [
+                            {
+                              tag = "geosite-category-ip-geo-detect";
+                              type = "remote";
+                              format = "binary";
+                              url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ip-geo-detect.srs";
+                              download_detour = "direct";
+                            }
+                            {
+                              tag = "geosite-category-ru";
+                              type = "remote";
+                              format = "binary";
+                              url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
+                              download_detour = "direct";
+                            }
+                            {
+                              tag = "geoip-ru";
+                              type = "remote";
+                              format = "binary";
+                              url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                              download_detour = "direct";
+                            }
+                          ];
+                          auto_detect_interface = true;
+                          final = "select";
+                          default_domain_resolver = "bootstrap-dns";
                         };
-                      }) sub.relays
-                      ++ [
-                        {
-                          type = "direct";
-                          tag = "direct";
-                        }
-                      ];
-                      route = {
-                        rules = [
-                          { action = "sniff"; }
-                          {
-                            protocol = "dns";
-                            action = "hijack-dns";
-                          }
-                          {
-                            ip_is_private = true;
-                            action = "route";
-                            outbound = "direct";
-                          }
-                          {
-                            network = "icmp";
-                            action = "route";
-                            outbound = "direct";
-                          }
-                          {
-                            domain_suffix = [
-                              "bybit.com"
-                              "3gppnetwork.org"
-                            ];
-                            action = "route";
-                            outbound = "direct";
-                          }
-                          {
-                            rule_set = [ "geosite-category-ip-geo-detect" ];
-                            action = "route";
-                            outbound = "direct";
-                          }
-                          {
-                            rule_set = [ "geosite-category-ru" ];
-                            action = "route";
-                            outbound = "direct";
-                          }
-                          {
-                            rule_set = [ "geoip-ru" ];
-                            action = "route";
-                            outbound = "direct";
-                          }
-                        ];
-                        rule_set = [
-                          {
-                            tag = "geosite-category-ip-geo-detect";
-                            type = "remote";
-                            format = "binary";
-                            url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ip-geo-detect.srs";
-                            download_detour = "direct";
-                          }
-                          {
-                            tag = "geosite-category-ru";
-                            type = "remote";
-                            format = "binary";
-                            url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                            download_detour = "direct";
-                          }
-                          {
-                            tag = "geoip-ru";
-                            type = "remote";
-                            format = "binary";
-                            url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                            download_detour = "direct";
-                          }
-                        ];
-                        auto_detect_interface = true;
-                        final = "select";
-                        default_domain_resolver = "bootstrap-dns";
                       };
                     };
-                  };
-                }) cfg.vpnUsers
+                  }
+                ) sub.subscribers
               );
 
             services.nginx.virtualHosts."${sub.domain}" = {
@@ -737,7 +804,7 @@
                   </body></html>
                   HTMLEOF
                     echo "${u} $USER_TOKEN" >> "$STAGE/tokens.txt"
-                '') cfg.vpnUsers}
+                '') sub.subscribers}
                 chown -R nginx:nginx "$STAGE"
                 chmod -R u=rwX,go=rX "$STAGE"
                 rm -rf "$DEST"

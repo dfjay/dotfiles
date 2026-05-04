@@ -11,23 +11,26 @@
   nixosStateVersion = "24.11";
   homeStateVersion = "25.11";
 
-  modules = with modules; [
-    locale
-    sops
+  modules =
+    with modules;
+    [
+      locale
+      sops
 
-    bat
-    btop
-    eza
-    git
-    helix
-    ripgrep
-    starship
-    tailscale
-    yazi
-    zoxide
-
-    sing-box-relay
-  ];
+      bat
+      btop
+      eza
+      git
+      helix
+      ripgrep
+      starship
+      tailscale
+      yazi
+      zoxide
+    ]
+    ++ [
+      (import ../../singbox/relay.nix)
+    ];
 
   colmena = {
     targetHost = "yc-vps";
@@ -44,6 +47,9 @@
       userdesc,
       ...
     }:
+    let
+      vpn = import ../../singbox/users.nix { inherit lib; };
+    in
     {
       nixpkgs.overlays = [
         (final: prev: {
@@ -67,12 +73,7 @@
         enable = true;
         realityShortId = "1a3287df";
         realityPublicKey = "654efZ1tti1w3gLBRnGOA2gUPT11tjz7zXoNm8ZuwjU";
-        vpnUsers = [
-          "dfjay"
-          "chu74"
-          "chu52"
-          "vdv7"
-        ];
+        vpnUsers = vpn.relayUsers "ru-fr";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/yc-vps.yaml;
 
