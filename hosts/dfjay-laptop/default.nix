@@ -90,6 +90,7 @@
     eza
     fastfetch
     fd
+    fish
     formats
     ghostty
     git
@@ -117,7 +118,6 @@
     yazi
     zed
     zoxide
-    zsh
 
     # work
     spectrum

@@ -31,6 +31,7 @@
     eza
     fastfetch
     fd
+    fish
     formats
     ghostty
     git
@@ -58,7 +59,6 @@
     yazi
     zed
     zoxide
-    zsh
   ];
 
   config =
@@ -150,7 +150,7 @@
       };
 
       users = {
-        defaultUserShell = pkgs.zsh;
+        defaultUserShell = pkgs.fish;
         mutableUsers = false;
         users.${username} = {
           isNormalUser = true;
