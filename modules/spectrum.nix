@@ -3,7 +3,10 @@
     { pkgs, ... }:
     {
       environment.systemPackages = [ pkgs.openfortivpn ];
-      homebrew.casks = [ "mattermost" ];
+      homebrew.casks = [
+        "mattermost"
+        "windows-app"
+      ];
     };
 
   nixosModule =

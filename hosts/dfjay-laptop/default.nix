@@ -221,7 +221,6 @@
           "tableplus"
           "tor-browser"
           "tuta-mail"
-          "windows-app"
           "yubico-authenticator"
         ];
       };
