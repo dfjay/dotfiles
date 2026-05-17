@@ -104,6 +104,7 @@
     lazydocker
     lazygit
     librewolf
+    mcp
     nix
     nix-index
     nushell

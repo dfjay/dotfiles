@@ -28,6 +28,7 @@
       programs.claude-code = {
         enable = true;
         package = pkgs-master.claude-code;
+        enableMcpIntegration = true;
 
         marketplaces = {
           claude-plugins-official = inputs.claude-plugins-official;
@@ -198,17 +199,6 @@
           };
         };
 
-        mcpServers = {
-          playwright = {
-            command = "npx";
-            args = [
-              "@playwright/mcp@latest"
-              "--browser"
-              "chromium"
-            ];
-            type = "stdio";
-          };
-        };
       };
     };
 }
