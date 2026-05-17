@@ -132,6 +132,7 @@
           templates."sing-box-config.json" = {
             restartUnits = [ "sing-box.service" ];
             content = builtins.toJSON {
+              experimental.cache_file.enabled = true;
               log = {
                 level = "warn";
                 timestamp = true;
@@ -178,6 +179,32 @@
                       465
                     ];
                     action = "reject";
+                  }
+                  {
+                    rule_set = [ "geosite-category-ru" ];
+                    action = "route";
+                    outbound = "direct";
+                  }
+                  {
+                    rule_set = [ "geoip-ru" ];
+                    action = "route";
+                    outbound = "direct";
+                  }
+                ];
+                rule_set = [
+                  {
+                    tag = "geosite-category-ru";
+                    type = "remote";
+                    format = "binary";
+                    url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
+                    download_detour = "direct";
+                  }
+                  {
+                    tag = "geoip-ru";
+                    type = "remote";
+                    format = "binary";
+                    url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                    download_detour = "direct";
                   }
                 ];
                 final = cfg.defaultUpstream;

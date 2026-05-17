@@ -521,12 +521,102 @@
                   u:
                   let
                     us = userServersFor u;
+                    relayTag = if us.relays != [ ] then "${(builtins.head us.relays).tag}-reality" else null;
+                    hasRelay = relayTag != null;
+
+                    # Routing is assembled from intent-named groups instead of
+                    # one positional list. ORDER BETWEEN GROUPS IS THE CONTRACT:
+                    #   alwaysDirect  -> never relayed, even under a whitelist block
+                    #   whitelist     -> "Whitelist" mode catches everything else -> relay
+                    #   ruleMode      -> only reached in normal (Rule) mode
+                    # Add new rules to the group matching their intent; do not
+                    # reorder the groups.
+                    routePreamble = [
+                      { action = "sniff"; }
+                      {
+                        protocol = "dns";
+                        action = "hijack-dns";
+                      }
+                    ];
+                    routeAlwaysDirect = [
+                      {
+                        ip_is_private = true;
+                        action = "route";
+                        outbound = "direct";
+                      }
+                      {
+                        network = "icmp";
+                        action = "route";
+                        outbound = "direct";
+                      }
+                      {
+                        domain_suffix = [ "3gppnetwork.org" ];
+                        action = "route";
+                        outbound = "direct";
+                      }
+                    ];
+                    routeWhitelist = lib.optional hasRelay {
+                      clash_mode = "Whitelist";
+                      action = "route";
+                      outbound = relayTag;
+                    };
+                    routeRuleMode = [
+                      {
+                        domain_suffix = [ "bybit.com" ];
+                        action = "route";
+                        outbound = "direct";
+                      }
+                      {
+                        rule_set = [ "geosite-category-ip-geo-detect" ];
+                        action = "route";
+                        outbound = "direct";
+                      }
+                      {
+                        rule_set = [ "geosite-category-ru" ];
+                        action = "route";
+                        outbound = "direct";
+                      }
+                      {
+                        rule_set = [ "geoip-ru" ];
+                        action = "route";
+                        outbound = "direct";
+                      }
+                    ];
+
+                    # Same three-group contract for DNS, mirroring routing so a
+                    # domain resolves through the same path it connects through.
+                    dnsAlwaysDirect = [
+                      {
+                        domain_suffix = [ "3gppnetwork.org" ];
+                        action = "route";
+                        server = "direct-dns";
+                      }
+                    ];
+                    dnsWhitelist = lib.optional hasRelay {
+                      clash_mode = "Whitelist";
+                      action = "route";
+                      server = "relay-dns";
+                    };
+                    dnsRuleMode = [
+                      {
+                        rule_set = [ "geosite-category-ru" ];
+                        action = "route";
+                        server = "direct-dns";
+                      }
+                    ];
                   in
                   {
                     name = "sing-box-client-${u}.json";
                     value = {
                       restartUnits = [ "subscription-generator.service" ];
                       content = builtins.toJSON {
+                        experimental = {
+                          clash_api = {
+                            external_controller = "127.0.0.1:9090";
+                            default_mode = "Rule";
+                          };
+                          cache_file.enabled = true;
+                        };
                         log = {
                           level = "info";
                           timestamp = true;
@@ -550,19 +640,15 @@
                               type = "udp";
                               server = "77.88.8.8";
                             }
-                          ];
-                          rules = [
-                            {
-                              rule_set = [ "geosite-category-ru" ];
-                              action = "route";
-                              server = "direct-dns";
-                            }
-                            {
-                              domain_suffix = [ "3gppnetwork.org" ];
-                              action = "route";
-                              server = "direct-dns";
-                            }
-                          ];
+                          ]
+                          ++ lib.optional hasRelay {
+                            tag = "relay-dns";
+                            type = "https";
+                            server = "dns.quad9.net";
+                            detour = relayTag;
+                            domain_resolver = "bootstrap-dns";
+                          };
+                          rules = dnsAlwaysDirect ++ dnsWhitelist ++ dnsRuleMode;
                           final = "proxy-dns";
                           strategy = "prefer_ipv4";
                         };
@@ -576,20 +662,17 @@
                             ];
                             auto_route = true;
                             strict_route = true;
-                            route_exclude_address_set = [ "geoip-ru" ];
                           }
                         ];
                         outbounds = [
                           {
                             type = "selector";
                             tag = "select";
-                            outbounds =
-                              lib.concatMap (s: [
-                                "${s.tag}-reality"
-                                "${s.tag}-hy2"
-                                "${s.tag}-naive"
-                              ]) us.servers
-                              ++ map (r: "${r.tag}-reality") us.relays;
+                            outbounds = lib.concatMap (s: [
+                              "${s.tag}-reality"
+                              "${s.tag}-hy2"
+                              "${s.tag}-naive"
+                            ]) us.servers;
                             default = "${(builtins.head us.servers).tag}-reality";
                           }
                         ]
@@ -671,46 +754,7 @@
                           }
                         ];
                         route = {
-                          rules = [
-                            { action = "sniff"; }
-                            {
-                              protocol = "dns";
-                              action = "hijack-dns";
-                            }
-                            {
-                              ip_is_private = true;
-                              action = "route";
-                              outbound = "direct";
-                            }
-                            {
-                              network = "icmp";
-                              action = "route";
-                              outbound = "direct";
-                            }
-                            {
-                              domain_suffix = [
-                                "bybit.com"
-                                "3gppnetwork.org"
-                              ];
-                              action = "route";
-                              outbound = "direct";
-                            }
-                            {
-                              rule_set = [ "geosite-category-ip-geo-detect" ];
-                              action = "route";
-                              outbound = "direct";
-                            }
-                            {
-                              rule_set = [ "geosite-category-ru" ];
-                              action = "route";
-                              outbound = "direct";
-                            }
-                            {
-                              rule_set = [ "geoip-ru" ];
-                              action = "route";
-                              outbound = "direct";
-                            }
-                          ];
+                          rules = routePreamble ++ routeAlwaysDirect ++ routeWhitelist ++ routeRuleMode;
                           rule_set = [
                             {
                               tag = "geosite-category-ip-geo-detect";
