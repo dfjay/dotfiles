@@ -31,7 +31,7 @@
     };
 
   homeModule =
-    { pkgs, ... }:
+    { ... }:
     {
       programs.fish = {
         enable = true;
@@ -39,13 +39,6 @@
         interactiveShellInit = ''
           set fish_greeting
         '';
-
-        plugins = [
-          {
-            name = "sponge";
-            src = pkgs.fishPlugins.sponge.src;
-          }
-        ];
 
         shellAliases = {
           edit = "sudo -e";
