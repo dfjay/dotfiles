@@ -11,7 +11,7 @@
         includes = [
           "~/.colima/ssh_config"
         ];
-        matchBlocks."*" = {
+        settings."*" = {
           addKeysToAgent = "yes";
           controlMaster = "auto";
           controlPath = "~/.ssh/sockets/%r@%h-%p";

@@ -168,7 +168,6 @@
         iina
         jan
         logseq
-        slack
         syncthing
         telegram-desktop
         yaak
@@ -200,10 +199,7 @@
         ];
 
         casks = [
-          "android-studio"
-          "balenaetcher"
           "brave-browser"
-          "chatgpt"
           "claude"
           "draw-things"
           "figma"
@@ -211,7 +207,6 @@
           "linearmouse"
           "loopback"
           "lulu"
-          "melodics"
           "microsoft-powerpoint"
           "microsoft-word"
           "orion"
