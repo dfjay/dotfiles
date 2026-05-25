@@ -88,7 +88,6 @@
     direnv
     docker
     eza
-    fastfetch
     fd
     fish
     formats
@@ -202,7 +201,6 @@
           "brave-browser"
           "claude"
           "draw-things"
-          "figma"
           "intellij-idea"
           "linearmouse"
           "loopback"
@@ -210,11 +208,9 @@
           "microsoft-powerpoint"
           "microsoft-word"
           "orion"
-          "proxyman"
           "signal"
           "soundsource"
           "steam"
-          "tableplus"
           "tor-browser"
           "tuta-mail"
           "yubico-authenticator"

@@ -29,7 +29,6 @@
     direnv
     docker
     eza
-    fastfetch
     fd
     fish
     formats
