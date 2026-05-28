@@ -85,6 +85,8 @@
         execWheelOnly = false;
       };
 
+      sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
       virtualisation.podman.enable = true;
 
       programs.coolercontrol.enable = true;
@@ -167,9 +169,11 @@
       environment.systemPackages = with pkgs; [
         # system
         devenv
+        gh
         home-manager
         nh
         pinentry-gnome3
+        pwvucontrol
         sbctl
 
         # sensors
@@ -191,7 +195,6 @@
         discord
         libreoffice-qt
         prismlauncher
-        qbittorrent
         telegram-desktop
         tor-browser
         via

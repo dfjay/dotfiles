@@ -46,7 +46,9 @@ let
           {
             system.stateVersion = nixosStateVersion;
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = (import ../overlays);
+            nixpkgs.overlays = (import ../overlays) ++ [
+              inputs.firefox-addons.overlays.default
+            ];
 
             nix = {
               gc = {
@@ -68,6 +70,7 @@ let
           inputs.lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
           {
+            home-manager.backupFileExtension = "backup";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;

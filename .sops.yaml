@@ -6,6 +6,7 @@ keys:
   - &gandi-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
   - &yc-age age1ds88zwfjwkdl4rhql0e3mhhkw56l3ytt473m4w0ep58jy03573cqkcdat5
+  - &dfjay-desktop-age age1wzuk4e4d0t344mx7z956wslhj60kyn0zlq7shagdxy2l3ppylvqqfcvp48
 
 creation_rules:
   # Shared secrets — all servers need access
@@ -20,6 +21,7 @@ creation_rules:
           - *gandi-age
           - *linode-age
           - *yc-age
+          - *dfjay-desktop-age
 
   # Gandi-specific secrets
   - path_regex: secrets/gandi-vps\.yaml$
