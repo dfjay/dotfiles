@@ -49,6 +49,11 @@
             DisableConsoleAccess = true;
           };
 
+          screensaver = {
+            askForPassword = true;
+            askForPasswordDelay = 0;
+          };
+
           CustomUserPreferences = {
             "com.apple.desktopservices" = {
               DSDontWriteNetworkStores = true;
