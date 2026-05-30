@@ -7,7 +7,7 @@
   useremail = "mail@dfjay.com";
 
   darwinStateVersion = 6;
-  homeStateVersion = "26.05";
+  homeStateVersion = "26.11";
 
   modules = with modules; [
     # system
@@ -148,6 +148,7 @@
         # CLI
         age
         colmena
+        container
         gh
         gitlab-ci-ls
         glab
@@ -162,11 +163,11 @@
         yubikey-manager
 
         # GUI
-        bitwarden-desktop
+        #bitwarden-desktop
         discord
         iina
         jan
-        logseq
+        #logseq
         syncthing
         telegram-desktop
         yaak

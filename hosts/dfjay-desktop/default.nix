@@ -8,7 +8,7 @@
   userdesc = "Pavel Yozhikov";
 
   nixosStateVersion = "25.11";
-  homeStateVersion = "26.05";
+  homeStateVersion = "26.11";
 
   modules = with modules; [
     # system
