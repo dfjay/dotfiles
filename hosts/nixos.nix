@@ -58,6 +58,8 @@ let
               };
               settings = {
                 auto-optimise-store = true;
+                min-free = "1G";
+                max-free = "5G";
                 experimental-features = [
                   "nix-command"
                   "flakes"
