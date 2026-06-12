@@ -191,7 +191,6 @@
         usbutils
 
         # GUI
-        bitwarden-desktop
         discord
         libreoffice-qt
         prismlauncher

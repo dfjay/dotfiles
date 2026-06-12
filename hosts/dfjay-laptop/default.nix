@@ -163,8 +163,6 @@
         yubikey-manager
 
         # GUI
-        #bitwarden-desktop
-        discord
         iina
         jan
         #logseq
@@ -181,6 +179,7 @@
           autoUpdate = true;
           upgrade = true;
           cleanup = "zap";
+          extraFlags = [ "--force-cleanup" ];
         };
 
         masApps = {
@@ -192,8 +191,6 @@
           "Xcode" = 497799835;
         };
 
-        taps = [ ];
-
         brews = [
           "incus"
         ];
@@ -203,12 +200,10 @@
           "claude"
           "draw-things"
           "intellij-idea"
-          "linearmouse"
           "loopback"
           "lulu"
-          "microsoft-powerpoint"
           "microsoft-word"
-          "orion"
+          "mos"
           "signal"
           "soundsource"
           "steam"
