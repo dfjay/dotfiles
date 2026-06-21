@@ -100,6 +100,13 @@
           git_panel = {
             tree_view = false;
           };
+          lsp = {
+            rust-analyzer = {
+              binary = {
+                path = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+              };
+            };
+          };
           languages = {
             Kotlin = {
               language_servers = [ "kotlin-lsp" ];
