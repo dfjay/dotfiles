@@ -163,6 +163,7 @@
         yubikey-manager
 
         # GUI
+        element-desktop
         iina
         jan
         #logseq
@@ -202,7 +203,6 @@
           "intellij-idea"
           "loopback"
           "lulu"
-          "microsoft-word"
           "mos"
           "signal"
           "soundsource"
