@@ -9,10 +9,10 @@
       };
 
       home.packages = with pkgs; [
+        async-profiler
         jdt-language-server
         kotlin
         ktlint
-        visualvm
       ];
     };
 
