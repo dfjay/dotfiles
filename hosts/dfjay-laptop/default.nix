@@ -154,6 +154,7 @@
         glab
         gopass
         k6
+        pgcli
         postgresql
         rclone
         sing-box
