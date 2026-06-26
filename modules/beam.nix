@@ -4,7 +4,7 @@
 
     {
       home.packages =
-        (with pkgs.beam28Packages; [
+        (with pkgs.beam29Packages; [
           elixir
           elixir-ls
           erlang
