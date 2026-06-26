@@ -133,8 +133,7 @@
                       file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
                       case "$file" in
                         *.go)
-                          gofumpt -w "$file" 2>/dev/null
-                          goimports -w "$file" 2>/dev/null
+                          golangci-lint fmt --no-config -E gofumpt -E goimports "$file" 2>/dev/null
                           ;;
                         *.nix)
                           nixfmt "$file" 2>/dev/null
