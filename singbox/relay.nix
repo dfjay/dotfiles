@@ -197,14 +197,14 @@
                     type = "remote";
                     format = "binary";
                     url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                    download_detour = "direct";
+                    download_detour = cfg.defaultUpstream;
                   }
                   {
                     tag = "geoip-ru";
                     type = "remote";
                     format = "binary";
                     url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                    download_detour = "direct";
+                    download_detour = cfg.defaultUpstream;
                   }
                 ];
                 final = cfg.defaultUpstream;

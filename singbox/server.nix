@@ -761,21 +761,21 @@
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ip-geo-detect.srs";
-                              download_detour = "direct";
+                              download_detour = "select";
                             }
                             {
                               tag = "geosite-category-ru";
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                              download_detour = "direct";
+                              download_detour = "select";
                             }
                             {
                               tag = "geoip-ru";
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                              download_detour = "direct";
+                              download_detour = "select";
                             }
                           ];
                           auto_detect_interface = true;
