@@ -1,12 +1,12 @@
 {
   homeModule =
-    { ... }:
+    { pkgs, lib, ... }:
     {
       programs.mcp = {
         enable = true;
         servers = {
           playwright = {
-            command = "npx";
+            command = lib.getExe' pkgs.nodejs_24 "npx";
             args = [
               "@playwright/mcp@latest"
               "--browser"
