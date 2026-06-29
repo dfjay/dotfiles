@@ -8,6 +8,8 @@
       ...
     }:
     {
+      home.file."${config.home.homeDirectory}/.claude/plugins/known_marketplaces.json".force = true;
+
       sops.secrets.context7_api_key = { };
 
       sops.templates."mcp.json" = {
@@ -55,33 +57,6 @@
               "Bash(git remote *)"
               "Bash(git add *)"
 
-              # go
-              "Bash(go build *)"
-              "Bash(go test *)"
-              "Bash(go vet *)"
-              "Bash(go fmt *)"
-              "Bash(go list *)"
-              "Bash(go env *)"
-              "Bash(go mod *)"
-              "Bash(golangci-lint *)"
-              "Bash(gofumpt *)"
-
-              # kotlin/jvm
-              "Bash(gradle build *)"
-              "Bash(gradle test *)"
-              "Bash(./gradlew build *)"
-              "Bash(./gradlew test *)"
-
-              # node
-              "Bash(npm run *)"
-              "Bash(npm test *)"
-
-              # nix
-              "Bash(nix build *)"
-              "Bash(nix eval *)"
-              "Bash(nix flake *)"
-              "Bash(nixfmt *)"
-
               # utilities
               "Bash(jq *)"
               "Bash(which *)"
@@ -120,46 +95,6 @@
             "security-guidance@claude-plugins-official" = true;
             "superpowers@superpowers-dev" = true;
             "frontend-design@claude-plugins-official" = true;
-          };
-          hooks = {
-            PostToolUse = [
-              {
-                matcher = "Edit|Write";
-                hooks = [
-                  {
-                    type = "command";
-                    command = ''
-                      input=$(cat)
-                      file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
-                      case "$file" in
-                        *.go)
-                          golangci-lint fmt --no-config -E gofumpt -E goimports "$file" 2>/dev/null
-                          ;;
-                        *.nix)
-                          nixfmt "$file" 2>/dev/null
-                          ;;
-                        *.kt|*.kts)
-                          ktlint --format "$file" 2>/dev/null
-                          ;;
-                      esac
-                    '';
-                    statusMessage = "Formatting...";
-                  }
-                  {
-                    type = "command";
-                    command = ''
-                      input=$(cat)
-                      file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
-                      if [[ "$file" == *.go ]]; then
-                        dir=$(dirname "$file")
-                        cd "$dir" && go vet ./... 2>&1 | head -20
-                      fi
-                    '';
-                    statusMessage = "Running go vet...";
-                  }
-                ];
-              }
-            ];
           };
 
           skipDangerousModePermissionPrompt = true;

@@ -11,7 +11,11 @@
         svelte-language-server
         tsx
         typescript-language-server
-        vue-language-server
+      ];
+
+      programs.claude-code.settings.permissions.allow = [
+        "Bash(npm run *)"
+        "Bash(npm test *)"
       ];
     };
 }
