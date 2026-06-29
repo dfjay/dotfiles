@@ -28,6 +28,7 @@
           "make"
           "nix"
           "proto"
+          "solidity"
           "sql"
           "svelte"
           "toml"

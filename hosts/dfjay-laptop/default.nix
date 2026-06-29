@@ -115,6 +115,7 @@
     starship
     tailscale
     tealdeer
+    web3
     yazi
     zed
     zoxide
