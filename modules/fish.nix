@@ -40,6 +40,13 @@
           set fish_greeting
         '';
 
+        functions = {
+          mkcd = {
+            description = "Create a directory and cd into it";
+            body = "mkdir -p $argv[1]; and cd $argv[1]";
+          };
+        };
+
         shellAliases = {
           edit = "sudo -e";
         };
