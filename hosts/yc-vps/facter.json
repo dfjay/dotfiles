@@ -662,6 +662,7 @@
           "l1tf",
           "mds",
           "swapgs",
+          "itlb_multihit",
           "mmio_stale_data",
           "retbleed",
           "bhi",
@@ -670,7 +671,7 @@
         "power_management": [
           ""
         ],
-        "bogo": 4190,
+        "bogo": 3990,
         "cache": 16384,
         "units": 2,
         "page_size": 4096,
@@ -681,7 +682,6 @@
         "fpu_exception": false,
         "cpuid_level": 13,
         "write_protect": false,
-        "tlb_size": 32669,
         "clflush_size": 64,
         "cache_alignment": 64,
         "address_sizes": {
@@ -693,6 +693,37 @@
     "disk": [
       {
         "index": 29,
+        "attached_to": 0,
+        "class_list": [
+          "disk",
+          "block_device"
+        ],
+        "base_class": {
+          "hex": "0106",
+          "name": "Mass Storage Device",
+          "value": 262
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Disk",
+          "value": 0
+        },
+        "model": "Disk",
+        "sysfs_id": "/class/block/zram0",
+        "unix_device_names": [
+          "/dev/zram0"
+        ],
+        "resources": [
+          {
+            "type": "size",
+            "unit": "sectors",
+            "value_1": 123648,
+            "value_2": 4096
+          }
+        ]
+      },
+      {
+        "index": 30,
         "attached_to": 21,
         "class_list": [
           "disk",
@@ -713,12 +744,11 @@
         "sysfs_bus_id": "virtio1",
         "sysfs_device_link": "/devices/pci0000:00/0000:00:0b.0/0000:01:00.0/virtio1",
         "unix_device_names": [
-          "/dev/disk/by-id/virtio-fhmqdla68rquvgcfukbc",
+          "/dev/disk/by-id/virtio-fv4iabkjatlh9bj1urc1",
           "/dev/disk/by-path/pci-0000:01:00.0",
           "/dev/disk/by-path/virtio-pci-0000:01:00.0",
           "/dev/vda"
         ],
-        "rom_id": "0x80",
         "resources": [
           {
             "type": "disk_geo",
@@ -1101,28 +1131,6 @@
     ],
     "network_interface": [
       {
-        "index": 30,
-        "attached_to": 0,
-        "class_list": [
-          "network_interface"
-        ],
-        "base_class": {
-          "hex": "0107",
-          "name": "Network Interface",
-          "value": 263
-        },
-        "sub_class": {
-          "hex": "0000",
-          "name": "Loopback",
-          "value": 0
-        },
-        "model": "Loopback network interface",
-        "sysfs_id": "/class/net/lo",
-        "unix_device_names": [
-          "lo"
-        ]
-      },
-      {
         "index": 31,
         "attached_to": 22,
         "class_list": [
@@ -1161,6 +1169,28 @@
         ],
         "driver_modules": [
           "virtio_net"
+        ]
+      },
+      {
+        "index": 32,
+        "attached_to": 0,
+        "class_list": [
+          "network_interface"
+        ],
+        "base_class": {
+          "hex": "0107",
+          "name": "Network Interface",
+          "value": 263
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Loopback",
+          "value": 0
+        },
+        "model": "Loopback network interface",
+        "sysfs_id": "/class/net/lo",
+        "unix_device_names": [
+          "lo"
         ]
       }
     ],
@@ -1681,7 +1711,7 @@
       "features": [
         "Hosting Board"
       ],
-      "location": "ru-central1-a",
+      "location": "ru-central1-d",
       "chassis": 768
     },
     "chassis": [

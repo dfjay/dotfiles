@@ -8,8 +8,8 @@
   userdesc = "Pavel Yozhikov";
   nixpkgs = "nixpkgs-stable";
   home-manager = "home-manager-stable";
-  nixosStateVersion = "24.11";
-  homeStateVersion = "25.11";
+  nixosStateVersion = "26.05";
+  homeStateVersion = "26.05";
 
   modules =
     with modules;
