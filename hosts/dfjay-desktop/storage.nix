@@ -110,12 +110,15 @@
     '';
   };
 
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 8 * 1024;
-    }
-  ];
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+  };
 
   preservation = {
     enable = true;

@@ -89,8 +89,6 @@
 
       virtualisation.podman.enable = true;
 
-      programs.coolercontrol.enable = true;
-
       security = {
         polkit.enable = true;
       };
@@ -99,6 +97,8 @@
       systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
       services.printing.enable = true;
+
+      services.fwupd.enable = true;
 
       hardware = {
         cpu.amd.updateMicrocode = true;
@@ -177,8 +177,6 @@
         sbctl
 
         # sensors
-        coolercontrol.coolercontrold
-        coolercontrol.coolercontrol-ui-data
         lm_sensors
 
         # CLI
