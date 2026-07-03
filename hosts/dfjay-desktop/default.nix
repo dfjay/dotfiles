@@ -54,7 +54,6 @@
     skim
     ssh
     starship
-    tailscale
     tealdeer
     yazi
     zed
