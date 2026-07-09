@@ -41,7 +41,7 @@
         settings = {
           env = { };
           enableVimMode = true;
-          includeCoAuthoredBy = true;
+          attribution.commit = "Assisted-by: Claude Code";
           permissions = {
             allow = [
               # git
