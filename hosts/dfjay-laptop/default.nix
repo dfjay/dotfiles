@@ -158,6 +158,7 @@
         k6
         pgcli
         postgresql
+        protobuf
         rclone
         sing-box
         squawk
@@ -195,13 +196,10 @@
           "Xcode" = 497799835;
         };
 
-        brews = [
-          "incus"
-        ];
+        brews = [ ];
 
         casks = [
           "brave-browser"
-          "claude"
           "draw-things"
           "intellij-idea"
           "loopback"
