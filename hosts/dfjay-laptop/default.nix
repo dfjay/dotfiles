@@ -107,6 +107,7 @@
     nix
     nix-index
     nushell
+    opencode
     python
     ripgrep
     rust
