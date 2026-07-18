@@ -9,6 +9,7 @@
 
     {
       stylix.targets.zed.colors.enable = false;
+      stylix.targets.zed.fonts.enable = false;
 
       sops.secrets.context7_api_key = { };
 
@@ -17,6 +18,7 @@
         extensions = [
           "docker-compose"
           "dockerfile"
+          "editorconfig"
           "elixir"
           "gleam"
           "graphql"
@@ -48,6 +50,10 @@
         ];
         userSettings = {
           theme = "Ayu Dark";
+          ui_font_family = "JetBrainsMono Nerd Font";
+          buffer_font_family = "JetBrainsMono Nerd Font";
+          ui_font_size = 14;
+          buffer_font_size = 13;
           telemetry = {
             metrics = false;
           };
@@ -84,6 +90,11 @@
           cursor_blink = false;
           relative_line_numbers = "enabled";
           scroll_beyond_last_line = "off";
+          wrap_guides = [ 100 ];
+          "unstable.ui_density" = "compact";
+          scrollbar = {
+            show = "never";
+          };
           vim = {
             toggle_relative_line_numbers = true;
           };
@@ -117,6 +128,10 @@
                 "nixd"
                 "!nil"
               ];
+            };
+            # Ruler overrides matching each formatter's wrap point.
+            Python = {
+              wrap_guides = [ 88 ];
             };
           };
         };
