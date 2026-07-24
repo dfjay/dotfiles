@@ -186,6 +186,7 @@
         k6
         postgresql
         usbutils
+        yubikey-manager
 
         # GUI
         discord

@@ -210,7 +210,6 @@
           "steam"
           "tor-browser"
           "tuta-mail"
-          "yubico-authenticator"
         ];
       };
     };
