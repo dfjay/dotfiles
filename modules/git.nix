@@ -12,7 +12,10 @@
         rm -f ~/.gitconfig
       '';
 
-      home.packages = [ pkgs.git-absorb ];
+      home.packages = [
+        pkgs.git-absorb
+        pkgs.difftastic
+      ];
 
       programs.git = {
         enable = true;
@@ -44,6 +47,13 @@
             ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
             ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
 
+            # review uncommitted changes, full-screen side-by-side
+            review = "-c delta.features=side-by-side diff HEAD";
+            # review this branch's commits against the remote's default branch
+            reviewb = "-c delta.features=side-by-side diff origin/HEAD...HEAD";
+            # structural (tree-based) diff via difftastic; takes any range, e.g. `git dft HEAD`
+            dft = "!f() { DFT_COLOR=always GIT_EXTERNAL_DIFF=difft git -c core.pager='less -R' diff \"$@\"; }; f";
+
             # aliases for submodule
             update = "submodule update --init --recursive";
             foreach = "submodule foreach";
@@ -55,7 +65,7 @@
         enable = true;
         enableGitIntegration = true;
         options = {
-          features = "side-by-side";
+          navigate = true;
         };
       };
     };
