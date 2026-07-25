@@ -91,6 +91,7 @@
     fd
     fish
     formats
+    gh
     ghostty
     git
     go
@@ -151,7 +152,6 @@
         age
         colmena
         container
-        gh
         gitlab-ci-ls
         glab
         gopass

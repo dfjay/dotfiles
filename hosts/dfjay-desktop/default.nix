@@ -32,6 +32,7 @@
     fd
     fish
     formats
+    gh
     ghostty
     git
     go
@@ -168,7 +169,6 @@
       environment.systemPackages = with pkgs; [
         # system
         devenv
-        gh
         home-manager
         nh
         pinentry-gnome3
