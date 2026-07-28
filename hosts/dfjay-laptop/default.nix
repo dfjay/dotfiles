@@ -105,6 +105,7 @@
     lazygit
     librewolf
     mcp
+    nh
     nix
     nix-index
     nushell
@@ -147,7 +148,6 @@
       environment.systemPackages = with pkgs; [
         # system
         devenv
-        nh
 
         # CLI
         age

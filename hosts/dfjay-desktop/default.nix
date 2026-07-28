@@ -46,6 +46,7 @@
     lazygit
     librewolf
     mcp
+    nh
     nix
     nix-index
     nushell
@@ -170,7 +171,6 @@
         # system
         devenv
         home-manager
-        nh
         pinentry-gnome3
         pwvucontrol
         sbctl
