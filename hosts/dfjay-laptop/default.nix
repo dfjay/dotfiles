@@ -154,6 +154,7 @@
         gitlab-ci-ls
         glab
         gopass
+        gpg-tui
         k6
         postgresql
         protobuf
