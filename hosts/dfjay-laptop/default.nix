@@ -168,7 +168,6 @@
         iina
         jan
         #logseq
-        syncthing
         telegram-desktop
         yaak
       ];
