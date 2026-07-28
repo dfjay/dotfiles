@@ -6,6 +6,7 @@ let
     filterAttrs
     hasAttr
     hasSuffix
+    isFunction
     mapAttrs
     mapAttrs'
     nameValuePair
@@ -59,17 +60,25 @@ let
 
   modules = collectModules ./modules;
 
+  # Parameterized modules are functions of their arguments; a host listing such
+  # a module without arguments gets it with its defaults.
+  applyDefaults = module: if isFunction module then module { } else module;
+
+  getModules =
+    type: moduleList:
+    let
+      applied = map applyDefaults moduleList;
+    in
+    map (m: m.${type}) (builtins.filter (hasAttr type) applied);
+
 in
 {
   inherit modules;
 
   # Helper to get list of module attrs for a specific type
-  getHomeModules =
-    moduleList: map (m: m.homeModule) (builtins.filter (hasAttr "homeModule") moduleList);
+  getHomeModules = getModules "homeModule";
 
-  getDarwinModules =
-    moduleList: map (m: m.darwinModule) (builtins.filter (hasAttr "darwinModule") moduleList);
+  getDarwinModules = getModules "darwinModule";
 
-  getNixosModules =
-    moduleList: map (m: m.nixosModule) (builtins.filter (hasAttr "nixosModule") moduleList);
+  getNixosModules = getModules "nixosModule";
 }

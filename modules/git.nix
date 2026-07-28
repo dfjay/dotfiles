@@ -1,4 +1,9 @@
 {
+  signingKey ? null,
+  signByDefault ? signingKey != null,
+}:
+
+{
   homeModule =
     {
       pkgs,
@@ -21,27 +26,44 @@
         enable = true;
         lfs.enable = true;
 
+        signing = lib.mkIf (signingKey != null) {
+          key = signingKey;
+          inherit signByDefault;
+        };
+
         ignores = [
           ".claude/"
           ".mcp.json"
         ];
 
         settings = {
-          user = {
-            name = username;
-            email = useremail;
-          };
+          user.name = username;
+          user.email = useremail;
 
           init.defaultBranch = "main";
           push.autoSetupRemote = true;
-          push.rebase = true;
-          pull.rebase = false;
-
-          branch.sort = "-committerdate";
+          push.followTags = true;
+          pull.ff = "only";
           fetch.prune = true;
+
           diff.algorithm = "histogram";
           merge.conflictstyle = "zdiff3";
           rerere.enabled = true;
+
+          commit.verbose = true;
+          rebase.autosquash = true;
+          rebase.autostash = true;
+          rebase.updateRefs = true;
+          rebase.missingCommitsCheck = "error";
+
+          submodule.recurse = true;
+          status.submoduleSummary = true;
+          diff.submodule = "log";
+
+          branch.sort = "-committerdate";
+          tag.sort = "-taggerdate";
+          column.ui = "auto";
+          help.autoCorrect = "prompt";
 
           alias = {
             ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
