@@ -110,6 +110,7 @@
     nushell
     opencode
     python
+    rclone
     ripgrep
     rust
     skim
@@ -159,7 +160,6 @@
         pgcli
         postgresql
         protobuf
-        rclone
         sing-box
         squawk
         xh
