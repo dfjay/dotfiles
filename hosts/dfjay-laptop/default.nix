@@ -112,6 +112,7 @@
     nix-index
     nushell
     opencode
+    pgcli
     python
     rclone
     ripgrep
@@ -154,7 +155,6 @@
         glab
         gopass
         k6
-        pgcli
         postgresql
         protobuf
         sing-box
