@@ -7,7 +7,7 @@
   lib,
 }:
 let
-  version = "25.12.2";
+  version = "25.12.5";
   target = "mediatek/filogic";
   profile = "glinet_gl-mt6000";
 
@@ -33,7 +33,7 @@ pkgs.stdenv.mkDerivation {
     url = "https://downloads.openwrt.org/releases/${version}/targets/${target}/openwrt-imagebuilder-${version}-${
       lib.replaceStrings [ "/" ] [ "-" ] target
     }.Linux-x86_64.tar.zst";
-    hash = "sha256-5mSSlOhtPW9I6gYjmue3fHs6wJMtzWXTfN0mwpo4aTU=";
+    hash = "sha256-f7bPYmWC68v7RpdNpIwerldyE/OIeer2sdmCBB6ENGE=";
   };
 
   nativeBuildInputs = with pkgs; [
