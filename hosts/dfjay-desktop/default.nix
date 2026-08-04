@@ -58,6 +58,7 @@
     skim
     ssh
     starship
+    tailscale
     tealdeer
     yazi
     zed
@@ -114,7 +115,19 @@
       networking = {
         hostName = hostname;
         networkmanager.enable = true;
+        firewall.trustedInterfaces = [ "tailscale0" ];
       };
+
+      services.openssh = {
+        enable = true;
+        openFirewall = false;
+        settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "no";
+        };
+      };
+
+      nix.settings.trusted-users = [ "nixremote" ];
 
       boot = {
         loader = {
@@ -161,6 +174,13 @@
             "docker"
           ];
           hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
+        };
+        users.nixremote = {
+          isNormalUser = true;
+          description = "Remote Nix builder";
+          openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGt8ag6YGihrNriFCBxJsygHsR7zu0nPvWfP9KLmOoY nix-builder@dfjay-laptop"
+          ];
         };
       };
 

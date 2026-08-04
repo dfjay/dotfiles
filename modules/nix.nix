@@ -1,4 +1,37 @@
 {
+  darwinModule = _: {
+    nix.linux-builder = {
+      enable = true;
+      maxJobs = 4;
+
+      config.virtualisation.cores = 4;
+    };
+
+    sops.secrets.nix_builder_key = {
+      sopsFile = ../secrets/secret.yaml;
+      path = "/etc/nix/id_builder";
+      mode = "0600";
+      owner = "root";
+    };
+
+    nix.buildMachines = [
+      {
+        hostName = "dfjay-desktop";
+        systems = [ "x86_64-linux" ];
+        sshUser = "nixremote";
+        sshKey = "/etc/nix/id_builder";
+        maxJobs = 8;
+        supportedFeatures = [
+          "big-parallel"
+          "kvm"
+          "nixos-test"
+        ];
+      }
+    ];
+
+    nix.settings.trusted-users = [ "@admin" ];
+  };
+
   homeModule =
     { pkgs, lib, ... }:
 
