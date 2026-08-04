@@ -20,6 +20,7 @@
         systems = [ "x86_64-linux" ];
         sshUser = "nixremote";
         sshKey = "/etc/nix/id_builder";
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU1JYnk5R2FFTktYV0VocTZ6bnA0VWM1akFLc1h0cTRZWUpFTjVZSS9NZXYK";
         maxJobs = 8;
         supportedFeatures = [
           "big-parallel"
