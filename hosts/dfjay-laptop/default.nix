@@ -37,7 +37,7 @@
         ];
         "3" = [
           "DELL U4025QW"
-          "DELL U2725QE"
+          "built-in"
           "main"
         ];
         "4" = [
@@ -62,8 +62,8 @@
         ];
         "8" = [
           "SU13TO"
-          "SSN-24"
           "DELL U2725QE"
+          "SSN-24"
           "built-in"
         ];
         "9" = [
