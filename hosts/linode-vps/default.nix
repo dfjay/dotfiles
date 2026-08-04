@@ -11,26 +11,9 @@
   nixosStateVersion = "25.11";
   homeStateVersion = "25.11";
 
-  modules =
-    with modules;
-    [
-      locale
-      sops
-
-      bat
-      btop
-      eza
-      git
-      helix
-      ripgrep
-      starship
-      tailscale
-      yazi
-      zoxide
-    ]
-    ++ [
-      (import ../../singbox/server.nix)
-    ];
+  modules = import ../vps-base.nix { inherit modules; } ++ [
+    (import ../../singbox/server.nix)
+  ];
 
   colmena = {
     targetHost = "linode-vps";

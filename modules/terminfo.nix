@@ -1,0 +1,8 @@
+{
+  nixosModule =
+    { ... }:
+
+    {
+      environment.enableAllTerminfo = true;
+    };
+}

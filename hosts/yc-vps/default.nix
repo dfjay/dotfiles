@@ -11,26 +11,9 @@
   nixosStateVersion = "26.05";
   homeStateVersion = "26.05";
 
-  modules =
-    with modules;
-    [
-      locale
-      sops
-
-      bat
-      btop
-      eza
-      git
-      helix
-      ripgrep
-      starship
-      tailscale
-      yazi
-      zoxide
-    ]
-    ++ [
-      (import ../../singbox/relay.nix)
-    ];
+  modules = import ../vps-base.nix { inherit modules; } ++ [
+    (import ../../singbox/relay.nix)
+  ];
 
   colmena = {
     targetHost = "yc-vps";
