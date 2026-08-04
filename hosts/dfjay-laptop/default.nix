@@ -11,7 +11,7 @@
 
   modules = with modules; [
     # system
-    (darwin-aerospace {
+    (aerospace {
       onWindowDetected = [
         {
           "if".app-id = "com.mitchellh.ghostty";
@@ -74,8 +74,8 @@
         ];
       };
     })
-    darwin-macos
     firewall
+    macos
     sops
     stylix
 
