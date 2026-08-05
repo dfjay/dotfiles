@@ -21,25 +21,71 @@
   homeModule =
     {
       config,
+      lib,
+      pkgs,
       ...
     }:
+    let
+      spectrumRoot = "${config.home.homeDirectory}/spectrum";
+      caBundle = "${config.home.homeDirectory}/.local/share/ca-certificates/spectrum.pem";
+      youtrackUrl = "https://mcp-youtrack.cloud.sd";
+
+      tokenVar = "YOUTRACK_MCP_TOKEN";
+
+      claudeSubcommands = [
+        "agents"
+        "auth"
+        "auto-mode"
+        "doctor"
+        "gateway"
+        "install"
+        "mcp"
+        "plugin"
+        "plugins"
+        "project"
+        "setup-token"
+        "ultrareview"
+        "update"
+        "upgrade"
+      ];
+    in
     {
       sops.secrets.youtrack_mcp_token = { };
 
-      sops.templates."spectrum-mcp.json" = {
-        path = "${config.home.homeDirectory}/spectrum/.mcp.json";
-        content = builtins.toJSON {
-          mcpServers = {
-            youtrack-cloud = {
-              type = "http";
-              url = "https://mcp-youtrack.cloud.sd";
-              headers = {
-                Authorization = "Bearer ${config.sops.placeholder.youtrack_mcp_token}";
-              };
-            };
-          };
+      home.file."spectrum/mcp.json".text = builtins.toJSON {
+        mcpServers.youtrack-cloud = {
+          type = "http";
+          url = youtrackUrl;
+          headers.Authorization = "Bearer \${${tokenVar}}";
         };
       };
+
+      home.file."spectrum/opencode.json".text = builtins.toJSON {
+        "$schema" = "https://opencode.ai/config.json";
+        mcp.youtrack-cloud = {
+          type = "remote";
+          url = youtrackUrl;
+          enabled = true;
+          headers.Authorization = "Bearer {env:${tokenVar}}";
+        };
+      };
+
+      home.file."spectrum/.bin/codex".source = pkgs.writeShellScript "codex-spectrum" ''
+        exec ${lib.getExe config.programs.codex.package} \
+          -c 'mcp_servers.youtrack-cloud.url="${youtrackUrl}"' \
+          -c 'mcp_servers.youtrack-cloud.bearer_token_env_var="${tokenVar}"' \
+          "$@"
+      '';
+
+      home.file."spectrum/.bin/claude".source = pkgs.writeShellScript "claude-spectrum" ''
+        case "''${1-}" in
+          ${lib.concatStringsSep "|" claudeSubcommands})
+            exec ${lib.getExe config.programs.claude-code.finalPackage} "$@"
+            ;;
+        esac
+        exec ${lib.getExe config.programs.claude-code.finalPackage} "$@" \
+          --mcp-config ${spectrumRoot}/mcp.json
+      '';
 
       home.file.".local/share/ca-certificates/spectrum.pem" = {
         force = true;
@@ -120,20 +166,16 @@
         export GOPROXY="direct,https://nexus.spectrumdata.tech/repository/proxy-golang/,https://proxy.golang.org"
         export GONOSUMDB=*
         export GONOPROXY=
-      '';
 
-      programs.zsh.initContent = ''
-        _spectrum_mcp_link() {
-          [[ -f "$HOME/spectrum/.mcp.json" ]] || return 0
-          [[ "$PWD" == "$HOME/spectrum"/* ]] || return 0
-          [[ -d .git ]] || return 0
-          [[ -e .mcp.json ]] && return 0
-          ln -s "$HOME/spectrum/.mcp.json" .mcp.json 2>/dev/null || true
-        }
-        if (( $+functions[add-zsh-hook] )) || autoload -U add-zsh-hook 2>/dev/null; then
-          add-zsh-hook chpwd _spectrum_mcp_link
-          _spectrum_mcp_link
+        export NODE_EXTRA_CA_CERTS="${caBundle}"
+
+        if [ -r "${config.sops.secrets.youtrack_mcp_token.path}" ]; then
+          export ${tokenVar}="$(cat "${config.sops.secrets.youtrack_mcp_token.path}")"
+        else
+          log_status "youtrack token unavailable, MCP server will not authenticate"
         fi
+        export OPENCODE_CONFIG="${spectrumRoot}/opencode.json"
+        PATH_add "${spectrumRoot}/.bin"
       '';
     };
 }
