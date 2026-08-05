@@ -6,7 +6,6 @@ keys:
   - &mac-host age1krvvfkj4plnuszmusq3sqpp2x8nuvmndx034wu6tqet23unlwczqkkd6v2
   - &gandi-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
-  - &yc-age age1mvdwhuw2qv5zedtqjle77esjww5jvhz8dy6dgu7gypf7w62c7cgqzsv2sd
   - &dfjay-desktop-age age1wzuk4e4d0t344mx7z956wslhj60kyn0zlq7shagdxy2l3ppylvqqfcvp48
 
 creation_rules:
@@ -21,7 +20,6 @@ creation_rules:
           - *mac-age
           - *gandi-age
           - *linode-age
-          - *yc-age
           - *dfjay-desktop-age
 
   # Gandi-specific secrets
@@ -45,17 +43,6 @@ creation_rules:
           - *mac
           - *mac-age
           - *linode-age
-
-  # YC-specific secrets
-  - path_regex: secrets/yc-vps\.yaml$
-    key_groups:
-      - pgp:
-          - *yubikey
-        age:
-          - *yubikey-ssh
-          - *mac
-          - *mac-age
-          - *yc-age
 
   # Desktop and other secrets
   - path_regex: secrets/secret\.yaml$

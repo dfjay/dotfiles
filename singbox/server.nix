@@ -24,19 +24,6 @@
         };
       };
 
-      relaySubmodule = lib.types.submodule {
-        options = {
-          tag = lib.mkOption { type = lib.types.str; };
-          server = lib.mkOption { type = lib.types.str; };
-          realityServerName = lib.mkOption {
-            type = lib.types.str;
-            default = "console.cloud.yandex.ru";
-          };
-          realityShortId = lib.mkOption { type = lib.types.str; };
-          realityPublicKey = lib.mkOption { type = lib.types.str; };
-        };
-      };
-
       # ── Shared helpers ──────────────────────────────────────────────────
 
       vlessUsers = map (u: {
@@ -99,22 +86,12 @@
       userServersFor =
         u:
         let
-          o = sub.userServers.${u} or { };
-          allowedServers = o.servers or null;
-          allowedRelays = o.relays or null;
+          allowedServers = (sub.userServers.${u} or { }).servers or null;
         in
-        {
-          servers =
-            if allowedServers == null then
-              allServers
-            else
-              lib.filter (s: lib.elem s.tag allowedServers) allServers;
-          relays =
-            if allowedRelays == null then
-              sub.relays
-            else
-              lib.filter (r: lib.elem r.tag allowedRelays) sub.relays;
-        };
+        if allowedServers == null then
+          allServers
+        else
+          lib.filter (s: lib.elem s.tag allowedServers) allServers;
     in
     {
       options.services.sing-box-vpn = {
@@ -181,12 +158,6 @@
             description = "Additional remote VPN servers (this server is included automatically)";
           };
 
-          relays = lib.mkOption {
-            type = lib.types.listOf relaySubmodule;
-            default = [ ];
-            description = "Relay servers (VLESS Reality only, for 2-hop chains)";
-          };
-
           subscribers = lib.mkOption {
             type = lib.types.listOf lib.types.str;
             default = cfg.vpnUsers;
@@ -210,16 +181,11 @@
                       null = all servers (selfServer + subscription.servers).
                     '';
                   };
-                  relays = lib.mkOption {
-                    type = lib.types.nullOr (lib.types.listOf lib.types.str);
-                    default = null;
-                    description = "Relay tags to include. null = all.";
-                  };
                 };
               }
             );
             default = { };
-            description = "Per-user filter of servers/relays in their subscription.";
+            description = "Per-user filter of servers in their subscription.";
           };
         };
 
@@ -504,13 +470,7 @@
                           "naive+https://${u}:${
                             config.sops.placeholder."vless_uuid_${u}"
                           }@${s.naiveDomain}:443#${u}-${s.tag}-naive"
-                        ]) us.servers
-                        ++ map (
-                          r:
-                          "vless://${
-                            config.sops.placeholder."vless_uuid_${u}"
-                          }@${r.server}:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=${r.realityServerName}&fp=chrome&pbk=${r.realityPublicKey}&sid=${r.realityShortId}#${u}-${r.tag}-reality"
-                        ) us.relays
+                        ]) us
                       );
                     };
                   }
@@ -521,14 +481,11 @@
                   u:
                   let
                     us = userServersFor u;
-                    relayTag = if us.relays != [ ] then "${(builtins.head us.relays).tag}-reality" else null;
-                    hasRelay = relayTag != null;
 
                     # Routing is assembled from intent-named groups instead of
                     # one positional list. ORDER BETWEEN GROUPS IS THE CONTRACT:
-                    #   alwaysDirect  -> never relayed, even under a whitelist block
-                    #   whitelist     -> "Whitelist" mode catches everything else -> relay
-                    #   ruleMode      -> only reached in normal (Rule) mode
+                    #   alwaysDirect  -> never proxied
+                    #   ruleMode      -> everything else, by geosite/geoip rules
                     # Add new rules to the group matching their intent; do not
                     # reorder the groups.
                     routePreamble = [
@@ -555,11 +512,6 @@
                         outbound = "direct";
                       }
                     ];
-                    routeWhitelist = lib.optional hasRelay {
-                      clash_mode = "Whitelist";
-                      action = "route";
-                      outbound = relayTag;
-                    };
                     routeRuleMode = [
                       {
                         domain_suffix = [ "bybit.com" ];
@@ -583,7 +535,7 @@
                       }
                     ];
 
-                    # Same three-group contract for DNS, mirroring routing so a
+                    # Same group contract for DNS, mirroring routing so a
                     # domain resolves through the same path it connects through.
                     dnsAlwaysDirect = [
                       {
@@ -592,11 +544,6 @@
                         server = "direct-dns";
                       }
                     ];
-                    dnsWhitelist = lib.optional hasRelay {
-                      clash_mode = "Whitelist";
-                      action = "route";
-                      server = "relay-dns";
-                    };
                     dnsRuleMode = [
                       {
                         rule_set = [ "geosite-category-ru" ];
@@ -640,15 +587,8 @@
                               type = "udp";
                               server = "77.88.8.8";
                             }
-                          ]
-                          ++ lib.optional hasRelay {
-                            tag = "relay-dns";
-                            type = "https";
-                            server = "dns.quad9.net";
-                            detour = relayTag;
-                            domain_resolver = "bootstrap-dns";
-                          };
-                          rules = dnsAlwaysDirect ++ dnsWhitelist ++ dnsRuleMode;
+                          ];
+                          rules = dnsAlwaysDirect ++ dnsRuleMode;
                           final = "proxy-dns";
                           strategy = "prefer_ipv4";
                         };
@@ -672,8 +612,8 @@
                               "${s.tag}-reality"
                               "${s.tag}-hy2"
                               "${s.tag}-naive"
-                            ]) us.servers;
-                            default = "${(builtins.head us.servers).tag}-reality";
+                            ]) us;
+                            default = "${(builtins.head us).tag}-reality";
                           }
                         ]
                         ++ lib.concatMap (s: [
@@ -725,28 +665,7 @@
                               server_name = s.naiveDomain;
                             };
                           }
-                        ]) us.servers
-                        ++ map (r: {
-                          type = "vless";
-                          tag = "${r.tag}-reality";
-                          server = r.server;
-                          server_port = 443;
-                          uuid = config.sops.placeholder."vless_uuid_${u}";
-                          flow = "xtls-rprx-vision";
-                          tls = {
-                            enabled = true;
-                            server_name = r.realityServerName;
-                            reality = {
-                              enabled = true;
-                              public_key = r.realityPublicKey;
-                              short_id = r.realityShortId;
-                            };
-                            utls = {
-                              enabled = true;
-                              fingerprint = "chrome";
-                            };
-                          };
-                        }) us.relays
+                        ]) us
                         ++ [
                           {
                             type = "direct";
@@ -754,7 +673,7 @@
                           }
                         ];
                         route = {
-                          rules = routePreamble ++ routeAlwaysDirect ++ routeWhitelist ++ routeRuleMode;
+                          rules = routePreamble ++ routeAlwaysDirect ++ routeRuleMode;
                           rule_set = [
                             {
                               tag = "geosite-category-ip-geo-detect";

@@ -10,7 +10,6 @@ Nix flake configuration for my machines.
 | `dfjay-desktop` | x86_64-linux | NixOS desktop |
 | `gandi-vps` | x86_64-linux | NixOS VPS |
 | `linode-vps` | x86_64-linux | NixOS VPS |
-| `yc-vps` | x86_64-linux | NixOS VPS |
 | `router` | mediatek/filogic | OpenWrt router |
 
 ## Stack
@@ -34,7 +33,6 @@ Nix flake configuration for my machines.
 │   ├── dfjay-desktop/ # NixOS desktop
 │   ├── gandi-vps/     # NixOS VPS
 │   ├── linode-vps/    # NixOS VPS
-│   ├── yc-vps/        # NixOS VPS
 │   └── router/        # OpenWrt router
 ├── modules/           # Reusable NixOS/home-manager modules
 │   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)

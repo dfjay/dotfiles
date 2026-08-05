@@ -75,14 +75,6 @@
               realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
             }
           ];
-          relays = [
-            {
-              tag = "ru-fr";
-              server = "edge-ru.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "654efZ1tti1w3gLBRnGOA2gUPT11tjz7zXoNm8ZuwjU";
-            }
-          ];
           subscribers = vpn.allUsers;
           userServers = vpn.users;
         };

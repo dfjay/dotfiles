@@ -95,7 +95,6 @@ let
 
   gandi-vps = import ./gandi-vps { inherit modules; };
   linode-vps = import ./linode-vps { inherit modules; };
-  yc-vps = import ./yc-vps { inherit modules; };
   desktop = import ./dfjay-desktop { inherit modules; };
 
 in
@@ -128,21 +127,11 @@ in
         };
         imports = conf.linode-vps._module.args.modules;
       };
-
-      yc-vps = {
-        deployment = {
-          targetHost = yc-vps.colmena.targetHost;
-          targetUser = yc-vps.colmena.targetUser;
-          buildOnTarget = true;
-        };
-        imports = conf.yc-vps._module.args.modules;
-      };
     };
 
   imports = [
     (mkNixosConfiguration gandi-vps)
     (mkNixosConfiguration linode-vps)
-    (mkNixosConfiguration yc-vps)
     (mkNixosConfiguration desktop)
   ];
 }
