@@ -1,20 +1,14 @@
 {
   homeModule =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
 
     {
       stylix.targets.zed.colors.enable = false;
       stylix.targets.zed.fonts.enable = false;
 
-      sops.secrets.context7_api_key = { };
-
       programs.zed-editor = {
         enable = true;
+        enableMcpIntegration = true;
         extensions = [
           "docker-compose"
           "dockerfile"
@@ -45,8 +39,6 @@
 
           "ayu-darker-theme"
           "colored-zed-icons-theme"
-
-          "mcp-server-context7"
         ];
         userSettings = {
           theme = "Ayu Dark";
@@ -78,11 +70,6 @@
             dock = "left";
             favorite_models = [ ];
             model_parameters = [ ];
-          };
-          context_servers = {
-            "mcp-server-context7" = {
-              enabled = true;
-            };
           };
           icon_theme = "Colored Zed Icons Theme Dark";
           vim_mode = true;
@@ -137,31 +124,5 @@
         };
       };
 
-      home.activation.zedContext7Secret =
-        lib.hm.dag.entryAfter
-          [
-            "zedSettingsActivation"
-            "sops-nix"
-          ]
-          ''
-            secret_path=${lib.escapeShellArg config.sops.secrets.context7_api_key.path}
-            settings_file=${lib.escapeShellArg "${config.xdg.configHome}/zed/settings.json"}
-
-            for _ in 1 2 3 4 5; do
-              [ -r "$secret_path" ] && break
-              sleep 1
-            done
-
-            if [ -r "$secret_path" ] && [ -f "$settings_file" ]; then
-              api_key=$(cat "$secret_path")
-              tmp=$(${pkgs.coreutils}/bin/mktemp)
-              ${pkgs.jq}/bin/jq \
-                --arg key "$api_key" \
-                '.context_servers["mcp-server-context7"].settings.context7_api_key = $key' \
-                "$settings_file" > "$tmp" \
-                && mv "$tmp" "$settings_file"
-              chmod 600 "$settings_file"
-            fi
-          '';
     };
 }
