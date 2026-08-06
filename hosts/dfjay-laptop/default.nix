@@ -117,6 +117,7 @@
     rclone
     ripgrep
     rust
+    skills
     skim
     ssh
     starship

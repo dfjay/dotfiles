@@ -55,6 +55,7 @@
     python
     ripgrep
     rust
+    skills
     skim
     ssh
     starship
