@@ -27,5 +27,16 @@
           };
         };
       };
+
+      home.file.".ai/mcp/mcp.json".source = (pkgs.formats.json { }).generate "jetbrains-mcp.json" {
+        mcpServers = lib.mapAttrs (
+          name: server:
+          lib.hm.mcp.transformMcpServer {
+            inherit server;
+            extraTransforms = [ (lib.hm.mcp.wrapEnvFilesCommand { inherit pkgs name; }) ];
+            exclude = [ "enabled" ];
+          }
+        ) config.programs.mcp.servers;
+      };
     };
 }
