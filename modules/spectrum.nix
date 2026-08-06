@@ -29,8 +29,33 @@
       spectrumRoot = "${config.home.homeDirectory}/spectrum";
       caBundle = "${config.home.homeDirectory}/.local/share/ca-certificates/spectrum.pem";
       youtrackUrl = "https://mcp-youtrack.cloud.sd";
+      youtrackToken = config.sops.secrets.youtrack_mcp_token.path;
 
-      tokenVar = "YOUTRACK_MCP_TOKEN";
+      youtrackProxy = pkgs.writeShellScript "mcp-youtrack-proxy" ''
+        if ! token=$(cat ${lib.escapeShellArg youtrackToken}); then
+          printf 'youtrack mcp: cannot read token from %s\n' \
+            ${lib.escapeShellArg youtrackToken} >&2
+          exit 1
+        fi
+
+        exec ${lib.getExe pkgs.mcp-proxy} \
+          --transport streamablehttp \
+          --headers Authorization "Bearer $token" \
+          --verify-ssl ${lib.escapeShellArg caBundle} \
+          --log-level WARNING \
+          ${lib.escapeShellArg youtrackUrl}
+      '';
+
+      youtrackJetBrains = (pkgs.formats.json { }).generate "jetbrains-mcp-youtrack.json" {
+        mcpServers.youtrack-cloud.command = "${youtrackProxy}";
+      };
+
+      youtrackZed = (pkgs.formats.json { }).generate "zed-settings-youtrack.json" {
+        context_servers.youtrack-cloud = {
+          command = "${youtrackProxy}";
+          args = [ ];
+        };
+      };
 
       claudeSubcommands = [
         "agents"
@@ -53,27 +78,21 @@
       sops.secrets.youtrack_mcp_token = { };
 
       home.file."spectrum/mcp.json".text = builtins.toJSON {
-        mcpServers.youtrack-cloud = {
-          type = "http";
-          url = youtrackUrl;
-          headers.Authorization = "Bearer \${${tokenVar}}";
-        };
+        mcpServers.youtrack-cloud.command = "${youtrackProxy}";
       };
 
       home.file."spectrum/opencode.json".text = builtins.toJSON {
         "$schema" = "https://opencode.ai/config.json";
         mcp.youtrack-cloud = {
-          type = "remote";
-          url = youtrackUrl;
+          type = "local";
+          command = [ "${youtrackProxy}" ];
           enabled = true;
-          headers.Authorization = "Bearer {env:${tokenVar}}";
         };
       };
 
       home.file."spectrum/.bin/codex".source = pkgs.writeShellScript "codex-spectrum" ''
         exec ${lib.getExe config.programs.codex.package} \
-          -c 'mcp_servers.youtrack-cloud.url="${youtrackUrl}"' \
-          -c 'mcp_servers.youtrack-cloud.bearer_token_env_var="${tokenVar}"' \
+          -c 'mcp_servers.youtrack-cloud.command="${youtrackProxy}"' \
           "$@"
       '';
 
@@ -85,6 +104,35 @@
         esac
         exec ${lib.getExe config.programs.claude-code.finalPackage} "$@" \
           --mcp-config ${spectrumRoot}/mcp.json
+      '';
+
+      home.activation.spectrumProjectAgents = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        if [ -d ${lib.escapeShellArg spectrumRoot} ]; then
+          ${pkgs.findutils}/bin/find ${lib.escapeShellArg spectrumRoot} \
+            -mindepth 2 -maxdepth 5 -type d -name .git -prune -print0 \
+          | while IFS= read -r -d "" gitdir; do
+              repo=''${gitdir%/.git}
+
+              target="$repo/.ai/mcp/mcp.json"
+              ${pkgs.diffutils}/bin/cmp -s ${youtrackJetBrains} "$target" \
+                || run ${pkgs.coreutils}/bin/install -Dm644 ${youtrackJetBrains} "$target"
+
+              target="$repo/.zed/settings.json"
+              if [ ! -e "$target" ]; then
+                run ${pkgs.coreutils}/bin/install -Dm644 ${youtrackZed} "$target"
+              elif ${pkgs.git}/bin/git -C "$repo" ls-files --error-unmatch \
+                     .zed/settings.json >/dev/null 2>&1; then
+                :
+              else
+                merged=$(${pkgs.coreutils}/bin/mktemp)
+                if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$target" ${youtrackZed} > "$merged" \
+                   && ! ${pkgs.diffutils}/bin/cmp -s "$merged" "$target"; then
+                  run ${pkgs.coreutils}/bin/install -Dm644 "$merged" "$target"
+                fi
+                rm -f "$merged"
+              fi
+            done
+        fi
       '';
 
       home.file.".local/share/ca-certificates/spectrum.pem" = {
@@ -169,11 +217,6 @@
 
         export NODE_EXTRA_CA_CERTS="${caBundle}"
 
-        if [ -r "${config.sops.secrets.youtrack_mcp_token.path}" ]; then
-          export ${tokenVar}="$(cat "${config.sops.secrets.youtrack_mcp_token.path}")"
-        else
-          log_status "youtrack token unavailable, MCP server will not authenticate"
-        fi
         export OPENCODE_CONFIG="${spectrumRoot}/opencode.json"
         PATH_add "${spectrumRoot}/.bin"
       '';

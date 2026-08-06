@@ -34,6 +34,8 @@
         ignores = [
           ".claude/"
           ".mcp.json"
+          ".ai/"
+          ".zed/"
         ];
 
         settings = {
