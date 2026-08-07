@@ -55,6 +55,32 @@ setup() {
   [ "$detail" = "hash mismatch" ]
 }
 
+@test "report: a row warning is prefixed onto the detail" {
+  export REPORT_FILE="$BATS_TEST_TMPDIR/report"
+  : > "$REPORT_FILE"
+  bash -c 'source "$SCRIPT" --source-only; ROW_WARNING="check failed"; report push-failed mos 1.0 1.1 b "push denied"'
+  IFS="$SEP" read -r _ _ _ _ _ detail < "$REPORT_FILE"
+  [ "$detail" = "check failed; push denied" ]
+}
+
+@test "log_reason: prefers the real cause over git housekeeping" {
+  printf 'Preparing worktree\nsoundsource: unexpected Wayback Machine response\nThe update script for soundsource-6.1.0 failed with exit code 1\nDeleted branch update-tmpabc (was ac858eb).\n' > "$BATS_TEST_TMPDIR/log"
+  run bash -c "source \"\$SCRIPT\" --source-only; log_reason \"$BATS_TEST_TMPDIR/log\""
+  [ "$output" = "soundsource: unexpected Wayback Machine response" ]
+}
+
+@test "log_reason: falls back to the last real line when nothing looks like an error" {
+  printf 'building\nHEAD is now at ac858eb\nsomething happened\nDeleted branch update-tmpabc (was ac858eb).\n' > "$BATS_TEST_TMPDIR/log"
+  run bash -c "source \"\$SCRIPT\" --source-only; log_reason \"$BATS_TEST_TMPDIR/log\""
+  [ "$output" = "something happened" ]
+}
+
+@test "log_reason: strips the field separator so a detail cannot corrupt the report" {
+  printf 'error: bad\x1fthing happened\n' > "$BATS_TEST_TMPDIR/log"
+  run bash -c "source \"\$SCRIPT\" --source-only; log_reason \"$BATS_TEST_TMPDIR/log\""
+  [ "$output" = "error: badthing happened" ]
+}
+
 fake_gh() {
   mkdir -p "$BATS_TEST_TMPDIR/bin"
   {

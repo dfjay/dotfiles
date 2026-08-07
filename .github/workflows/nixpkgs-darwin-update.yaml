@@ -47,7 +47,7 @@ jobs:
           PACKAGES: ${{ inputs.packages }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
           REPORT_FILE: ${{ runner.temp }}/report.txt
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.NIXPKGS_FORK_TOKEN }}
         run: bash .github/scripts/nixpkgs-darwin-update.sh
 
       - name: Render report

@@ -3,6 +3,7 @@
 set -uo pipefail
 
 SEP=$'\x1f'
+ROW_WARNING=""
 
 resolve_packages() {
   if [ -n "${PACKAGES:-}" ]; then
@@ -15,7 +16,15 @@ resolve_packages() {
 }
 
 report() {
-  printf '%s\n' "$1$SEP$2$SEP$3$SEP$4$SEP$5$SEP$6" >> "$REPORT_FILE"
+  printf '%s\n' "$1$SEP$2$SEP$3$SEP$4$SEP$5$SEP${ROW_WARNING:+${ROW_WARNING}; }$6" >> "$REPORT_FILE"
+}
+
+log_reason() {
+  local line
+  line="$(grep -iE 'error|failed|fatal|unexpected|refus|denied' "$1" 2>/dev/null \
+            | grep -vE '^The update script for ' | tail -n 1)"
+  [ -n "$line" ] || line="$(grep -vE "^$|^Deleted branch |^Preparing worktree|^Updating files|^HEAD is now at " "$1" 2>/dev/null | tail -n 1)"
+  printf '%s' "$line" | tr -d "\r\n$SEP" | cut -c1-200
 }
 
 parse_bump() {
@@ -34,7 +43,7 @@ classify_update_failure() {
 
 has_open_pr() {
   local attr="$1" count
-  count="$(GH_TOKEN="" GITHUB_TOKEN="" gh api -X GET search/issues \
+  count="$(gh api -X GET search/issues \
              -f q="repo:NixOS/nixpkgs is:pr is:open in:title ${attr}" \
              --jq "[.items[] | select(.title | startswith(\"${attr}: \"))] | length" \
              2>/dev/null)" || return 2
@@ -43,7 +52,7 @@ has_open_pr() {
 }
 
 publish_branch() {
-  local attr="$1" old="$2" new="$3" branch="$4" warn="${5:-}"
+  local attr="$1" old="$2" new="$3" branch="$4"
 
   # Never touch an existing branch: it may hold an unsent PR.
   if git -C "$NIXPKGS_DIR" ls-remote --exit-code --heads fork "$branch" >/dev/null 2>&1; then
@@ -52,22 +61,23 @@ publish_branch() {
   fi
 
   if [ "${DRY_RUN:-1}" = "1" ]; then
-    report updated "$attr" "$old" "$new" "$branch" "${warn:+$warn; }dry run, not pushed"
+    report updated "$attr" "$old" "$new" "$branch" "dry run, not pushed"
     return 0
   fi
 
   git -C "$NIXPKGS_DIR" branch -f "$branch" HEAD
-  if ! git -C "$NIXPKGS_DIR" push fork "$branch" >/dev/null 2>&1; then
-    report push-failed "$attr" "$old" "$new" "$branch" "the package built, but the push to the fork failed"
+  if ! git -C "$NIXPKGS_DIR" push fork "$branch" > "/tmp/push-${attr}.log" 2>&1; then
+    report push-failed "$attr" "$old" "$new" "$branch" "built, but the push failed: $(log_reason "/tmp/push-${attr}.log")"
     return 0
   fi
-  report updated "$attr" "$old" "$new" "$branch" "$warn"
+  report updated "$attr" "$old" "$new" "$branch" ""
 }
 
 process_package() {
   local attr="$1"
-  local before after subject old new branch warn=""
+  local before after subject old new branch
 
+  ROW_WARNING=""
   has_open_pr "$attr"
   case $? in
     0)
@@ -75,7 +85,8 @@ process_package() {
       return 0
       ;;
     2)
-      warn="could not check upstream for a duplicate PR"
+      # Set on the row rather than passed around, so no report call can drop it.
+      ROW_WARNING="could not check upstream for a duplicate PR"
       ;;
   esac
 
@@ -89,7 +100,7 @@ process_package() {
         report no-update-script "$attr" "" "" "" "no passthru.updateScript"
         ;;
       *)
-        report build-failed "$attr" "" "" "" "update.nix failed: $(tail -n 1 "/tmp/update-${attr}.log")"
+        report build-failed "$attr" "" "" "" "update.nix failed: $(log_reason "/tmp/update-${attr}.log")"
         ;;
     esac
     return 0
@@ -110,11 +121,11 @@ process_package() {
   branch="auto-update/${attr}-${new}"
 
   if ! nix-build "$NIXPKGS_DIR" -A "$attr" --no-out-link > "/tmp/build-${attr}.log" 2>&1; then
-    report build-failed "$attr" "$old" "$new" "" "$(tail -n 1 "/tmp/build-${attr}.log")"
+    report build-failed "$attr" "$old" "$new" "" "build failed: $(log_reason "/tmp/build-${attr}.log")"
     return 0
   fi
 
-  publish_branch "$attr" "$old" "$new" "$branch" "$warn"
+  publish_branch "$attr" "$old" "$new" "$branch"
 }
 
 main() {
