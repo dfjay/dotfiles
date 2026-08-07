@@ -20,9 +20,10 @@ report() {
 }
 
 log_reason() {
+  local noise='^The update script for |^-+ SHOWING ERROR LOG|: (ERROR|UPDATING \.\.\.)$'
   local line
   line="$(grep -iE 'error|failed|fatal|unexpected|refus|denied' "$1" 2>/dev/null \
-            | grep -vE '^The update script for ' | tail -n 1)"
+            | grep -vE "$noise" | tail -n 1)"
   [ -n "$line" ] || line="$(grep -vE "^$|^Deleted branch |^Preparing worktree|^Updating files|^HEAD is now at " "$1" 2>/dev/null | tail -n 1)"
   printf '%s' "$line" | tr -d "\r\n$SEP" | cut -c1-200
 }

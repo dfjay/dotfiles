@@ -1,6 +1,7 @@
 setup() {
   SCRIPT_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")/.." && pwd)"
   export SCRIPT="$SCRIPT_DIR/nixpkgs-darwin-update.sh"
+  export SYNC="$SCRIPT_DIR/sync-update-issue.sh"
   export LIST_FILE="$BATS_TEST_TMPDIR/list.txt"
   # Same separator the scripts use.
   SEP=$'\x1f'
@@ -63,10 +64,24 @@ setup() {
   [ "$detail" = "check failed; push denied" ]
 }
 
-@test "log_reason: prefers the real cause over git housekeeping" {
-  printf 'Preparing worktree\nsoundsource: unexpected Wayback Machine response\nThe update script for soundsource-6.1.0 failed with exit code 1\nDeleted branch update-tmpabc (was ac858eb).\n' > "$BATS_TEST_TMPDIR/log"
+# Verbatim shape of a real update.nix failure log, banners and all.
+@test "log_reason: prefers the real cause over update.nix banners and git housekeeping" {
+  cat > "$BATS_TEST_TMPDIR/log" <<'EOF'
+Enqueuing group of 1 packages
+ - soundsource-6.1.0: UPDATING ...
+ - soundsource-6.1.0: ERROR
+
+--- SHOWING ERROR LOG FOR soundsource-6.1.0 ----------------------
+
+soundsource: unexpected Wayback Machine response: 'https://web.archive.org/save/x'
+
+
+--- SHOWING ERROR LOG FOR soundsource-6.1.0 ----------------------
+The update script for soundsource-6.1.0 failed with exit code 1
+Deleted branch update-tmpqnbb0u3_ (was 1f5a62ea0071).
+EOF
   run bash -c "source \"\$SCRIPT\" --source-only; log_reason \"$BATS_TEST_TMPDIR/log\""
-  [ "$output" = "soundsource: unexpected Wayback Machine response" ]
+  [ "$output" = "soundsource: unexpected Wayback Machine response: 'https://web.archive.org/save/x'" ]
 }
 
 @test "log_reason: falls back to the last real line when nothing looks like an error" {
@@ -79,6 +94,22 @@ setup() {
   printf 'error: bad\x1fthing happened\n' > "$BATS_TEST_TMPDIR/log"
   run bash -c "source \"\$SCRIPT\" --source-only; log_reason \"$BATS_TEST_TMPDIR/log\""
   [ "$output" = "error: badthing happened" ]
+}
+
+@test "state_changed: the same table is not news" {
+  local t='| `lulu` | 4.3.1 → 4.5.1 | built | [open PR](x) |'
+  run bash -c "source \"\$SYNC\" --source-only; state_changed '$t' '$t'"
+  [ "$status" -ne 0 ]
+}
+
+@test "state_changed: only the run-log footer moving is not news" {
+  run bash -c "source \"\$SYNC\" --source-only; state_changed 'row' \$'row\n\n[Run log](https://x/1)'"
+  [ "$status" -ne 0 ]
+}
+
+@test "state_changed: a new row is news" {
+  run bash -c "source \"\$SYNC\" --source-only; state_changed 'row' \$'row\nsecond row'"
+  [ "$status" -eq 0 ]
 }
 
 fake_gh() {
