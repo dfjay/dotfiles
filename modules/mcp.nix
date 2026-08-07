@@ -6,12 +6,22 @@
       lib,
       ...
     }:
+    let
+      intellijUrl = "http://127.0.0.1:64342/stream";
+    in
     {
       sops.secrets.context7_api_key = { };
+
+      programs.zed-editor.userSettings.context_servers.intellij = {
+        source = "http";
+        url = intellijUrl;
+        enabled = false;
+      };
 
       programs.mcp = {
         enable = true;
         servers = {
+          intellij.url = intellijUrl;
           playwright = {
             command = lib.getExe' pkgs.nodejs_24 "npx";
             args = [
@@ -36,7 +46,7 @@
             extraTransforms = [ (lib.hm.mcp.wrapEnvFilesCommand { inherit pkgs name; }) ];
             exclude = [ "enabled" ];
           }
-        ) config.programs.mcp.servers;
+        ) (lib.filterAttrs (name: _: name != "intellij") config.programs.mcp.servers);
       };
     };
 }
