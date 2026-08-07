@@ -33,15 +33,17 @@ classify_update_failure() {
 }
 
 has_open_pr() {
-  local attr="$1" found
-  found="$(gh pr list --repo NixOS/nixpkgs --state open \
-             --search "in:title ${attr}:" --json title \
-             --jq "[.[] | select(.title | startswith(\"${attr}: \"))] | length")"
-  [ "${found:-0}" -gt 0 ]
+  local attr="$1" count
+  count="$(GH_TOKEN="" GITHUB_TOKEN="" gh api -X GET search/issues \
+             -f q="repo:NixOS/nixpkgs is:pr is:open in:title ${attr}" \
+             --jq "[.items[] | select(.title | startswith(\"${attr}: \"))] | length" \
+             2>/dev/null)" || return 2
+  [[ "$count" =~ ^[0-9]+$ ]] || return 2
+  [ "$count" -gt 0 ]
 }
 
 publish_branch() {
-  local attr="$1" old="$2" new="$3" branch="$4"
+  local attr="$1" old="$2" new="$3" branch="$4" warn="${5:-}"
 
   # Never touch an existing branch: it may hold an unsent PR.
   if git -C "$NIXPKGS_DIR" ls-remote --exit-code --heads fork "$branch" >/dev/null 2>&1; then
@@ -50,7 +52,7 @@ publish_branch() {
   fi
 
   if [ "${DRY_RUN:-1}" = "1" ]; then
-    report updated "$attr" "$old" "$new" "$branch" "dry run, not pushed"
+    report updated "$attr" "$old" "$new" "$branch" "${warn:+$warn; }dry run, not pushed"
     return 0
   fi
 
@@ -59,17 +61,23 @@ publish_branch() {
     report push-failed "$attr" "$old" "$new" "$branch" "the package built, but the push to the fork failed"
     return 0
   fi
-  report updated "$attr" "$old" "$new" "$branch" ""
+  report updated "$attr" "$old" "$new" "$branch" "$warn"
 }
 
 process_package() {
   local attr="$1"
-  local before after subject old new branch
+  local before after subject old new branch warn=""
 
-  if has_open_pr "$attr"; then
-    report pr-exists "$attr" "" "" "" "a PR is already open in NixOS/nixpkgs"
-    return 0
-  fi
+  has_open_pr "$attr"
+  case $? in
+    0)
+      report pr-exists "$attr" "" "" "" "a PR is already open in NixOS/nixpkgs"
+      return 0
+      ;;
+    2)
+      warn="could not check upstream for a duplicate PR"
+      ;;
+  esac
 
   before="$(git -C "$NIXPKGS_DIR" rev-parse HEAD)"
 
@@ -106,7 +114,7 @@ process_package() {
     return 0
   fi
 
-  publish_branch "$attr" "$old" "$new" "$branch"
+  publish_branch "$attr" "$old" "$new" "$branch" "$warn"
 }
 
 main() {

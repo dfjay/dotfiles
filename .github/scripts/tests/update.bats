@@ -55,6 +55,42 @@ setup() {
   [ "$detail" = "hash mismatch" ]
 }
 
+fake_gh() {
+  mkdir -p "$BATS_TEST_TMPDIR/bin"
+  {
+    echo '#!/usr/bin/env bash'
+    echo "printf '%s' \"\$FAKE_GH_OUT\""
+    echo 'exit ${FAKE_GH_RC}'
+  } > "$BATS_TEST_TMPDIR/bin/gh"
+  chmod +x "$BATS_TEST_TMPDIR/bin/gh"
+  export FAKE_GH_OUT="$1" FAKE_GH_RC="$2"
+  export PATH="$BATS_TEST_TMPDIR/bin:$PATH"
+}
+
+@test "has_open_pr: a matching upstream PR is found" {
+  fake_gh 1 0
+  run bash -c 'source "$SCRIPT" --source-only; has_open_pr lulu'
+  [ "$status" -eq 0 ]
+}
+
+@test "has_open_pr: no matching PR is a clean negative" {
+  fake_gh 0 0
+  run bash -c 'source "$SCRIPT" --source-only; has_open_pr lulu'
+  [ "$status" -eq 1 ]
+}
+
+@test "has_open_pr: a failed query is not reported as no PR" {
+  fake_gh "" 1
+  run bash -c 'source "$SCRIPT" --source-only; has_open_pr lulu'
+  [ "$status" -eq 2 ]
+}
+
+@test "has_open_pr: a non-numeric answer is not reported as no PR" {
+  fake_gh "gateway timeout" 0
+  run bash -c 'source "$SCRIPT" --source-only; has_open_pr lulu'
+  [ "$status" -eq 2 ]
+}
+
 @test "classify_update_failure: an absent updateScript is reported as such" {
   printf 'error: Package with an attribute name `mos` does not have a `passthru.updateScript` attribute defined.\n' > "$BATS_TEST_TMPDIR/log"
   run bash -c "source \"\$SCRIPT\" --source-only; classify_update_failure \"$BATS_TEST_TMPDIR/log\""
