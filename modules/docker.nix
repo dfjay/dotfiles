@@ -42,7 +42,7 @@
           isService = true;
           settings = {
             cpu = 6;
-            memory = 12;
+            memory = 8;
             disk = 100;
             arch = "aarch64";
             runtime = "docker";
