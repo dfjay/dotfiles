@@ -1,0 +1,75 @@
+name: Update darwin-only nixpkgs packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: "Space-separated packages (empty: read .github/nixpkgs-auto-update.txt)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Do not push branches or open an issue"
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    - cron: "0 6 * * 1"
+
+concurrency:
+  group: nixpkgs-darwin-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-26
+    timeout-minutes: 60
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout dotfiles
+        uses: actions/checkout@v7
+
+      - name: Setup Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Clone nixpkgs
+        run: |
+          git clone --filter=blob:none https://github.com/NixOS/nixpkgs "$RUNNER_TEMP/nixpkgs"
+          git -C "$RUNNER_TEMP/nixpkgs" remote add fork \
+            "https://x-access-token:${{ secrets.NIXPKGS_FORK_TOKEN }}@github.com/dfjay/nixpkgs.git"
+          git -C "$RUNNER_TEMP/nixpkgs" config user.name "dfjay"
+          git -C "$RUNNER_TEMP/nixpkgs" config user.email "claude@dfjay.com"
+
+      - name: Run updates
+        env:
+          NIXPKGS_DIR: ${{ runner.temp }}/nixpkgs
+          LIST_FILE: ${{ github.workspace }}/.github/nixpkgs-auto-update.txt
+          PACKAGES: ${{ inputs.packages }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          REPORT_FILE: ${{ runner.temp }}/report.txt
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/nixpkgs-darwin-update.sh
+
+      - name: Render report
+        id: report
+        run: |
+          body="$(bash .github/scripts/render-update-report.sh "$RUNNER_TEMP/report.txt")"
+          if [ -z "$body" ]; then
+            echo "Nothing to update." >> "$GITHUB_STEP_SUMMARY"
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "empty=false" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$body" >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$body" > "$RUNNER_TEMP/body.md"
+          printf '\n[Run log](%s/%s/actions/runs/%s)\n' \
+            "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" >> "$RUNNER_TEMP/body.md"
+
+      - name: Open issue
+        if: steps.report.outputs.empty == 'false' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Darwin auto-update: branches ready for PR" \
+            --body-file "$RUNNER_TEMP/body.md"
