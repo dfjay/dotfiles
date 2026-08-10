@@ -18,8 +18,6 @@
 
         marketplaces = {
           claude-plugins-official = inputs.claude-plugins-official;
-          goland-claude-marketplace = inputs.go-modern-guidelines;
-          superpowers-dev = inputs.claude-superpowers;
         };
 
         settings = {
@@ -101,16 +99,14 @@
               '';
           };
           enabledPlugins = {
-            "modern-go-guidelines@goland-claude-marketplace" = true;
             "gopls-lsp@claude-plugins-official" = true;
             "typescript-lsp@claude-plugins-official" = true;
             "rust-analyzer-lsp@claude-plugins-official" = true;
             "pyright-lsp@claude-plugins-official" = true;
             "kotlin-lsp@claude-plugins-official" = true;
+            "jdtls-lsp@claude-plugins-official" = true;
             "code-review@claude-plugins-official" = true;
             "security-guidance@claude-plugins-official" = true;
-            "superpowers@superpowers-dev" = true;
-            "frontend-design@claude-plugins-official" = true;
           };
 
           skipDangerousModePermissionPrompt = true;

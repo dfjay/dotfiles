@@ -12,22 +12,26 @@
 
       superpowers = "${inputs.claude-superpowers}/skills";
 
-      superpowersSkills = lib.genAttrs (lib.attrNames (
-        lib.filterAttrs (_: type: type == "directory") (builtins.readDir superpowers)
-      )) (name: "${superpowers}/${name}");
+      superpowersSkills = lib.genAttrs [
+        "brainstorming"
+        "systematic-debugging"
+        "test-driven-development"
+        "verification-before-completion"
+      ] (name: "${superpowers}/${name}");
 
       skills = {
         use-modern-go = "${inputs.go-modern-guidelines}/skills/use-modern-go";
-        frontend-design = "${inputs.claude-plugins-official}/plugins/frontend-design/skills/frontend-design";
       }
       // superpowersSkills;
+
+      mkSkillFiles =
+        prefix:
+        lib.mapAttrs' (name: source: lib.nameValuePair "${prefix}/${name}" { inherit source; }) skills;
     in
     {
       programs.opencode.skills = skills;
 
-      home.file = lib.mapAttrs' (
-        name: source: lib.nameValuePair ".agents/skills/${name}" { inherit source; }
-      ) skills;
+      home.file = mkSkillFiles ".agents/skills" // mkSkillFiles ".claude/skills";
 
       home.activation.jetbrainsBundledSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         jar=$(
