@@ -175,6 +175,14 @@ fake_gh() {
   [[ "$output" != *"compare/master"* ]]
 }
 
+@test "render: a row with no known versions shows no bare arrow" {
+  printf 'build-failed%ssoundsource%s%s%s%swayback said no\n' "$SEP" "$SEP" "$SEP" "$SEP" "$SEP" > "$BATS_TEST_TMPDIR/report"
+  run bash "$SCRIPT_DIR/render-update-report.sh" "$BATS_TEST_TMPDIR/report"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"| — |"* ]]
+  [[ "$output" != *"→"* ]]
+}
+
 @test "render: push-failed is not reported as a build failure" {
   printf 'push-failed%smos%s1.0%s1.1%sauto-update/mos-1.1%sthe package built, but the push to the fork failed\n' "$SEP" "$SEP" "$SEP" "$SEP" "$SEP" > "$BATS_TEST_TMPDIR/report"
   run bash "$SCRIPT_DIR/render-update-report.sh" "$BATS_TEST_TMPDIR/report"
