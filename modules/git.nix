@@ -1,9 +1,4 @@
 {
-  signingKey ? null,
-  signByDefault ? signingKey != null,
-}:
-
-{
   homeModule =
     {
       pkgs,
@@ -25,11 +20,6 @@
       programs.git = {
         enable = true;
         lfs.enable = true;
-
-        signing = lib.mkIf (signingKey != null) {
-          key = signingKey;
-          inherit signByDefault;
-        };
 
         ignores = [
           ".claude/"

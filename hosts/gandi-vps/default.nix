@@ -1,7 +1,6 @@
-{ modules }:
+{ modules, profiles, ... }:
 
 {
-  host = "gandi-vps";
   system = "x86_64-linux";
   user = "dfjay";
   useremail = "mail@dfjay.com";
@@ -11,7 +10,7 @@
   nixosStateVersion = "24.11";
   homeStateVersion = "25.11";
 
-  modules = import ../vps-base.nix { inherit modules; } ++ [
+  modules = profiles.server ++ [
     (import ../../singbox/server.nix)
   ];
 

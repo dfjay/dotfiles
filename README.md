@@ -28,20 +28,80 @@ Nix flake configuration for my machines.
 ```
 .
 ├── flake.nix          # Flake entrypoint
-├── hosts/             # Per-machine configurations
+├── lib.nix            # Module and profile collection
+├── hosts/
+│   ├── default.nix    # Host discovery, colmena nodes
+│   ├── mk-host.nix    # Host declaration -> nixos/darwin configuration
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
 │   ├── gandi-vps/     # NixOS VPS
 │   ├── linode-vps/    # NixOS VPS
 │   └── router/        # OpenWrt router
-├── modules/           # Reusable NixOS/home-manager modules
-│   ├── de/            # Desktop environments (COSMIC, GNOME, KDE)
-│   ├── languages/     # Dev toolchains (Go, Rust, Python, JS, ...)
-│   ├── shell/         # Shell configs (Zsh, Nushell, Fish)
+├── profiles/          # Named module lists shared by hosts
+│   ├── base.nix       # Every host, servers included
+│   ├── server.nix     # Headless boxes
+│   └── workstation.nix
+├── modules/           # Reusable NixOS/darwin/home-manager modules
+│   ├── de/            # Desktop environments
 │   └── *.nix          # Individual tool modules
+├── singbox/           # sing-box VPN stack
+├── overlays/          # nixpkgs overlays
 ├── secrets/           # SOPS-encrypted secrets
-└── Justfile           # Common tasks
+└── justfile           # Common tasks
 ```
+
+### Adding a host
+
+Create `hosts/<name>/default.nix` — nothing else needs to be touched. The
+directory name is the host name, `system` decides whether a `nixosConfiguration`
+or a `darwinConfiguration` is generated, and adding a `colmena` attribute makes
+the host deployable:
+
+```nix
+{ modules, profiles, ... }:
+
+{
+  system = "x86_64-linux";
+  user = "dfjay";
+  useremail = "mail@dfjay.com";
+  nixosStateVersion = "25.11";
+  homeStateVersion = "25.11";
+
+  modules = profiles.server ++ (with modules; [ docker ]);
+
+  colmena = {
+    targetHost = "<name>";
+    targetUser = "dfjay";
+  };
+
+  config = { ... }: { /* host-specific configuration */ };
+}
+```
+
+A host directory containing a `flake-module.nix` is left alone and imported as a
+flake-parts module instead — that is how `router/` opts out of the above.
+
+### Modules
+
+Every file in `modules/` returns a bundle of per-class modules:
+
+```nix
+{
+  nixosModule = { ... }: { /* ... */ };
+  darwinModule = { ... }: { /* ... */ };
+  homeModule = { ... }: { /* ... */ };
+}
+```
+
+They are published as `flake.modules.<class>.<name>`, where `<class>` is
+`nixos`, `darwin` or `homeManager` and `<name>` is the path under `modules/`
+with `/` replaced by `-` (`modules/de/kde.nix` becomes `de-kde`). Hosts and
+profiles list names, which `mk-host.nix` resolves against that namespace and
+filters by the host's platform — so a single list covers all three classes.
+
+Because the namespace is the flake-parts `flake.modules` option, any other file
+can extend a module by defining into the same name, and a name that has nothing
+for a host's platform is an error rather than a silent no-op.
 
 ## Usage
 

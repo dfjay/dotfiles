@@ -1,10 +1,6 @@
 {
-  workspaceMonitorAssignment ? { },
-  onWindowDetected ? [ ],
-}:
-{
   darwinModule =
-    { lib, ... }:
+    { ... }:
     {
       services.aerospace = {
         enable = true;
@@ -114,11 +110,6 @@
               "mode main"
             ];
           };
-
-          on-window-detected = onWindowDetected;
-        }
-        // lib.optionalAttrs (workspaceMonitorAssignment != { }) {
-          workspace-to-monitor-force-assignment = workspaceMonitorAssignment;
         };
       };
     };

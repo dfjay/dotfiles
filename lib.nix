@@ -2,23 +2,26 @@
 let
   inherit (builtins) readDir;
   inherit (lib)
-    attrNames
+    any
+    attrValues
+    concatMapAttrs
     filterAttrs
-    hasAttr
     hasSuffix
-    isFunction
     mapAttrs
     mapAttrs'
     nameValuePair
     removeSuffix
     ;
 
-  # Import a single module file
-  importModule = path: filename: import (path + "/${filename}");
+  classes = {
+    nixos = "nixosModule";
+    darwin = "darwinModule";
+    homeManager = "homeModule";
+  };
 
-  # Recursively collect modules from a directory
-  # Returns nested attrset: { bat = <module>; languages = { kotlin = <module>; }; }
-  collectModules =
+  isBundle = value: any (attr: value ? ${attr}) (attrValues classes);
+
+  collectFiles =
     path:
     let
       contents = readDir path;
@@ -27,58 +30,76 @@ let
         name: type: type == "regular" && hasSuffix ".nix" name && name != "default.nix"
       ) contents;
 
-      subDirs = filterAttrs (name: type: type == "directory") contents;
-
-      # Import .nix files as modules
-      fileModules = mapAttrs' (
-        filename: _: nameValuePair (removeSuffix ".nix" filename) (importModule path filename)
-      ) nixFiles;
-
-      # Recursively process subdirectories
-      dirModules = mapAttrs (dirname: _: collectModules (path + "/${dirname}")) subDirs;
+      subDirs = filterAttrs (_: type: type == "directory") contents;
     in
-    fileModules // dirModules;
+    mapAttrs' (
+      filename: _: nameValuePair (removeSuffix ".nix" filename) (import (path + "/${filename}"))
+    ) nixFiles
+    // mapAttrs (dirname: _: collectFiles (path + "/${dirname}")) subDirs;
 
-  # Extract specific module type (homeModule, darwinModule, nixosModule) from collected modules
-  # Flattens nested structure for easier use
-  extractModuleType =
-    type: modules:
-    let
-      extract =
-        prefix: mods:
-        lib.concatMapAttrs (
-          name: value:
-          if hasAttr type value then
-            { ${if prefix == "" then name else "${prefix}/${name}"} = value.${type}; }
-          else if builtins.isAttrs value then
-            extract (if prefix == "" then name else "${prefix}/${name}") value
-          else
-            { }
-        ) mods;
-    in
-    extract "" modules;
+  tree = collectFiles ./modules;
 
-  modules = collectModules ./modules;
+  flatName = prefix: name: if prefix == "" then name else "${prefix}-${name}";
 
-  # Parameterized modules are functions of their arguments; a host listing such
-  # a module without arguments gets it with its defaults.
-  applyDefaults = module: if isFunction module then module { } else module;
+  flatten =
+    prefix: node:
+    concatMapAttrs (
+      name: value:
+      let
+        n = flatName prefix name;
+      in
+      if isBundle value then { ${n} = value; } else flatten n value
+    ) node;
 
-  getModules =
-    type: moduleList:
-    let
-      applied = map applyDefaults moduleList;
-    in
-    map (m: m.${type}) (builtins.filter (hasAttr type) applied);
+  flat = flatten "" tree;
+
+  # Leaves are the published names, not the modules, so a typo in a host list
+  # surfaces as an undefined variable where it was written.
+  names =
+    prefix: node:
+    mapAttrs (
+      name: value:
+      let
+        n = flatName prefix name;
+      in
+      if isBundle value then n else names n value
+    ) node;
+
+  modules = names "" tree;
 
 in
 {
   inherit modules;
 
-  # Helper to get list of module attrs for a specific type
-  getHomeModules = getModules "homeModule";
+  profiles = lib.fix (
+    self:
+    mapAttrs (
+      _: profile:
+      profile {
+        inherit modules;
+        profiles = self;
+      }
+    ) (collectFiles ./profiles)
+  );
 
-  getDarwinModules = getModules "darwinModule";
+  # Published as flake.modules.<class>.<name> so that any other file can extend
+  # a module by defining into the same name.
+  flakeModules = mapAttrs (
+    _: attr: mapAttrs (_: bundle: bundle.${attr}) (filterAttrs (_: bundle: bundle ? ${attr}) flat)
+  ) classes;
 
-  getNixosModules = getModules "nixosModule";
+  # An entry naming no class at all is rejected by mk-host.nix, not here.
+  getModules =
+    class: flakeModules: entries:
+    let
+      attr = classes.${class};
+      available = flakeModules.${class} or { };
+      resolve =
+        entry:
+        if builtins.isString entry then
+          lib.optional (available ? ${entry}) available.${entry}
+        else
+          lib.optional (entry ? ${attr}) entry.${attr};
+    in
+    lib.concatMap resolve entries;
 }

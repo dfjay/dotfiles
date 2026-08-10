@@ -96,9 +96,19 @@
       ];
 
       imports = [
-        ./hosts/darwin.nix
-        ./hosts/nixos.nix
-        ./hosts/router/flake-module.nix
+        inputs.flake-parts.flakeModules.modules
+        ./hosts
+        (
+          { lib, ... }:
+          let
+            self-lib = import ./lib.nix { inherit lib; };
+          in
+          {
+            _module.args = { inherit self-lib; };
+
+            flake.modules = self-lib.flakeModules;
+          }
+        )
       ];
 
       perSystem =

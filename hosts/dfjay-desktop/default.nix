@@ -1,7 +1,6 @@
-{ modules }:
+{ modules, profiles, ... }:
 
 {
-  host = "dfjay-desktop";
   system = "x86_64-linux";
   user = "dfjay";
   useremail = "mail@dfjay.com";
@@ -10,61 +9,16 @@
   nixosStateVersion = "25.11";
   homeStateVersion = "26.11";
 
-  modules = with modules; [
-    # system
-    audio
-    bluetooth
-    de.cosmic
-    firewall
-    games
-    locale
-    sops
-    stylix
-
-    # tools
-    bat
-    beam
-    btop
-    claude
-    direnv
-    docker
-    eza
-    fd
-    fish
-    formats
-    gh
-    ghostty
-    (git {
-      signingKey = "A82705DF08BC95859FF5CB7E577260D68251AC22"; # YubiKey primary key [SC]
-    })
-    go
-    gpg
-    helix
-    js
-    just
-    jvm
-    k8s
-    lazydocker
-    lazygit
-    librewolf
-    mcp
-    nh
-    nix
-    nix-index
-    nushell
-    python
-    ripgrep
-    rust
-    skills
-    skim
-    ssh
-    starship
-    tailscale
-    tealdeer
-    yazi
-    zed
-    zoxide
-  ];
+  modules =
+    profiles.workstation
+    ++ (with modules; [
+      # system
+      audio
+      bluetooth
+      de.cosmic
+      games
+      locale
+    ]);
 
   config =
     {
@@ -152,10 +106,6 @@
       home-manager.users.${username} = {
         sops.gnupg.home = "/home/${username}/.gnupg";
         sops.secrets."netrc".path = "/home/${username}/.netrc";
-        services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
-        services.gpg-agent.sshKeys = [
-          "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # YubiKey auth subkey
-        ];
         programs.git.includes = [
           {
             path = "~/spectrum/.gitconfig";
