@@ -171,6 +171,7 @@
         jan
         #logseq
         telegram-desktop
+        tutanota-desktop
         yaak
       ];
       environment.variables.EDITOR = "hx";
@@ -206,7 +207,6 @@
           "soundsource"
           "steam"
           "tor-browser"
-          "tuta-mail"
         ];
       };
     };

@@ -213,6 +213,7 @@
         prismlauncher
         telegram-desktop
         tor-browser
+        tutanota-desktop
         via
       ];
 
