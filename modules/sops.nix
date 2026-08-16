@@ -6,24 +6,23 @@ let
 in
 {
   nixosModule =
-    { inputs, pkgs, ... }:
+    { inputs, ... }:
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
       sops = defaultSopsConfig;
-      environment.systemPackages = [ pkgs.sops ];
     };
 
   darwinModule =
-    { inputs, pkgs, ... }:
+    { inputs, ... }:
     {
       imports = [ inputs.sops-nix.darwinModules.sops ];
-      environment.systemPackages = [ pkgs.sops ];
     };
 
   homeModule =
-    { inputs, ... }:
+    { inputs, pkgs, ... }:
     {
       imports = [ inputs.sops-nix.homeManagerModules.sops ];
       sops = defaultSopsConfig;
+      home.packages = [ pkgs.sops ];
     };
 }
