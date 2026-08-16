@@ -3,6 +3,8 @@
     { pkgs, ... }:
 
     {
+      home.packages = [ pkgs.prismlauncher ];
+
       programs.lutris = {
         enable = true;
         steamPackage = pkgs.steam;
