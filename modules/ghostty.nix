@@ -11,12 +11,8 @@
     };
 
   darwinModule =
-    { username, ... }:
+    { pkgs, username, ... }:
     {
-      homebrew.casks = [
-        "ghostty"
-      ];
-
-      home-manager.users.${username}.programs.ghostty.package = null;
+      home-manager.users.${username}.programs.ghostty.package = pkgs.ghostty-bin;
     };
 }
