@@ -76,7 +76,6 @@
           gsta = "git stash";
           gstp = "git stash pop";
 
-          nhs = "nh home switch";
           nrs = "nh os switch";
           nds = "nh darwin switch";
         };
