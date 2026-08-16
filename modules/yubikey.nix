@@ -1,7 +1,9 @@
 {
   homeModule =
-    { ... }:
+    { pkgs, ... }:
     {
+      home.packages = [ pkgs.yubikey-manager ];
+
       programs.git.signing = {
         key = "A82705DF08BC95859FF5CB7E577260D68251AC22"; # primary key [SC]
         signByDefault = true;
