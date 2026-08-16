@@ -10,6 +10,7 @@
 
       home.packages = with pkgs; [
         async-profiler
+        eclipse-mat
         jdt-language-server
         kotlin
         ktlint
@@ -45,20 +46,11 @@
       };
     };
 
-  nixosModule =
-    { pkgs, ... }:
-    {
-      environment.systemPackages = with pkgs; [
-        eclipse-mat
-      ];
-    };
-
   darwinModule =
     { ... }:
     {
       homebrew.casks = [
         "jdk-mission-control"
-        "memoryanalyzer"
       ];
     };
 }
