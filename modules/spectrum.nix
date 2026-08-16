@@ -1,20 +1,18 @@
 {
+  nixosModule =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = [ pkgs.openfortivpn ];
+    };
+
   darwinModule =
     { pkgs, ... }:
     {
       environment.systemPackages = [ pkgs.openfortivpn ];
+
       homebrew.casks = [
         "mattermost"
         "windows-app"
-      ];
-    };
-
-  nixosModule =
-    { pkgs, ... }:
-    {
-      environment.systemPackages = with pkgs; [
-        openfortivpn
-        mattermost-desktop
       ];
     };
 
@@ -76,6 +74,8 @@
     in
     {
       sops.secrets.youtrack_mcp_token = { };
+
+      home.packages = lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.mattermost-desktop;
 
       home.file."spectrum/mcp.json".text = builtins.toJSON {
         mcpServers.youtrack-cloud.command = "${youtrackProxy}";
