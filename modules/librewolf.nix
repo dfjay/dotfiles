@@ -148,7 +148,7 @@
       ];
 
       home.packages =
-        lib.optional pkgs.stdenv.isDarwin librewolfWorkAppDarwin
-        ++ lib.optional pkgs.stdenv.isLinux librewolfWorkDesktopLinux;
+        lib.optional pkgs.stdenv.hostPlatform.isDarwin librewolfWorkAppDarwin
+        ++ lib.optional pkgs.stdenv.hostPlatform.isLinux librewolfWorkDesktopLinux;
     };
 }
