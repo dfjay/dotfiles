@@ -38,6 +38,8 @@
 
     {
       home.packages = with pkgs; [
+        colmena
+        devenv
         nixd
         nixfmt
       ];
