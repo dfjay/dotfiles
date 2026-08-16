@@ -13,4 +13,11 @@
 
       programs.kdeconnect.enable = true;
     };
+
+  homeModule =
+    { pkgs, ... }:
+
+    {
+      services.gpg-agent.pinentry.package = pkgs.pinentry-qt;
+    };
 }
