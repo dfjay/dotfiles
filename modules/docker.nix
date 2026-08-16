@@ -12,14 +12,8 @@
     };
 
   darwinModule =
-    { pkgs, username, ... }:
+    { username, ... }:
     {
-      environment.systemPackages = with pkgs; [
-        docker
-        docker-credential-helpers
-        dive
-      ];
-
       # /var/run is wiped on boot; clients resolve the daemon through this path rather than DOCKER_HOST
       launchd.daemons.colima-docker-socket = {
         script = "ln -sfn /Users/${username}/.colima/default/docker.sock /var/run/docker.sock";
@@ -30,12 +24,21 @@
   homeModule =
     { pkgs, lib, ... }:
     {
-      home.packages = with pkgs; [
-        dockerfile-language-server
-        docker-compose-language-service
-      ];
+      home.packages =
+        (with pkgs; [
+          dockerfile-language-server
+          docker-compose-language-service
+        ])
+        ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin (
+          with pkgs;
+          [
+            docker
+            docker-credential-helpers
+            dive
+          ]
+        );
 
-      services.colima = lib.mkIf pkgs.stdenv.isDarwin {
+      services.colima = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         enable = true;
         profiles.default = {
           isActive = true;
