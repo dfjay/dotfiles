@@ -31,6 +31,7 @@ profiles.base
   nix
   nix-index
   nushell
+  postgres
   python
   rust
   skills

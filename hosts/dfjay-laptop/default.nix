@@ -18,7 +18,6 @@
       # tools
       codex
       opencode
-      pgcli
       rclone
       web3
 

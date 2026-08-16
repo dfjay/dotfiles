@@ -1,6 +1,6 @@
 {
   homeModule =
-    { config, ... }:
+    { config, pkgs, ... }:
 
     let
       inherit (config.lib.stylix.colors.withHashtag)
@@ -19,6 +19,8 @@
       style = s: "'${s}'";
     in
     {
+      home.packages = [ pkgs.postgresql ];
+
       programs.pgcli = {
         enable = true;
 
