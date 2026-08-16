@@ -112,6 +112,22 @@
             condition = "gitdir:~/spectrum/";
           }
         ];
+
+        home.packages = with pkgs; [
+          # CLI
+          gnumake
+          home-manager
+          k6
+
+          # GUI
+          discord
+          libreoffice-qt
+          pwvucontrol
+          telegram-desktop
+          tor-browser
+          tutanota-desktop
+          via
+        ];
       };
 
       users = {
@@ -137,34 +153,9 @@
       };
 
       environment.systemPackages = with pkgs; [
-        # system
-        devenv
-        home-manager
-        pinentry-gnome3
-        pwvucontrol
-        sbctl
-
-        # sensors
         lm_sensors
-
-        # CLI
-        colmena
-        gnumake
-        gopass
-        gpg-tui
-        k6
-        postgresql
+        sbctl
         usbutils
-        yubikey-manager
-
-        # GUI
-        discord
-        libreoffice-qt
-        prismlauncher
-        telegram-desktop
-        tor-browser
-        tutanota-desktop
-        via
       ];
 
       environment.variables.EDITOR = "hx";

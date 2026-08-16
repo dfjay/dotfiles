@@ -31,6 +31,30 @@
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
         sops.secrets."netrc".path = "/Users/${username}/.netrc";
+
+        home.packages = with pkgs; [
+          # CLI
+          age
+          container
+          gitlab-ci-ls
+          glab
+          k6
+          protobuf
+          sing-box
+          squawk
+          xh
+          yq-go
+
+          # GUI
+          element-desktop
+          iina
+          jan
+          #logseq
+          mos
+          telegram-desktop
+          tutanota-desktop
+          yaak
+        ];
       };
 
       services.aerospace.settings = {
@@ -98,36 +122,6 @@
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        # system
-        devenv
-
-        # CLI
-        age
-        colmena
-        container
-        gitlab-ci-ls
-        glab
-        gopass
-        gpg-tui
-        k6
-        postgresql
-        protobuf
-        sing-box
-        squawk
-        xh
-        yq-go
-        yubikey-manager
-
-        # GUI
-        element-desktop
-        iina
-        jan
-        #logseq
-        telegram-desktop
-        tutanota-desktop
-        yaak
-      ];
       environment.variables.EDITOR = "hx";
 
       homebrew = {
@@ -156,7 +150,6 @@
           "intellij-idea"
           "loopback"
           "lulu"
-          "mos"
           "signal"
           "soundsource"
           "steam"
