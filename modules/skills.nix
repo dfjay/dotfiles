@@ -20,7 +20,7 @@
       ] (name: "${superpowers}/${name}");
 
       skills = {
-        use-modern-go = "${inputs.go-modern-guidelines}/skills/use-modern-go";
+        use-modern-go = "${inputs.go-modern-guidelines}/plugin/skills/use-modern-go";
       }
       // superpowersSkills;
 
