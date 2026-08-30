@@ -48,6 +48,9 @@
 
       facter.reportPath = ./facter.json;
 
+      # headless: the emulated QEMU vga would pull in mesa
+      facter.detected.graphics.enable = false;
+
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];
 
