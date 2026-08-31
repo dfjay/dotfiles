@@ -47,8 +47,7 @@
       ],
       "auto_route": true,
       "strict_route": true,
-      "auto_redirect": true,
-      "sniff": true
+      "auto_redirect": true
     }
   ],
   "outbounds": [
@@ -81,6 +80,9 @@
   ],
   "route": {
     "rules": [
+      {
+        "action": "sniff"
+      },
       {
         "protocol": "dns",
         "action": "hijack-dns"
