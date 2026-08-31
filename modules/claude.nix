@@ -24,6 +24,9 @@
           env = { };
           enableVimMode = true;
           attribution.commit = "Assisted-by: Claude Code";
+          # Keeps the claude.ai session link out of commit messages; this repo
+          # is public, so the session id would be published with it.
+          attribution.sessionUrl = false;
           permissions = {
             allow = [
               # git
