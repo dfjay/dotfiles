@@ -227,6 +227,12 @@
                     level = "warn";
                     timestamp = true;
                   };
+                  http_clients = [
+                    {
+                      tag = "direct-http";
+                      detour = "direct";
+                    }
+                  ];
                   dns = {
                     servers = [
                       {
@@ -352,17 +358,16 @@
                         type = "remote";
                         format = "binary";
                         url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                        download_detour = "direct";
                       }
                       {
                         tag = "geoip-ru";
                         type = "remote";
                         format = "binary";
                         url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                        download_detour = "direct";
                       }
                     ];
                     final = "warp";
+                    default_http_client = "direct-http";
                     default_domain_resolver = "bootstrap";
                   };
                 };
@@ -568,6 +573,12 @@
                           level = "info";
                           timestamp = true;
                         };
+                        http_clients = [
+                          {
+                            tag = "proxy-http";
+                            detour = "select";
+                          }
+                        ];
                         dns = {
                           servers = [
                             {
@@ -680,25 +691,23 @@
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ip-geo-detect.srs";
-                              download_detour = "select";
                             }
                             {
                               tag = "geosite-category-ru";
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
-                              download_detour = "select";
                             }
                             {
                               tag = "geoip-ru";
                               type = "remote";
                               format = "binary";
                               url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
-                              download_detour = "select";
                             }
                           ];
                           auto_detect_interface = true;
                           final = "select";
+                          default_http_client = "proxy-http";
                           default_domain_resolver = "bootstrap-dns";
                         };
                       };
