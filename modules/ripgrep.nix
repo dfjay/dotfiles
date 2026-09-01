@@ -3,12 +3,8 @@
     { ... }:
 
     {
-      programs.ripgrep-all = {
+      programs.ripgrep = {
         enable = true;
-      };
-
-      home.shellAliases = {
-        rg = "rga";
       };
     };
 }

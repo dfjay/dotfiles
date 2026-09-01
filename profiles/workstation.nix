@@ -33,6 +33,7 @@ profiles.base
   nushell
   postgres
   python
+  ripgrep-all
   rust
   skills
   skim
