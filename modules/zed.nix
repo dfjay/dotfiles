@@ -1,7 +1,10 @@
 {
   homeModule =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
 
+    let
+      inherit (config.stylix.fonts) monospace;
+    in
     {
       stylix.targets.zed.colors.enable = false;
       stylix.targets.zed.fonts.enable = false;
@@ -42,8 +45,8 @@
         ];
         userSettings = {
           theme = "Ayu Dark";
-          ui_font_family = "JetBrainsMono Nerd Font";
-          buffer_font_family = "JetBrainsMono Nerd Font";
+          ui_font_family = monospace.name;
+          buffer_font_family = monospace.name;
           ui_font_size = 14;
           buffer_font_size = 13;
           telemetry = {
