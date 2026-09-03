@@ -34,11 +34,8 @@
     in
     {
       nixpkgs.overlays = [
-        (final: prev: {
-          sing-box =
-            inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}.callPackage
-              ../../singbox/package.nix
-              { };
+        (_: prev: {
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
         })
       ];
 
