@@ -145,6 +145,7 @@
 
         casks = [
           "brave-browser"
+          "cryptomator"
           "draw-things"
           "intellij-idea"
           "loopback"
