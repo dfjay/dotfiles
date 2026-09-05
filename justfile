@@ -3,6 +3,20 @@
 up:
   nix flake update
 
+# Update all the flake inputs and apply the current system configuration
+[group('nix')]
+upgrade:
+  #!/usr/bin/env bash
+  set -euo pipefail
+
+  nix flake update
+
+  case "$(uname -s)" in
+    Darwin) nh darwin switch . ;;
+    Linux) nh os switch . ;;
+    *) echo "Unsupported OS: $(uname -s)" >&2; exit 1 ;;
+  esac
+
 # List all generations of the system profile
 [group('nix')]
 history:
