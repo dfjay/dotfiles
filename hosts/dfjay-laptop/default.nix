@@ -149,6 +149,7 @@
           "intellij-idea"
           "loopback"
           "lulu"
+          "sfm"
           "signal"
           "soundsource"
           "steam"
