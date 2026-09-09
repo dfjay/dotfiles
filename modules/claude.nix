@@ -17,7 +17,7 @@
         enableMcpIntegration = true;
 
         marketplaces = {
-          claude-plugins-official = inputs.claude-plugins-official;
+          claude-plugins-nix = inputs.claude-plugins-official;
         };
 
         settings = {
@@ -102,14 +102,14 @@
               '';
           };
           enabledPlugins = {
-            "gopls-lsp@claude-plugins-official" = true;
-            "typescript-lsp@claude-plugins-official" = true;
-            "rust-analyzer-lsp@claude-plugins-official" = true;
-            "pyright-lsp@claude-plugins-official" = true;
-            "kotlin-lsp@claude-plugins-official" = true;
-            "jdtls-lsp@claude-plugins-official" = true;
-            "code-review@claude-plugins-official" = true;
-            "security-guidance@claude-plugins-official" = true;
+            "gopls-lsp@claude-plugins-nix" = true;
+            "typescript-lsp@claude-plugins-nix" = true;
+            "rust-analyzer-lsp@claude-plugins-nix" = true;
+            "pyright-lsp@claude-plugins-nix" = true;
+            "kotlin-lsp@claude-plugins-nix" = true;
+            "jdtls-lsp@claude-plugins-nix" = true;
+            "code-review@claude-plugins-nix" = true;
+            "security-guidance@claude-plugins-nix" = true;
           };
 
           skipDangerousModePermissionPrompt = true;
