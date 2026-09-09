@@ -102,8 +102,15 @@
             exec ${lib.getExe config.programs.claude-code.finalPackage} "$@"
             ;;
         esac
+
+        plugins=()
+        for manifest in ${spectrumRoot}/ai/skills/*/plugins/*/.claude-plugin/plugin.json; do
+          [ -f "$manifest" ] || continue
+          plugins+=(--plugin-dir "''${manifest%/.claude-plugin/plugin.json}")
+        done
+
         exec ${lib.getExe config.programs.claude-code.finalPackage} "$@" \
-          --mcp-config ${spectrumRoot}/mcp.json
+          --mcp-config ${spectrumRoot}/mcp.json "''${plugins[@]}"
       '';
 
       home.activation.spectrumProjectAgents = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
