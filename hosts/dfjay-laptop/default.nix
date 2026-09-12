@@ -17,6 +17,7 @@
 
       # tools
       codex
+      games
       opencode
       rclone
       web3
@@ -153,7 +154,6 @@
           "sfm"
           "signal"
           "soundsource"
-          "steam"
           "tor-browser"
         ];
       };

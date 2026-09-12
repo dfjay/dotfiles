@@ -24,4 +24,11 @@
         gamescopeSession.enable = true;
       };
     };
+
+  darwinModule =
+    { ... }:
+
+    {
+      homebrew.casks = [ "steam" ];
+    };
 }
