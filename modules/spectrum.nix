@@ -28,6 +28,7 @@
       caBundle = "${config.home.homeDirectory}/.local/share/ca-certificates/spectrum.pem";
       youtrackUrl = "https://mcp-youtrack.cloud.sd";
       youtrackToken = config.sops.secrets.youtrack_mcp_token.path;
+      gitlabMcpUrl = "https://gitlab.spectrumdata.tech/api/v4/mcp";
 
       youtrackProxy = pkgs.writeShellScript "mcp-youtrack-proxy" ''
         if ! token=$(cat ${lib.escapeShellArg youtrackToken}); then
@@ -44,14 +45,20 @@
           ${lib.escapeShellArg youtrackUrl}
       '';
 
-      youtrackJetBrains = (pkgs.formats.json { }).generate "jetbrains-mcp-youtrack.json" {
-        mcpServers.youtrack-cloud.command = "${youtrackProxy}";
+      jetbrainsMcp = (pkgs.formats.json { }).generate "jetbrains-mcp-spectrum.json" {
+        mcpServers = {
+          youtrack-cloud.command = "${youtrackProxy}";
+          gitlab.url = gitlabMcpUrl;
+        };
       };
 
-      youtrackZed = (pkgs.formats.json { }).generate "zed-settings-youtrack.json" {
-        context_servers.youtrack-cloud = {
-          command = "${youtrackProxy}";
-          args = [ ];
+      zedSettings = (pkgs.formats.json { }).generate "zed-settings-spectrum.json" {
+        context_servers = {
+          youtrack-cloud = {
+            command = "${youtrackProxy}";
+            args = [ ];
+          };
+          gitlab.url = gitlabMcpUrl;
         };
       };
 
@@ -121,18 +128,18 @@
               repo=''${gitdir%/.git}
 
               target="$repo/.ai/mcp/mcp.json"
-              ${pkgs.diffutils}/bin/cmp -s ${youtrackJetBrains} "$target" \
-                || run ${pkgs.coreutils}/bin/install -Dm644 ${youtrackJetBrains} "$target"
+              ${pkgs.diffutils}/bin/cmp -s ${jetbrainsMcp} "$target" \
+                || run ${pkgs.coreutils}/bin/install -Dm644 ${jetbrainsMcp} "$target"
 
               target="$repo/.zed/settings.json"
               if [ ! -e "$target" ]; then
-                run ${pkgs.coreutils}/bin/install -Dm644 ${youtrackZed} "$target"
+                run ${pkgs.coreutils}/bin/install -Dm644 ${zedSettings} "$target"
               elif ${pkgs.git}/bin/git -C "$repo" ls-files --error-unmatch \
                      .zed/settings.json >/dev/null 2>&1; then
                 :
               else
                 merged=$(${pkgs.coreutils}/bin/mktemp)
-                if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$target" ${youtrackZed} > "$merged" \
+                if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$target" ${zedSettings} > "$merged" \
                    && ! ${pkgs.diffutils}/bin/cmp -s "$merged" "$target"; then
                   run ${pkgs.coreutils}/bin/install -Dm644 "$merged" "$target"
                 fi
