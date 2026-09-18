@@ -64,16 +64,23 @@
 
       claudeSubcommands = [
         "agents"
+        "attach"
         "auth"
         "auto-mode"
         "doctor"
         "gateway"
+        "import"
         "install"
+        "kill"
+        "logs"
         "mcp"
         "plugin"
         "plugins"
         "project"
+        "respawn"
+        "rm"
         "setup-token"
+        "stop"
         "ultrareview"
         "update"
         "upgrade"
@@ -111,7 +118,9 @@
         esac
 
         plugins=()
-        for manifest in ${spectrumRoot}/ai/skills/*/plugins/*/.claude-plugin/plugin.json; do
+        for manifest in \
+          ${spectrumRoot}/ai/skills/*/.claude-plugin/plugin.json \
+          ${spectrumRoot}/ai/skills/*/plugins/*/.claude-plugin/plugin.json; do
           [ -f "$manifest" ] || continue
           plugins+=(--plugin-dir "''${manifest%/.claude-plugin/plugin.json}")
         done
