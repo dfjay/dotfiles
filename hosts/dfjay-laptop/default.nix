@@ -45,17 +45,6 @@
           squawk
           xh
           yq-go
-
-          # GUI
-          element-desktop
-          iina
-          jan
-          #logseq
-          mos
-          obsidian
-          telegram-desktop
-          tutanota-desktop
-          yaak
         ];
       };
 
@@ -148,13 +137,21 @@
           "brave-browser"
           "cryptomator"
           "draw-things"
+          "element"
+          "iina"
           "intellij-idea"
+          "jan"
           "loopback"
           "lulu"
+          "mos"
+          "obsidian"
           "sfm"
           "signal"
           "soundsource"
+          "telegram-desktop"
           "tor-browser"
+          "tuta-mail"
+          "yaak"
         ];
       };
     };
