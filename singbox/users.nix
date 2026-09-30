@@ -5,6 +5,7 @@ let
       servers = [
         "fr"
         "us"
+        "ru"
       ];
     };
     chu74 = {
@@ -23,6 +24,7 @@ let
       servers = [
         "fr"
         "us"
+        "ru"
       ];
     };
     gtn5 = {

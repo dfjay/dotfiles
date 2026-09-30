@@ -7,15 +7,15 @@
   userdesc = "Pavel Yozhikov";
   nixpkgs = "nixpkgs-stable";
   home-manager = "home-manager-stable";
-  nixosStateVersion = "24.11";
-  homeStateVersion = "25.11";
+  nixosStateVersion = "26.05";
+  homeStateVersion = "26.05";
 
   modules = profiles.server ++ [
     (import ../../singbox/server.nix)
   ];
 
   colmena = {
-    targetHost = "gandi-vps";
+    targetHost = "regru-vps";
     targetUser = "dfjay";
   };
 
@@ -48,73 +48,24 @@
 
       facter.reportPath = ./facter.json;
 
+      # headless: the emulated QEMU vga would pull in mesa
+      facter.detected.graphics.enable = false;
+
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];
 
       services.sing-box-vpn = {
         enable = true;
-        tag = "fr";
-        edgeDomain = "edge-fr.dfjay.com";
-        naiveDomain = "naive-fr.dfjay.com";
-        realityShortId = "1a3287df";
-        realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
-        vpnUsers = vpn.serverUsers "fr";
+        tag = "ru";
+        edgeDomain = "edge-ru.dfjay.com";
+        naiveDomain = "naive-ru.dfjay.com";
+        realityShortId = "f0447be7";
+        realityServerName = "www.ozon.ru";
+        realityPublicKey = "OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg";
+        domestic = true;
+        vpnUsers = vpn.serverUsers "ru";
         sharedSecretsFile = ../../secrets/shared.yaml;
-        serverSecretsFile = ../../secrets/gandi-vps.yaml;
-
-        subscription = {
-          enable = true;
-          domain = "subs.dfjay.com";
-          servers = [
-            {
-              tag = "us";
-              edgeDomain = "edge-us.dfjay.com";
-              naiveDomain = "naive-us.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
-            }
-            {
-              tag = "ru";
-              edgeDomain = "edge-ru.dfjay.com";
-              naiveDomain = "naive-ru.dfjay.com";
-              realityServerName = "www.ozon.ru";
-              realityShortId = "f0447be7";
-              realityPublicKey = "OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg";
-              domestic = true;
-            }
-          ];
-          subscribers = vpn.allUsers;
-          userServers = vpn.users;
-        };
-
-        extraStreamHosts = [ "dfjay.com" ];
-      };
-
-      services.nginx.virtualHosts."dfjay.com" = {
-        forceSSL = true;
-        enableACME = true;
-        listen = [
-          {
-            addr = "0.0.0.0";
-            port = 80;
-          }
-          {
-            addr = "[::]";
-            port = 80;
-          }
-          {
-            addr = "127.0.0.1";
-            port = 8443;
-            ssl = true;
-          }
-          {
-            addr = "[::1]";
-            port = 8443;
-            ssl = true;
-          }
-        ];
-        root = "${inputs.portfolio}";
-        locations."/".tryFiles = "$uri $uri/ /index.html";
+        serverSecretsFile = ../../secrets/regru-vps.yaml;
       };
 
       security.sudo.wheelNeedsPassword = false;

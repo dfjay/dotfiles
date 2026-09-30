@@ -21,6 +21,10 @@
           };
           realityShortId = lib.mkOption { type = lib.types.str; };
           realityPublicKey = lib.mkOption { type = lib.types.str; };
+          domestic = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+          };
         };
       };
 
@@ -78,6 +82,7 @@
           realityServerName
           realityShortId
           realityPublicKey
+          domestic
           ;
       };
 
@@ -126,6 +131,16 @@
         realityPublicKey = lib.mkOption {
           type = lib.types.str;
           description = "Reality public key (for client configs)";
+        };
+
+        domestic = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = ''
+            Server located inside Russia, used to reach RU services from abroad.
+            Egress is plain direct (no WARP, no RU rejects), and clients route
+            RU traffic through a separate `ru-select` selector instead of `select`.
+          '';
         };
 
         vpnUsers = lib.mkOption {
@@ -203,10 +218,12 @@
             sops = {
               secrets = {
                 reality_private_key.sopsFile = cfg.serverSecretsFile;
+                hy2_obfs_password.sopsFile = cfg.sharedSecretsFile;
+              }
+              // lib.optionalAttrs (!cfg.domestic) {
                 warp_private_key.sopsFile = cfg.serverSecretsFile;
                 warp_ipv4.sopsFile = cfg.serverSecretsFile;
                 warp_ipv6.sopsFile = cfg.serverSecretsFile;
-                hy2_obfs_password.sopsFile = cfg.sharedSecretsFile;
               }
               // builtins.listToAttrs (
                 map (u: {
@@ -233,23 +250,37 @@
                       detour = "direct";
                     }
                   ];
-                  dns = {
-                    servers = [
+                  dns =
+                    if cfg.domestic then
                       {
-                        tag = "quad9";
-                        type = "https";
-                        server = "dns.quad9.net";
-                        domain_resolver = "bootstrap";
+                        servers = [
+                          {
+                            tag = "yandex";
+                            type = "udp";
+                            server = "77.88.8.8";
+                          }
+                        ];
+                        final = "yandex";
+                        strategy = "prefer_ipv4";
                       }
+                    else
                       {
-                        tag = "bootstrap";
-                        type = "udp";
-                        server = "9.9.9.9";
-                      }
-                    ];
-                    final = "quad9";
-                    strategy = "prefer_ipv4";
-                  };
+                        servers = [
+                          {
+                            tag = "quad9";
+                            type = "https";
+                            server = "dns.quad9.net";
+                            domain_resolver = "bootstrap";
+                          }
+                          {
+                            tag = "bootstrap";
+                            type = "udp";
+                            server = "9.9.9.9";
+                          }
+                        ];
+                        final = "quad9";
+                        strategy = "prefer_ipv4";
+                      };
                   inbounds = [
                     {
                       type = "vless";
@@ -296,7 +327,7 @@
                       };
                     }
                   ];
-                  endpoints = [
+                  endpoints = lib.optionals (!cfg.domestic) [
                     {
                       type = "wireguard";
                       tag = "warp";
@@ -335,6 +366,8 @@
                         ];
                         action = "reject";
                       }
+                    ]
+                    ++ lib.optionals (!cfg.domestic) [
                       {
                         domain_suffix = [
                           "claude.ai"
@@ -352,7 +385,7 @@
                         action = "reject";
                       }
                     ];
-                    rule_set = [
+                    rule_set = lib.optionals (!cfg.domestic) [
                       {
                         tag = "geosite-category-ru";
                         type = "remote";
@@ -366,9 +399,9 @@
                         url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
                       }
                     ];
-                    final = "warp";
+                    final = if cfg.domestic then "direct" else "warp";
                     default_http_client = "direct-http";
-                    default_domain_resolver = "bootstrap";
+                    default_domain_resolver = if cfg.domestic then "yandex" else "bootstrap";
                   };
                 };
               };
@@ -486,6 +519,18 @@
                   u:
                   let
                     us = userServersFor u;
+                    exitServers = lib.filter (s: !s.domestic) us;
+                    domesticServers = lib.filter (s: s.domestic) us;
+                    hasDomestic = domesticServers != [ ];
+
+                    ruOutbound = if hasDomestic then "ru-select" else "direct";
+                    ruDns = if hasDomestic then "ru-dns" else "direct-dns";
+
+                    serverOutboundTags = s: [
+                      "${s.tag}-reality"
+                      "${s.tag}-hy2"
+                      "${s.tag}-naive"
+                    ];
 
                     # Routing is assembled from intent-named groups instead of
                     # one positional list. ORDER BETWEEN GROUPS IS THE CONTRACT:
@@ -519,9 +564,9 @@
                     ];
                     routeRuleMode = [
                       {
-                        domain_suffix = [ "bybit.com" ];
+                        rule_set = [ "geosite-bybit" ];
                         action = "route";
-                        outbound = "direct";
+                        outbound = ruOutbound;
                       }
                       {
                         rule_set = [ "geosite-category-ip-geo-detect" ];
@@ -531,12 +576,12 @@
                       {
                         rule_set = [ "geosite-category-ru" ];
                         action = "route";
-                        outbound = "direct";
+                        outbound = ruOutbound;
                       }
                       {
                         rule_set = [ "geoip-ru" ];
                         action = "route";
-                        outbound = "direct";
+                        outbound = ruOutbound;
                       }
                     ];
 
@@ -551,9 +596,12 @@
                     ];
                     dnsRuleMode = [
                       {
-                        rule_set = [ "geosite-category-ru" ];
+                        rule_set = [
+                          "geosite-bybit"
+                          "geosite-category-ru"
+                        ];
                         action = "route";
-                        server = "direct-dns";
+                        server = ruDns;
                       }
                     ];
                   in
@@ -598,7 +646,13 @@
                               type = "udp";
                               server = "77.88.8.8";
                             }
-                          ];
+                          ]
+                          ++ lib.optional hasDomestic {
+                            tag = "ru-dns";
+                            type = "udp";
+                            server = "77.88.8.8";
+                            detour = "ru-select";
+                          };
                           rules = dnsAlwaysDirect ++ dnsRuleMode;
                           final = "proxy-dns";
                           strategy = "prefer_ipv4";
@@ -619,14 +673,16 @@
                           {
                             type = "selector";
                             tag = "select";
-                            outbounds = lib.concatMap (s: [
-                              "${s.tag}-reality"
-                              "${s.tag}-hy2"
-                              "${s.tag}-naive"
-                            ]) us;
-                            default = "${(builtins.head us).tag}-reality";
+                            outbounds = lib.concatMap serverOutboundTags exitServers;
+                            default = "${(builtins.head exitServers).tag}-reality";
                           }
                         ]
+                        ++ lib.optional hasDomestic {
+                          type = "selector";
+                          tag = "ru-select";
+                          outbounds = [ "direct" ] ++ lib.concatMap serverOutboundTags domesticServers;
+                          default = "direct";
+                        }
                         ++ lib.concatMap (s: [
                           {
                             type = "vless";
@@ -686,6 +742,12 @@
                         route = {
                           rules = routePreamble ++ routeAlwaysDirect ++ routeRuleMode;
                           rule_set = [
+                            {
+                              tag = "geosite-bybit";
+                              type = "remote";
+                              format = "binary";
+                              url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-bybit.srs";
+                            }
                             {
                               tag = "geosite-category-ip-geo-detect";
                               type = "remote";

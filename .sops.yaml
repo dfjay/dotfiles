@@ -6,6 +6,7 @@ keys:
   - &mac-host age1krvvfkj4plnuszmusq3sqpp2x8nuvmndx034wu6tqet23unlwczqkkd6v2
   - &gandi-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
+  - &regru-age age125e4z55u3642ldaz9qerxk8xfw8egj6pu6qzqfcpc36rksv8cs4qcepk52
   - &dfjay-desktop-age age1wzuk4e4d0t344mx7z956wslhj60kyn0zlq7shagdxy2l3ppylvqqfcvp48
 
 creation_rules:
@@ -20,6 +21,7 @@ creation_rules:
           - *mac-age
           - *gandi-age
           - *linode-age
+          - *regru-age
           - *dfjay-desktop-age
 
   # Gandi-specific secrets
@@ -43,6 +45,17 @@ creation_rules:
           - *mac
           - *mac-age
           - *linode-age
+
+  # REG.RU-specific secrets
+  - path_regex: secrets/regru-vps\.yaml$
+    key_groups:
+      - pgp:
+          - *yubikey
+        age:
+          - *yubikey-ssh
+          - *mac
+          - *mac-age
+          - *regru-age
 
   # Desktop and other secrets
   - path_regex: secrets/secret\.yaml$
