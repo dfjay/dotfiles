@@ -47,4 +47,7 @@ in
       // hostCfg.colmena;
       imports = conf.${name}._module.args.modules;
     }) colmenaHosts;
+
+  # colmena >= 0.5 reads the prebuilt hive instead of `colmena`
+  flake.colmenaHive = inputs.colmena.lib.makeHive inputs.self.colmena;
 }
