@@ -135,6 +135,7 @@
 
         casks = [
           "brave-browser"
+          "crossover"
           "cryptomator"
           "draw-things"
           "element"
