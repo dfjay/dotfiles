@@ -47,6 +47,7 @@ let
 
   overlays = (import ../overlays) ++ [
     inputs.firefox-addons.overlays.default
+    inputs.rust-overlay.overlays.default
   ];
 
   homeDirectory = if isDarwin then "/Users/${user}" else "/home/${user}";

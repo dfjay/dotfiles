@@ -3,15 +3,14 @@
     { pkgs, ... }:
 
     {
-      home.packages = with pkgs; [
-        cargo
-        rustc
-        rustfmt
-        clippy
-        rust-analyzer
-        rustlings
+      home.packages = [
+        (pkgs.rust-bin.stable.latest.default.override {
+          extensions = [
+            "rust-analyzer"
+            "rust-src"
+          ];
+        })
+        pkgs.rustlings
       ];
-
-      home.sessionVariables.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
     };
 }

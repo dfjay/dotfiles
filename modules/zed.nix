@@ -105,7 +105,7 @@
           lsp = {
             rust-analyzer = {
               binary = {
-                path = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+                path = "${config.home.profileDirectory}/bin/rust-analyzer";
               };
             };
           };
