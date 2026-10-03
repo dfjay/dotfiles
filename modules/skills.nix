@@ -30,8 +30,9 @@
     in
     {
       programs.opencode.skills = skills;
+      programs.claude-code.skills = skills;
 
-      home.file = mkSkillFiles ".agents/skills" // mkSkillFiles ".claude/skills";
+      home.file = mkSkillFiles ".agents/skills";
 
       home.activation.jetbrainsBundledSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         jar=$(

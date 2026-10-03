@@ -5,7 +5,7 @@
       programs.fish.enable = true;
       environment.shells = [ pkgs.fish ];
 
-      # Add homebrew (managed manually outside nix) to PATH. Append rather than prepend
+      # Add homebrew to PATH. Append rather than prepend
       # so nix-installed binaries always win over brew-installed ones with the same name.
       programs.fish.shellInit = ''
         if test -d /opt/homebrew/bin; and not contains -- /opt/homebrew/bin $PATH
