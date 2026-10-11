@@ -1,9 +1,9 @@
 {
   homeModule =
-    { pkgs, config, ... }:
+    { config, ... }:
 
     let
-      inherit (config.stylix.fonts) monospace;
+      inherit (config.stylix.fonts) monospace sansSerif;
     in
     {
       stylix.targets.zed.colors.enable = false;
@@ -40,55 +40,69 @@
           "gitlab-ci-ls"
           "golangci-lint"
 
-          "ayu-darker-theme"
-          "colored-zed-icons-theme"
+          "jetbrains-themes"
+          "jetbrains-new-ui-icons"
         ];
         userSettings = {
-          theme = "Ayu Dark";
-          ui_font_family = monospace.name;
+          theme = "JetBrains Islands Dark";
+          icon_theme = "JetBrains New UI Icons (Dark)";
+          ui_font_family = sansSerif.name;
           buffer_font_family = monospace.name;
-          ui_font_size = 14;
+          ui_font_size = 15;
           buffer_font_size = 13;
-          telemetry = {
-            metrics = false;
+          "unstable.ui_density" = "compact";
+
+          toolbar = {
+            breadcrumbs = false;
+            quick_actions = false;
           };
-          agent_servers = {
-            "claude-acp" = {
-              type = "registry";
-            };
-            "codex-acp" = {
-              type = "registry";
-            };
+          tab_bar.show_nav_history_buttons = false;
+          tabs = {
+            file_icons = true;
+            git_status = true;
+            show_diagnostics = "errors";
           };
+          scrollbar.show = "never";
           project_panel = {
             dock = "right";
+            folder_indicator = "both";
           };
-          outline_panel = {
-            dock = "right";
+          outline_panel.dock = "right";
+          collaboration_panel.dock = "right";
+          git_panel.tree_view = false;
+
+          cursor_blink = false;
+          relative_line_numbers = "enabled";
+          scroll_beyond_last_line = "off";
+          wrap_guides = [ 100 ];
+          sticky_scroll.enabled = true;
+          inlay_hints.enabled = true;
+          auto_signature_help = true;
+          colorize_brackets = true;
+          use_smartcase_search = true;
+          autosave = "on_focus_change";
+
+          base_keymap = "JetBrains";
+          vim_mode = true;
+          helix_mode = true;
+          vim.toggle_relative_line_numbers = true;
+          which_key = {
+            enabled = true;
+            delay_ms = 400;
           };
-          collaboration_panel = {
-            dock = "right";
-          };
+
           agent = {
             dock = "left";
             favorite_models = [ ];
             model_parameters = [ ];
           };
-          icon_theme = "Colored Zed Icons Theme Dark";
-          vim_mode = true;
-          helix_mode = true;
-          cursor_blink = false;
-          relative_line_numbers = "enabled";
-          scroll_beyond_last_line = "off";
-          wrap_guides = [ 100 ];
-          "unstable.ui_density" = "compact";
-          scrollbar = {
-            show = "never";
+          agent_servers = {
+            "claude-acp".type = "registry";
+            "codex-acp".type = "registry";
           };
-          vim = {
-            toggle_relative_line_numbers = true;
-          };
-          autosave = "on_focus_change";
+
+          telemetry.metrics = false;
+
           file_types = {
             Helm = [
               "**/templates/**/*.tpl"
@@ -99,16 +113,7 @@
               "**/values*.yaml"
             ];
           };
-          git_panel = {
-            tree_view = false;
-          };
-          lsp = {
-            rust-analyzer = {
-              binary = {
-                path = "${config.home.profileDirectory}/bin/rust-analyzer";
-              };
-            };
-          };
+          lsp.rust-analyzer.binary.path = "${config.home.profileDirectory}/bin/rust-analyzer";
           languages = {
             Kotlin = {
               language_servers = [ "kotlin-lsp" ];
