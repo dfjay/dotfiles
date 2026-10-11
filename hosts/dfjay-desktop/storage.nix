@@ -134,6 +134,7 @@
         "/var/lib/AccountsService"
         "/var/lib/NetworkManager"
         "/var/lib/sudo"
+        "/var/lib/tailscale"
         {
           directory = "/var/lib/colord";
           user = "colord";

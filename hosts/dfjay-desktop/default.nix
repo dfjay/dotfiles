@@ -85,6 +85,18 @@
 
       nix.settings.trusted-users = [ "nixremote" ];
 
+      services.displayManager.autoLogin = {
+        enable = true;
+        user = username;
+      };
+
+      systemd.sleep.settings.Sleep = {
+        AllowSuspend = "no";
+        AllowHibernation = "no";
+        AllowHybridSleep = "no";
+        AllowSuspendThenHibernate = "no";
+      };
+
       boot = {
         loader = {
           systemd-boot.enable = lib.mkForce false;
@@ -112,6 +124,23 @@
             condition = "gitdir:~/spectrum/";
           }
         ];
+
+        systemd.user.services.lock-on-login = {
+          Unit = {
+            Description = "Lock the autologin session";
+            After = [ "graphical-session.target" ];
+          };
+          Service = {
+            Type = "oneshot";
+            ExecStart = pkgs.writeShellScript "lock-on-login" ''
+              for _ in 1 2 3 4 5; do
+                ${pkgs.systemd}/bin/loginctl lock-session auto
+                sleep 2
+              done
+            '';
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
 
         home.packages = with pkgs; [
           # CLI
@@ -142,6 +171,9 @@
             "docker"
           ];
           hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
+          openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR yubikey"
+          ];
         };
         users.nixremote = {
           isNormalUser = true;
