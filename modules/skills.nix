@@ -20,6 +20,7 @@
       ] (name: "${superpowers}/${name}");
 
       skills = {
+        playwright-cli = pkgs.playwright-cli.skill;
         use-modern-go = "${inputs.go-modern-guidelines}/plugin/skills/use-modern-go";
       }
       // superpowersSkills;
@@ -33,6 +34,8 @@
       programs.claude-code.skills = skills;
 
       home.file = mkSkillFiles ".agents/skills";
+
+      home.packages = [ pkgs.playwright-cli ];
 
       home.activation.jetbrainsBundledSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         jar=$(

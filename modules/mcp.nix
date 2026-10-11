@@ -22,14 +22,6 @@
         enable = true;
         servers = {
           intellij.url = intellijUrl;
-          playwright = {
-            command = lib.getExe' pkgs.nodejs_24 "npx";
-            args = [
-              "@playwright/mcp@latest"
-              "--browser"
-              "chromium"
-            ];
-          };
           context7 = {
             command = lib.getExe' pkgs.nodejs_24 "npx";
             args = [ "@upstash/context7-mcp@latest" ];
