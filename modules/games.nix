@@ -3,7 +3,10 @@
     { pkgs, ... }:
 
     {
-      home.packages = [ pkgs.prismlauncher ];
+      home.packages = with pkgs; [
+        moonlight-qt
+        prismlauncher
+      ];
     };
 
   nixosModule =
@@ -22,6 +25,13 @@
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
         gamescopeSession.enable = true;
+      };
+
+      services.sunshine = {
+        enable = true;
+        autoStart = true;
+        capSysAdmin = true;
+        openFirewall = false;
       };
     };
 
