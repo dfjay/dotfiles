@@ -77,7 +77,9 @@
           wrap_guides = [ 100 ];
           sticky_scroll.enabled = true;
           inlay_hints.enabled = true;
-          auto_signature_help = true;
+          auto_signature_help = false;
+          show_signature_help_after_edits = true;
+          hover_popover_delay = 550;
           colorize_brackets = true;
           use_smartcase_search = true;
           autosave = "on_focus_change";
