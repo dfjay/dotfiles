@@ -18,6 +18,7 @@
 
         marketplaces = {
           claude-plugins-nix = inputs.claude-plugins-official;
+          trailofbits = inputs.trailofbits-skills;
         };
 
         settings = {
@@ -128,9 +129,10 @@
             "jdtls-lsp@claude-plugins-nix" = true;
             "code-review@claude-plugins-nix" = true;
             "security-guidance@claude-plugins-nix" = true;
+            "sharp-edges@trailofbits" = true;
+            "spec-to-code-compliance@trailofbits" = true;
+            "variant-analysis@trailofbits" = true;
           };
-
-          skipDangerousModePermissionPrompt = true;
         };
 
         lspServers = {

@@ -10,20 +10,22 @@
     let
       homeDir = lib.escapeShellArg config.home.homeDirectory;
 
-      superpowers = "${inputs.claude-superpowers}/skills";
+      pocock = "${inputs.mattpocock-skills}/skills";
 
-      superpowersSkills = lib.genAttrs [
-        "brainstorming"
-        "systematic-debugging"
-        "test-driven-development"
-        "verification-before-completion"
-      ] (name: "${superpowers}/${name}");
+      trailofbitsSkills = lib.genAttrs [
+        "modern-python"
+        "property-based-testing"
+        "second-opinion"
+      ] (name: "${inputs.trailofbits-skills}/plugins/${name}/skills/${name}");
 
       skills = {
         playwright-cli = pkgs.playwright-cli.skill;
         use-modern-go = "${inputs.go-modern-guidelines}/plugin/skills/use-modern-go";
+        grilling = "${pocock}/productivity/grilling";
+        tdd = "${pocock}/engineering/tdd";
+        diagnosing-bugs = "${pocock}/engineering/diagnosing-bugs";
       }
-      // superpowersSkills;
+      // trailofbitsSkills;
 
       mkSkillFiles =
         prefix:

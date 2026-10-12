@@ -84,22 +84,6 @@
         "type": "github"
       }
     },
-    "claude-superpowers": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791592084,
-        "narHash": "sha256-UCVI+T7j1Xh1LDkrvnJduis7eHFqrizCyGTWAGW5d6U=",
-        "owner": "obra",
-        "repo": "superpowers",
-        "rev": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "obra",
-        "repo": "superpowers",
-        "type": "github"
-      }
-    },
     "colmena": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
@@ -368,6 +352,22 @@
         "type": "github"
       }
     },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791543409,
+        "narHash": "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "49dd158d1076134a641b33efb035946536778336",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -574,7 +574,6 @@
     "root": {
       "inputs": {
         "claude-plugins-official": "claude-plugins-official",
-        "claude-superpowers": "claude-superpowers",
         "colmena": "colmena",
         "disko": "disko",
         "firefox-addons": "firefox-addons",
@@ -583,6 +582,7 @@
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",
         "lanzaboote": "lanzaboote",
+        "mattpocock-skills": "mattpocock-skills",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nixos-facter-modules": "nixos-facter-modules",
@@ -593,7 +593,8 @@
         "preservation": "preservation",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "trailofbits-skills": "trailofbits-skills"
       }
     },
     "rust-overlay": {
@@ -798,6 +799,22 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "trailofbits-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791582903,
+        "narHash": "sha256-Ih86JnI1tw5YIswdK38biz2tcaUZ5rPV143hzZViCxE=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "442fc9d6c89b1e937e6f7a477e7071ea75fcbea4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
         "type": "github"
       }
     }
