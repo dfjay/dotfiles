@@ -1,6 +1,6 @@
 {
   nixosModule =
-    { config, ... }:
+    { config, lib, ... }:
     {
       sops.secrets.tailscale_authkey = {
         sopsFile = ../secrets/shared.yaml;
@@ -16,6 +16,9 @@
           config.networking.hostName
         ];
       };
+
+      services.resolved.enable = true;
+      security.polkit.enable = lib.mkIf config.networking.dhcpcd.enable true;
     };
 
   darwinModule =

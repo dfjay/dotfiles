@@ -41,6 +41,11 @@
 
       networking.hostName = hostname;
 
+      services.resolved.settings.Resolve.FallbackDNS = [
+        "194.58.125.120"
+        "194.67.94.40"
+      ];
+
       imports = [
         inputs.nixos-facter-modules.nixosModules.facter
         ./storage.nix
