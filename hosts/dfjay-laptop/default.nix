@@ -38,6 +38,7 @@
           age
           caligula
           container
+          gcx
           gitlab-ci-ls
           glab
           k6

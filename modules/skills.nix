@@ -18,6 +18,14 @@
         "second-opinion"
       ] (name: "${inputs.trailofbits-skills}/plugins/${name}/skills/${name}");
 
+      gcxSkills = lib.genAttrs [
+        "gcx"
+        "debug-with-grafana"
+        "investigate-alert"
+        "manage-dashboards"
+        "create-dashboard"
+      ] (name: "${pkgs.gcx.src}/claude-plugin/skills/${name}");
+
       skills = {
         playwright-cli = pkgs.playwright-cli.skill;
         use-modern-go = "${inputs.go-modern-guidelines}/plugin/skills/use-modern-go";
@@ -25,7 +33,8 @@
         tdd = "${pocock}/engineering/tdd";
         diagnosing-bugs = "${pocock}/engineering/diagnosing-bugs";
       }
-      // trailofbitsSkills;
+      // trailofbitsSkills
+      // gcxSkills;
 
       mkSkillFiles =
         prefix:
