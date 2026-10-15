@@ -36,6 +36,7 @@
         home.packages = with pkgs; [
           # CLI
           age
+          caligula
           container
           gitlab-ci-ls
           glab
@@ -137,11 +138,13 @@
           "brave-browser"
           "crossover"
           "cryptomator"
+          "datagrip"
           "draw-things"
           "element"
           "iina"
           "intellij-idea"
           "jan"
+          "kde-connect"
           "loopback"
           "lulu"
           "mos"
