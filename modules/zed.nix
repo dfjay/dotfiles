@@ -81,7 +81,11 @@
           scroll_beyond_last_line = "off";
           wrap_guides = [ 100 ];
           sticky_scroll.enabled = true;
-          inlay_hints.enabled = true;
+          inlay_hints = {
+            enabled = true;
+            show_background = true;
+          };
+          git.inline_blame.delay_ms = 1000;
           auto_signature_help = false;
           show_signature_help_after_edits = true;
           hover_popover_delay = 550;
@@ -127,6 +131,11 @@
               (lib.getExe pkgs.kotlin-lsp)
               "--stdio"
             ];
+          };
+          lsp.gopls.initialization_options.hints = {
+            assignVariableTypes = false;
+            rangeVariableTypes = false;
+            compositeLiteralTypes = false;
           };
           languages = {
             Kotlin = {
