@@ -1,6 +1,11 @@
 {
   homeModule =
-    { config, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
       inherit (config.stylix.fonts) monospace sansSerif;
@@ -116,6 +121,13 @@
             ];
           };
           lsp.rust-analyzer.binary.path = "${config.home.profileDirectory}/bin/rust-analyzer";
+          lsp.kotlin-lsp.binary = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+            path = lib.getExe pkgs.kotlin-lsp-proxy;
+            arguments = [
+              (lib.getExe pkgs.kotlin-lsp)
+              "--stdio"
+            ];
+          };
           languages = {
             Kotlin = {
               language_servers = [ "kotlin-lsp" ];

@@ -8,13 +8,18 @@
         package = pkgs.zulu;
       };
 
-      home.packages = with pkgs; [
-        async-profiler
-        eclipse-mat
-        jdt-language-server
-        kotlin
-        ktlint
-      ];
+      home.packages =
+        with pkgs;
+        [
+          async-profiler
+          eclipse-mat
+          jdt-language-server
+          kotlin
+          ktlint
+        ]
+        ++ lib.optionals stdenv.hostPlatform.isDarwin [
+          kotlin-lsp
+        ];
 
       programs.claude-code.settings = {
         permissions.allow = [
