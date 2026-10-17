@@ -30,6 +30,9 @@ let
     gtn5 = {
       servers = [ "us" ];
     };
+    betra = {
+      servers = [ "us" ];
+    };
   };
 in
 {
