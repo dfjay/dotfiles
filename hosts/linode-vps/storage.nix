@@ -37,4 +37,5 @@
   networking.usePredictableInterfaceNames = false;
   networking.useDHCP = false;
   networking.interfaces.eth0.useDHCP = true;
+  networking.tempAddresses = "disabled";
 }
