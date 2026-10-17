@@ -40,6 +40,11 @@
               type = lib.types.str;
               description = "Reality public key (for client configs)";
             };
+            ipv6 = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether the server can reach IPv6 destinations";
+            };
             domestic = lib.mkOption {
               type = lib.types.bool;
               default = false;
@@ -510,6 +515,7 @@
                     exitServers = lib.filter (s: !s.domestic) us;
                     domesticServers = lib.filter (s: s.domestic) us;
                     hasDomestic = domesticServers != [ ];
+                    ruNeedsIpv4 = lib.any (s: !s.ipv6) domesticServers;
 
                     ruOutbound = if hasDomestic then "ru-select" else "direct";
                     ruDns = if hasDomestic then "ru-dns" else "direct-dns";
@@ -526,13 +532,19 @@
                     #   ruleMode      -> everything else, by geosite/geoip rules
                     # Add new rules to the group matching their intent; do not
                     # reorder the groups.
-                    routePreamble = [
-                      { action = "sniff"; }
-                      {
-                        protocol = "dns";
-                        action = "hijack-dns";
+                    routePreamble =
+                      lib.optional ruNeedsIpv4 {
+                        ip_version = 6;
+                        rule_set = [ "geoip-ru" ];
+                        action = "reject";
                       }
-                    ];
+                      ++ [
+                        { action = "sniff"; }
+                        {
+                          protocol = "dns";
+                          action = "hijack-dns";
+                        }
+                      ];
                     routeAlwaysDirect = [
                       {
                         ip_is_private = true;
@@ -582,16 +594,25 @@
                         server = "direct-dns";
                       }
                     ];
-                    dnsRuleMode = [
-                      {
+                    dnsRuleMode =
+                      lib.optional ruNeedsIpv4 {
                         rule_set = [
                           "geosite-bybit"
                           "geosite-category-ru"
                         ];
-                        action = "route";
-                        server = ruDns;
+                        query_type = [ "AAAA" ];
+                        action = "predefined";
                       }
-                    ];
+                      ++ [
+                        {
+                          rule_set = [
+                            "geosite-bybit"
+                            "geosite-category-ru"
+                          ];
+                          action = "route";
+                          server = ruDns;
+                        }
+                      ];
                   in
                   {
                     name = "sing-box-client-${u}.json";
@@ -786,10 +807,16 @@
                 default_type text/html;
                 try_files /$1/index.html =404;
               '';
-              locations."~ ^/([a-f0-9]+)/?$".extraConfig = ''
+              # Named capture: the `if` regex below would reset $1.
+              locations."~ ^/(?<token>[a-f0-9]+)/?$".extraConfig = ''
+                # sing-box apps send "SFx (sing-box …)": give them the JSON
+                # profile so the universal link works there too.
+                if ($http_user_agent ~ "^SF[A-Z] \(sing-box") {
+                  rewrite ^ /$token/sing-box last;
+                }
                 default_type text/plain;
                 add_header profile-update-interval "24";
-                try_files /$1/base64 =404;
+                try_files /$token/base64 =404;
               '';
             };
 

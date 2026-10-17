@@ -18,5 +18,6 @@
     realityShortId = "f0447be7";
     realityPublicKey = "OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg";
     domestic = true;
+    ipv6 = false;
   };
 }
