@@ -35,7 +35,11 @@
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
+            sing-box
+            sing-geosite
+            sing-geoip
+            ;
         })
       ];
 
@@ -57,10 +61,7 @@
       services.sing-box-vpn = {
         enable = true;
         tag = "us";
-        edgeDomain = "edge-us.dfjay.com";
-        naiveDomain = "naive-us.dfjay.com";
-        realityShortId = "1a3287df";
-        realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
+        servers = import ../../singbox/servers.nix;
         vpnUsers = vpn.serverUsers "us";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/linode-vps.yaml;

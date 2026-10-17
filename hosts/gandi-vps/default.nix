@@ -35,7 +35,11 @@
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
+            sing-box
+            sing-geosite
+            sing-geoip
+            ;
         })
       ];
 
@@ -54,10 +58,8 @@
       services.sing-box-vpn = {
         enable = true;
         tag = "fr";
-        edgeDomain = "edge-fr.dfjay.com";
-        naiveDomain = "naive-fr.dfjay.com";
-        realityShortId = "1a3287df";
-        realityPublicKey = "nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo";
+        servers = import ../../singbox/servers.nix;
+        masqueradeUrl = "https://dfjay.com";
         vpnUsers = vpn.serverUsers "fr";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/gandi-vps.yaml;
@@ -65,24 +67,6 @@
         subscription = {
           enable = true;
           domain = "subs.dfjay.com";
-          servers = [
-            {
-              tag = "us";
-              edgeDomain = "edge-us.dfjay.com";
-              naiveDomain = "naive-us.dfjay.com";
-              realityShortId = "1a3287df";
-              realityPublicKey = "WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs";
-            }
-            {
-              tag = "ru";
-              edgeDomain = "edge-ru.dfjay.com";
-              naiveDomain = "naive-ru.dfjay.com";
-              realityServerName = "www.ozon.ru";
-              realityShortId = "f0447be7";
-              realityPublicKey = "OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg";
-              domestic = true;
-            }
-          ];
           subscribers = vpn.allUsers;
           userServers = vpn.users;
         };

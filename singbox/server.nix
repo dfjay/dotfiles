@@ -10,23 +10,50 @@
     let
       cfg = config.services.sing-box-vpn;
       sub = cfg.subscription;
-      serverSubmodule = lib.types.submodule {
-        options = {
-          tag = lib.mkOption { type = lib.types.str; };
-          edgeDomain = lib.mkOption { type = lib.types.str; };
-          naiveDomain = lib.mkOption { type = lib.types.str; };
-          realityServerName = lib.mkOption {
-            type = lib.types.str;
-            default = "www.samsung.com";
+      serverSubmodule = lib.types.submodule (
+        { name, ... }:
+        {
+          options = {
+            tag = lib.mkOption {
+              type = lib.types.str;
+              default = name;
+              description = "Short tag of the server (e.g. fr, us)";
+            };
+            edgeDomain = lib.mkOption {
+              type = lib.types.str;
+              description = "Domain for VLESS Reality and Hysteria2";
+            };
+            naiveDomain = lib.mkOption {
+              type = lib.types.str;
+              description = "Domain for Naive proxy";
+            };
+            realityServerName = lib.mkOption {
+              type = lib.types.str;
+              default = "www.samsung.com";
+              description = "TLS server name for Reality handshake";
+            };
+            realityShortId = lib.mkOption {
+              type = lib.types.str;
+              description = "Reality short ID";
+            };
+            realityPublicKey = lib.mkOption {
+              type = lib.types.str;
+              description = "Reality public key (for client configs)";
+            };
+            domestic = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = ''
+                Server located inside Russia, used to reach RU services from abroad.
+                Egress is plain direct (no WARP, no RU rejects), and clients route
+                RU traffic through a separate `ru-select` selector instead of `select`.
+              '';
+            };
           };
-          realityShortId = lib.mkOption { type = lib.types.str; };
-          realityPublicKey = lib.mkOption { type = lib.types.str; };
-          domestic = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-          };
-        };
-      };
+        }
+      );
+
+      self = cfg.servers.${cfg.tag};
 
       # ── Shared helpers ──────────────────────────────────────────────────
 
@@ -38,15 +65,15 @@
 
       realityTls = {
         enabled = true;
-        server_name = cfg.realityServerName;
+        server_name = self.realityServerName;
         reality = {
           enabled = true;
           handshake = {
-            server = cfg.realityServerName;
+            server = self.realityServerName;
             server_port = 443;
           };
           private_key = config.sops.placeholder.reality_private_key;
-          short_id = [ cfg.realityShortId ];
+          short_id = [ self.realityShortId ];
         };
       };
 
@@ -74,19 +101,11 @@
         }
       ];
 
-      selfServer = {
-        inherit (cfg)
-          tag
-          edgeDomain
-          naiveDomain
-          realityServerName
-          realityShortId
-          realityPublicKey
-          domestic
-          ;
-      };
-
-      allServers = [ selfServer ] ++ sub.servers;
+      # This server first, then the other exit servers, then domestic ones.
+      otherServers = lib.partition (s: !s.domestic) (
+        lib.attrValues (lib.removeAttrs cfg.servers [ cfg.tag ])
+      );
+      allServers = [ self ] ++ otherServers.right ++ otherServers.wrong;
 
       userServersFor =
         u:
@@ -104,42 +123,24 @@
 
         tag = lib.mkOption {
           type = lib.types.str;
-          description = "Short tag for this server (e.g. fr, us)";
+          description = "Tag of this server in `servers` (e.g. fr, us)";
         };
 
-        edgeDomain = lib.mkOption {
-          type = lib.types.str;
-          description = "Domain for VLESS Reality and Hysteria2";
-        };
-
-        naiveDomain = lib.mkOption {
-          type = lib.types.str;
-          description = "Domain for Naive proxy";
-        };
-
-        realityServerName = lib.mkOption {
-          type = lib.types.str;
-          default = "www.samsung.com";
-          description = "TLS server name for Reality handshake";
-        };
-
-        realityShortId = lib.mkOption {
-          type = lib.types.str;
-          description = "Reality short ID";
-        };
-
-        realityPublicKey = lib.mkOption {
-          type = lib.types.str;
-          description = "Reality public key (for client configs)";
-        };
-
-        domestic = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
+        servers = lib.mkOption {
+          type = lib.types.attrsOf serverSubmodule;
           description = ''
-            Server located inside Russia, used to reach RU services from abroad.
-            Egress is plain direct (no WARP, no RU rejects), and clients route
-            RU traffic through a separate `ru-select` selector instead of `select`.
+            Registry of all VPN servers, keyed by tag. The entry matching `tag`
+            configures this host; every entry is offered in subscriptions.
+          '';
+        };
+
+        masqueradeUrl = lib.mkOption {
+          type = lib.types.str;
+          default = "https://${self.realityServerName}";
+          defaultText = lib.literalExpression ''"https://''${servers.<tag>.realityServerName}"'';
+          description = ''
+            Site that Hysteria2 reverse-proxies to when authentication fails,
+            so active probes see a real website instead of a bare 404.
           '';
         };
 
@@ -167,12 +168,6 @@
             description = "Domain for subscription site";
           };
 
-          servers = lib.mkOption {
-            type = lib.types.listOf serverSubmodule;
-            default = [ ];
-            description = "Additional remote VPN servers (this server is included automatically)";
-          };
-
           subscribers = lib.mkOption {
             type = lib.types.listOf lib.types.str;
             default = cfg.vpnUsers;
@@ -193,7 +188,7 @@
                     default = null;
                     description = ''
                       Server tags to include in this user's subscription.
-                      null = all servers (selfServer + subscription.servers).
+                      null = all servers in the registry.
                     '';
                   };
                 };
@@ -220,7 +215,7 @@
                 reality_private_key.sopsFile = cfg.serverSecretsFile;
                 hy2_obfs_password.sopsFile = cfg.sharedSecretsFile;
               }
-              // lib.optionalAttrs (!cfg.domestic) {
+              // lib.optionalAttrs (!self.domestic) {
                 warp_private_key.sopsFile = cfg.serverSecretsFile;
                 warp_ipv4.sopsFile = cfg.serverSecretsFile;
                 warp_ipv6.sopsFile = cfg.serverSecretsFile;
@@ -244,14 +239,8 @@
                     level = "warn";
                     timestamp = true;
                   };
-                  http_clients = [
-                    {
-                      tag = "direct-http";
-                      detour = "direct";
-                    }
-                  ];
                   dns =
-                    if cfg.domestic then
+                    if self.domestic then
                       {
                         servers = [
                           {
@@ -299,15 +288,20 @@
                         type = "salamander";
                         password = config.sops.placeholder.hy2_obfs_password;
                       };
+                      masquerade = {
+                        type = "proxy";
+                        url = cfg.masqueradeUrl;
+                        rewrite_host = true;
+                      };
                       users = map (u: {
                         name = u;
                         password = config.sops.placeholder."vless_uuid_${u}";
                       }) cfg.vpnUsers;
                       tls = {
                         enabled = true;
-                        server_name = cfg.edgeDomain;
-                        certificate_path = "/var/lib/acme/${cfg.edgeDomain}/fullchain.pem";
-                        key_path = "/var/lib/acme/${cfg.edgeDomain}/key.pem";
+                        server_name = self.edgeDomain;
+                        certificate_path = "/var/lib/acme/${self.edgeDomain}/fullchain.pem";
+                        key_path = "/var/lib/acme/${self.edgeDomain}/key.pem";
                       };
                     }
                     {
@@ -321,13 +315,13 @@
                       }) cfg.vpnUsers;
                       tls = {
                         enabled = true;
-                        server_name = cfg.naiveDomain;
-                        certificate_path = "/var/lib/acme/${cfg.naiveDomain}/fullchain.pem";
-                        key_path = "/var/lib/acme/${cfg.naiveDomain}/key.pem";
+                        server_name = self.naiveDomain;
+                        certificate_path = "/var/lib/acme/${self.naiveDomain}/fullchain.pem";
+                        key_path = "/var/lib/acme/${self.naiveDomain}/key.pem";
                       };
                     }
                   ];
-                  endpoints = lib.optionals (!cfg.domestic) [
+                  endpoints = lib.optionals (!self.domestic) [
                     {
                       type = "wireguard";
                       tag = "warp";
@@ -367,15 +361,9 @@
                         action = "reject";
                       }
                     ]
-                    ++ lib.optionals (!cfg.domestic) [
-                      {
-                        domain_suffix = [
-                          "claude.ai"
-                          "anthropic.com"
-                        ];
-                        action = "route";
-                        outbound = "direct";
-                      }
+                    ++ lib.optionals (!self.domestic) [
+                      # Clients dial by IP; sniff recovers the domain for domain rules.
+                      { action = "sniff"; }
                       {
                         rule_set = [ "geosite-category-ru" ];
                         action = "reject";
@@ -385,23 +373,23 @@
                         action = "reject";
                       }
                     ];
-                    rule_set = lib.optionals (!cfg.domestic) [
+                    # Pinned by flake.lock instead of fetched from GitHub at runtime.
+                    rule_set = lib.optionals (!self.domestic) [
                       {
                         tag = "geosite-category-ru";
-                        type = "remote";
+                        type = "local";
                         format = "binary";
-                        url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs";
+                        path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-category-ru.srs";
                       }
                       {
                         tag = "geoip-ru";
-                        type = "remote";
+                        type = "local";
                         format = "binary";
-                        url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-ru.srs";
+                        path = "${pkgs.sing-geoip}/share/sing-box/rule-set/geoip-ru.srs";
                       }
                     ];
-                    final = if cfg.domestic then "direct" else "warp";
-                    default_http_client = "direct-http";
-                    default_domain_resolver = if cfg.domestic then "yandex" else "bootstrap";
+                    final = if self.domestic then "direct" else "warp";
+                    default_domain_resolver = if self.domestic then "yandex" else "bootstrap";
                   };
                 };
               };
@@ -420,8 +408,8 @@
             security.acme = {
               acceptTerms = true;
               defaults.email = lib.mkDefault "mail@dfjay.com";
-              certs."${cfg.edgeDomain}".reloadServices = [ "sing-box" ];
-              certs."${cfg.naiveDomain}".reloadServices = [ "sing-box" ];
+              certs."${self.edgeDomain}".reloadServices = [ "sing-box" ];
+              certs."${self.naiveDomain}".reloadServices = [ "sing-box" ];
             };
 
             services.nginx = {
@@ -433,7 +421,7 @@
                     map (h: "${h} 127.0.0.1:8443;") cfg.extraStreamHosts
                     ++ lib.optional sub.enable "${sub.domain} 127.0.0.1:8443;"
                     ++ [
-                      "${cfg.naiveDomain} 127.0.0.1:8445;"
+                      "${self.naiveDomain} 127.0.0.1:8445;"
                       "default 127.0.0.1:8444;"
                     ];
                 in
@@ -449,13 +437,13 @@
                   }
                 '';
 
-              virtualHosts."${cfg.edgeDomain}" = {
+              virtualHosts."${self.edgeDomain}" = {
                 enableACME = true;
                 listen = httpOnlyListen;
                 locations."/".return = "404";
               };
 
-              virtualHosts."${cfg.naiveDomain}" = {
+              virtualHosts."${self.naiveDomain}" = {
                 enableACME = true;
                 listen = httpOnlyListen;
                 locations."/".return = "404";
@@ -469,8 +457,8 @@
 
             systemd.services.sing-box = {
               after = [
-                "acme-${cfg.edgeDomain}.service"
-                "acme-${cfg.naiveDomain}.service"
+                "acme-${self.edgeDomain}.service"
+                "acme-${self.naiveDomain}.service"
               ];
               serviceConfig = {
                 ExecStart = lib.mkForce [
@@ -615,7 +603,10 @@
                             external_controller = "127.0.0.1:9090";
                             default_mode = "Rule";
                           };
-                          cache_file.enabled = true;
+                          cache_file = {
+                            enabled = true;
+                            store_dns = true;
+                          };
                         };
                         log = {
                           level = "info";
@@ -656,6 +647,7 @@
                           rules = dnsAlwaysDirect ++ dnsRuleMode;
                           final = "proxy-dns";
                           strategy = "prefer_ipv4";
+                          optimistic = true;
                         };
                         inbounds = [
                           {

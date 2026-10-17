@@ -35,7 +35,11 @@
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
+            sing-box
+            sing-geosite
+            sing-geoip
+            ;
         })
       ];
 
@@ -62,12 +66,7 @@
       services.sing-box-vpn = {
         enable = true;
         tag = "ru";
-        edgeDomain = "edge-ru.dfjay.com";
-        naiveDomain = "naive-ru.dfjay.com";
-        realityShortId = "f0447be7";
-        realityServerName = "www.ozon.ru";
-        realityPublicKey = "OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg";
-        domestic = true;
+        servers = import ../../singbox/servers.nix;
         vpnUsers = vpn.serverUsers "ru";
         sharedSecretsFile = ../../secrets/shared.yaml;
         serverSecretsFile = ../../secrets/regru-vps.yaml;
