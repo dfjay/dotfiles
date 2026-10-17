@@ -6,7 +6,7 @@
       home.packages = with pkgs; [
         biome
         bun
-        nodejs_24
+        nodejs_26
         npm-check-updates
         svelte-language-server
         tsx

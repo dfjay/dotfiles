@@ -4,7 +4,7 @@
 
     {
       home.packages = with pkgs; [
-        python314
+        python315
         ruff
       ];
 

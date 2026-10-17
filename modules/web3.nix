@@ -4,7 +4,7 @@
 
     let
       solidity-lsp = pkgs.writeShellScriptBin "nomicfoundation-solidity-language-server" ''
-        exec ${pkgs.nodejs_24}/bin/node \
+        exec ${pkgs.nodejs_26}/bin/node \
           ${pkgs.vscode-extensions.nomicfoundation.hardhat-solidity}/share/vscode/extensions/nomicfoundation.hardhat-solidity/server/out/index.js "$@"
       '';
     in
