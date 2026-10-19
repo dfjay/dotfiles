@@ -1,4 +1,4 @@
-{ modules, profiles, ... }:
+{ profiles, ... }:
 
 {
   system = "x86_64-linux";
@@ -10,9 +10,7 @@
   nixosStateVersion = "25.11";
   homeStateVersion = "25.11";
 
-  modules = profiles.server ++ [
-    (import ../../singbox/server.nix)
-  ];
+  modules = profiles.server;
 
   colmena = {
     targetHost = "linode-vps";
@@ -29,17 +27,10 @@
       userdesc,
       ...
     }:
-    let
-      vpn = import ../../singbox/users.nix { inherit lib; };
-    in
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
-            sing-box
-            sing-geosite
-            sing-geoip
-            ;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
         })
       ];
 
@@ -47,6 +38,7 @@
 
       imports = [
         inputs.nixos-facter-modules.nixosModules.facter
+        inputs.princo.nixosModules.default
         ./storage.nix
       ];
 
@@ -58,13 +50,11 @@
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];
 
-      services.sing-box-vpn = {
+      services.princo = {
         enable = true;
-        tag = "us";
-        servers = import ../../singbox/servers.nix;
-        vpnUsers = vpn.serverUsers "us";
-        sharedSecretsFile = ../../secrets/shared.yaml;
-        serverSecretsFile = ../../secrets/linode-vps.yaml;
+        config = ../../vpn/princo.yaml;
+        node = "us";
+        planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
 
       security.sudo.wheelNeedsPassword = false;

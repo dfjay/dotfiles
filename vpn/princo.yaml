@@ -1,0 +1,122 @@
+princo: v1
+
+defaults:
+  engine: sing-box
+  acme_email: mail@dfjay.com
+
+  reality:
+    server_name: www.samsung.com
+
+  egress: warp
+
+  dns:
+    servers:
+      quad9: { address: https://dns.quad9.net, resolver: bootstrap }
+      bootstrap: { address: 9.9.9.9 }
+    final: quad9
+    default_resolver: bootstrap
+    strategy: prefer_ipv4
+
+  rules:
+    - { match: [port:25, port:587, port:465], action: reject }
+    - { action: sniff }
+    - { match: [geosite:category-ru, geoip:ru], action: reject }
+
+nodes:
+  fr:
+    ssh: gandi-vps
+    address: edge-fr.dfjay.com
+    reality:
+      short_id: 1a3287df
+      public_key: nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo
+    hysteria2:
+      masquerade: https://dfjay.com
+    naive:
+      domain: naive-fr.dfjay.com
+    passthrough:
+      dfjay.com: 127.0.0.1:8443
+
+  us:
+    ssh: linode-vps
+    address: edge-us.dfjay.com
+    reality:
+      short_id: 1a3287df
+      public_key: WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs
+    hysteria2: {}
+    naive:
+      domain: naive-us.dfjay.com
+
+  ru:
+    ssh: regru-vps
+    address: edge-ru.dfjay.com
+    tags: [domestic]
+    ipv6: false
+    reality:
+      server_name: www.ozon.ru
+      short_id: f0447be7
+      public_key: OaF4Ru6_I-f7fGXQoRqDgxWYyNC3LGp7qcdPLpkhMDg
+    hysteria2: {}
+    naive:
+      domain: naive-ru.dfjay.com
+    egress: direct
+    dns:
+      servers:
+        yandex: { address: 77.88.8.8 }
+      final: yandex
+      default_resolver: yandex
+      strategy: prefer_ipv4
+    rules:
+      - { match: [port:25, port:587, port:465], action: reject }
+
+users:
+  dfjay: { nodes: [fr, us, ru] }
+  vdv7: { nodes: [fr, us, ru] }
+  chu74: { nodes: [fr, us] }
+  chu52: { nodes: [fr, us] }
+  gtn5: { nodes: [us] }
+  betra: { nodes: [us] }
+
+client:
+  groups:
+    select:
+      nodes: "!domestic"
+      default: first
+    ru-select:
+      nodes: domestic
+      include_direct: true
+      default: direct
+      fallback: direct
+
+  dns:
+    servers:
+      proxy-dns: { address: https://dns.quad9.net, via: select, resolver: bootstrap-dns }
+      direct-dns: { address: 77.88.8.8 }
+      bootstrap-dns: { address: 77.88.8.8 }
+      ru-dns: { address: 77.88.8.8, via: ru-select }
+    final: proxy-dns
+    default_resolver: bootstrap-dns
+    strategy: prefer_ipv4
+    optimistic: true
+    rules:
+      - { match: [domain_suffix:3gppnetwork.org], server: direct-dns }
+      - { match: [geosite:bybit, geosite:category-ru], server: ru-dns }
+
+  rules:
+    - { match: [ip:private, network:icmp, domain_suffix:3gppnetwork.org], action: direct } # LAN, ping, VoWiFi
+    - { match: [geosite:bybit], via: ru-select }
+    - { match: [geosite:category-ip-geo-detect], action: direct }
+    - { match: [geosite:category-ru, geoip:ru], via: ru-select }
+  final: select
+
+subscription:
+  node: fr
+  domain: subs.dfjay.com
+
+secrets:
+  users/*: sops:../secrets/shared.yaml#vless_uuid_*
+  shared/hy2_obfs: sops:../secrets/shared.yaml#hy2_obfs_password
+  nodes/fr/reality: sops:../secrets/gandi-vps.yaml#reality_private_key
+  nodes/fr/warp/*: sops:../secrets/gandi-vps.yaml#warp_*
+  nodes/us/reality: sops:../secrets/linode-vps.yaml#reality_private_key
+  nodes/us/warp/*: sops:../secrets/linode-vps.yaml#warp_*
+  nodes/ru/reality: sops:../secrets/regru-vps.yaml#reality_private_key

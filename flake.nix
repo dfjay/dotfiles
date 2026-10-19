@@ -70,6 +70,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Renders and deploys the VPN described in vpn/princo.yaml.
+    princo = {
+      url = "github:dfjay/princo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Non-flake sources
     portfolio = {
       url = "github:dfjay/dfjay.com";

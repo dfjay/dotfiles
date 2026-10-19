@@ -571,6 +571,26 @@
         "type": "github"
       }
     },
+    "princo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792445804,
+        "narHash": "sha256-oKnHUW5DAtdQE9GtGNiw6+OcUTElcgUvQo8/5O9/qhQ=",
+        "owner": "dfjay",
+        "repo": "princo",
+        "rev": "73254c66f3417d79e7465c734525aaf73805ad38",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfjay",
+        "repo": "princo",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "claude-plugins-official": "claude-plugins-official",
@@ -591,6 +611,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "portfolio": "portfolio",
         "preservation": "preservation",
+        "princo": "princo",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "stylix": "stylix",

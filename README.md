@@ -46,7 +46,7 @@ Nix flake configuration for my machines.
 ├── modules/           # Reusable NixOS/darwin/home-manager modules
 │   ├── de/            # Desktop environments
 │   └── *.nix          # Individual tool modules
-├── singbox/           # sing-box VPN stack
+├── vpn/               # princo.yaml: VPN nodes, users, routing
 ├── overlays/          # nixpkgs overlays
 ├── secrets/           # SOPS-encrypted secrets
 └── justfile           # Common tasks

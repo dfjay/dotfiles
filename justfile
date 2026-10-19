@@ -74,17 +74,6 @@ deploy host *args:
   set -euo pipefail
   colmena apply --on {{host}} {{args}}
 
-# Print subscription links for a VPN user
-# Usage: just sub user
-[group('vps')]
-sub user:
-  #!/usr/bin/env bash
-  set -euo pipefail
-  token=$(sops decrypt --extract '["vless_uuid_{{user}}"]' secrets/shared.yaml | sha256sum | cut -c1-32)
-  echo "QR page:   https://subs.dfjay.com/$token/qr"
-  echo "Universal: https://subs.dfjay.com/$token/"
-  echo "sing-box:  sing-box://import-remote-profile?url=https://subs.dfjay.com/$token/sing-box#{{user}}"
-
 # Regenerate facter.json for the current host
 # Usage: just facter dfjay-desktop
 [group('nix')]

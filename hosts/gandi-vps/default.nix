@@ -1,4 +1,4 @@
-{ modules, profiles, ... }:
+{ profiles, ... }:
 
 {
   system = "x86_64-linux";
@@ -10,9 +10,7 @@
   nixosStateVersion = "24.11";
   homeStateVersion = "25.11";
 
-  modules = profiles.server ++ [
-    (import ../../singbox/server.nix)
-  ];
+  modules = profiles.server;
 
   colmena = {
     targetHost = "gandi-vps";
@@ -29,17 +27,10 @@
       userdesc,
       ...
     }:
-    let
-      vpn = import ../../singbox/users.nix { inherit lib; };
-    in
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
-            sing-box
-            sing-geosite
-            sing-geoip
-            ;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
         })
       ];
 
@@ -47,6 +38,7 @@
 
       imports = [
         inputs.nixos-facter-modules.nixosModules.facter
+        inputs.princo.nixosModules.default
         ./storage.nix
       ];
 
@@ -55,23 +47,11 @@
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];
 
-      services.sing-box-vpn = {
+      services.princo = {
         enable = true;
-        tag = "fr";
-        servers = import ../../singbox/servers.nix;
-        masqueradeUrl = "https://dfjay.com";
-        vpnUsers = vpn.serverUsers "fr";
-        sharedSecretsFile = ../../secrets/shared.yaml;
-        serverSecretsFile = ../../secrets/gandi-vps.yaml;
-
-        subscription = {
-          enable = true;
-          domain = "subs.dfjay.com";
-          subscribers = vpn.allUsers;
-          userServers = vpn.users;
-        };
-
-        extraStreamHosts = [ "dfjay.com" ];
+        config = ../../vpn/princo.yaml;
+        node = "fr";
+        planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
 
       services.nginx.virtualHosts."dfjay.com" = {

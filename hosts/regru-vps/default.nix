@@ -1,4 +1,4 @@
-{ modules, profiles, ... }:
+{ profiles, ... }:
 
 {
   system = "x86_64-linux";
@@ -10,9 +10,7 @@
   nixosStateVersion = "26.05";
   homeStateVersion = "26.05";
 
-  modules = profiles.server ++ [
-    (import ../../singbox/server.nix)
-  ];
+  modules = profiles.server;
 
   colmena = {
     targetHost = "regru-vps";
@@ -29,17 +27,10 @@
       userdesc,
       ...
     }:
-    let
-      vpn = import ../../singbox/users.nix { inherit lib; };
-    in
     {
       nixpkgs.overlays = [
         (_: prev: {
-          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system})
-            sing-box
-            sing-geosite
-            sing-geoip
-            ;
+          inherit (inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}) sing-box;
         })
       ];
 
@@ -52,6 +43,7 @@
 
       imports = [
         inputs.nixos-facter-modules.nixosModules.facter
+        inputs.princo.nixosModules.default
         ./storage.nix
       ];
 
@@ -63,13 +55,11 @@
       sops.age.keyFile = "/var/lib/sops-nix/key.txt";
       sops.age.sshKeyPaths = [ ];
 
-      services.sing-box-vpn = {
+      services.princo = {
         enable = true;
-        tag = "ru";
-        servers = import ../../singbox/servers.nix;
-        vpnUsers = vpn.serverUsers "ru";
-        sharedSecretsFile = ../../secrets/shared.yaml;
-        serverSecretsFile = ../../secrets/regru-vps.yaml;
+        config = ../../vpn/princo.yaml;
+        node = "ru";
+        planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
 
       security.sudo.wheelNeedsPassword = false;
