@@ -56,6 +56,7 @@
         node = "us";
         planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
+      security.acme.acceptTerms = true;
 
       security.sudo.wheelNeedsPassword = false;
 

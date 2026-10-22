@@ -29,8 +29,7 @@ nodes:
     reality:
       short_id: 1a3287df
       public_key: nK2Kjs_gPs7ktIY0MmjFYt32n1ZIUcViJI37ZW0vNlo
-    hysteria2:
-      masquerade: https://dfjay.com
+    hysteria2: { obfs: salamander }
     naive:
       domain: naive-fr.dfjay.com
     passthrough:
@@ -42,7 +41,7 @@ nodes:
     reality:
       short_id: 1a3287df
       public_key: WauUnrXr3NyKrgExAXEeJ6TVqn3Sqc8xFoEU7Pt1VXs
-    hysteria2: {}
+    hysteria2: { obfs: salamander }
     naive:
       domain: naive-us.dfjay.com
 
@@ -114,7 +113,7 @@ subscription:
 
 secrets:
   users/*: sops:../secrets/shared.yaml#vless_uuid_*
-  shared/hy2_obfs: sops:../secrets/shared.yaml#hy2_obfs_password
+  shared/hysteria2_obfs: sops:../secrets/shared.yaml#hy2_obfs_password
   nodes/fr/reality: sops:../secrets/gandi-vps.yaml#reality_private_key
   nodes/fr/warp/*: sops:../secrets/gandi-vps.yaml#warp_*
   nodes/us/reality: sops:../secrets/linode-vps.yaml#reality_private_key

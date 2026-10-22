@@ -53,6 +53,7 @@
         node = "fr";
         planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
+      security.acme.acceptTerms = true;
 
       services.nginx.virtualHosts."dfjay.com" = {
         forceSSL = true;
