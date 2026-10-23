@@ -10,15 +10,9 @@
         kagi-translate
         multi-account-containers
         vimium
-        wappalyzer
       ];
 
       sharedSettings = {
-        # Read trusted root CAs from the macOS Keychain / Linux NSS store
-        # instead of only Librewolf's bundled set. Needed for mkcert,
-        # corporate CAs (e.g. Spectrum), and other locally-installed roots.
-        "security.enterprise_roots.enabled" = true;
-
         # Don't wipe cookies/history/tabs on browser close (Librewolf's
         # default). Keeps logins and session.
         "privacy.sanitize.sanitizeOnShutdown" = false;
@@ -125,7 +119,9 @@
               ++ (with pkgs.firefox-addons; [
                 metamask
               ]);
-            settings = sharedSettings;
+            settings = sharedSettings // {
+              "security.enterprise_roots.enabled" = false;
+            };
             search = sharedSearch;
           };
 
@@ -136,7 +132,9 @@
               ++ (with pkgs.firefox-addons; [
                 react-devtools
               ]);
-            settings = sharedSettings;
+            settings = sharedSettings // {
+              "security.enterprise_roots.enabled" = true;
+            };
             search = sharedSearch;
           };
         };
