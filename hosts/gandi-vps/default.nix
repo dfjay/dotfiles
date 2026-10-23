@@ -82,8 +82,6 @@
         locations."/".tryFiles = "$uri $uri/ /index.html";
       };
 
-      security.sudo.wheelNeedsPassword = false;
-
       users = {
         defaultUserShell = pkgs.bash;
         mutableUsers = true;

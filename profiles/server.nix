@@ -2,6 +2,7 @@
 
 profiles.base
 ++ (with modules; [
+  colmena-target
   locale
 
   git

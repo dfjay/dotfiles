@@ -63,8 +63,6 @@
       };
       security.acme.acceptTerms = true;
 
-      security.sudo.wheelNeedsPassword = false;
-
       users = {
         defaultUserShell = pkgs.bash;
         mutableUsers = true;

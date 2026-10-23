@@ -42,7 +42,7 @@ in
     }
     // lib.mapAttrs (name: hostCfg: {
       deployment = {
-        buildOnTarget = true;
+        buildOnTarget = false;
       }
       // hostCfg.colmena;
       imports = conf.${name}._module.args.modules;
