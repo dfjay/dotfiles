@@ -1,37 +1,24 @@
 {
-  darwinModule = _: {
-    nix.linux-builder = {
-      enable = true;
-      maxJobs = 4;
-
-      config.virtualisation.cores = 4;
-    };
-
-    sops.secrets.nix_builder_key = {
-      sopsFile = ../secrets/secret.yaml;
-      path = "/etc/nix/id_builder";
-      mode = "0600";
-      owner = "root";
-    };
-
-    nix.buildMachines = [
-      {
-        hostName = "dfjay-desktop";
-        systems = [ "x86_64-linux" ];
-        sshUser = "nixremote";
-        sshKey = "/etc/nix/id_builder";
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU1JYnk5R2FFTktYV0VocTZ6bnA0VWM1akFLc1h0cTRZWUpFTjVZSS9NZXYK";
-        maxJobs = 8;
-        supportedFeatures = [
-          "big-parallel"
-          "kvm"
-          "nixos-test"
+  darwinModule =
+    { pkgs, ... }:
+    {
+      nix.linux-builder = {
+        enable = true;
+        package = pkgs.darwin.linux-builder-vz;
+        systems = [
+          "aarch64-linux"
+          "x86_64-linux"
         ];
-      }
-    ];
+        maxJobs = 4;
 
-    nix.settings.trusted-users = [ "@admin" ];
-  };
+        config.virtualisation = {
+          cores = 4;
+          darwin-builder.memorySize = 6 * 1024;
+        };
+      };
+
+      nix.settings.trusted-users = [ "@admin" ];
+    };
 
   homeModule =
     { pkgs, lib, ... }:

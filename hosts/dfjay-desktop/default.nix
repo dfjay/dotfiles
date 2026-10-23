@@ -81,8 +81,6 @@
         };
       };
 
-      nix.settings.trusted-users = [ "nixremote" ];
-
       services.displayManager.autoLogin = {
         enable = true;
         user = username;
@@ -170,13 +168,6 @@
           hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR yubikey"
-          ];
-        };
-        users.nixremote = {
-          isNormalUser = true;
-          description = "Remote Nix builder";
-          openssh.authorizedKeys.keys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGt8ag6YGihrNriFCBxJsygHsR7zu0nPvWfP9KLmOoY nix-builder@dfjay-laptop"
           ];
         };
       };
