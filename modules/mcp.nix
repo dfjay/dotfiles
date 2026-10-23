@@ -23,8 +23,7 @@
         servers = {
           intellij.url = intellijUrl;
           context7 = {
-            command = lib.getExe' pkgs.nodejs_26 "npx";
-            args = [ "@upstash/context7-mcp@latest" ];
+            command = lib.getExe pkgs.context7-mcp;
             env.CONTEXT7_API_KEY.file = config.sops.secrets.context7_api_key.path;
           };
         };
