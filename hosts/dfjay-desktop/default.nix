@@ -120,8 +120,8 @@
         sops.secrets."netrc".path = "/home/${username}/.netrc";
         programs.git.includes = [
           {
-            path = "~/spectrum/.gitconfig";
-            condition = "gitdir:~/spectrum/";
+            path = "~/code/work/.gitconfig";
+            condition = "gitdir:~/code/work/";
           }
         ];
 

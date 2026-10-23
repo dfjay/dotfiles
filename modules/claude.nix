@@ -22,7 +22,9 @@
         };
 
         settings = {
-          env = { };
+          env = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
+          };
           enableVimMode = true;
           attribution.commit = "Assisted-by: Claude Code";
           # Keeps the claude.ai session link out of commit messages; this repo
