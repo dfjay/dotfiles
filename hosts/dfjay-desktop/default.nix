@@ -38,6 +38,21 @@
 
       facter.reportPath = ./facter.json;
 
+      security.pam.u2f.settings = {
+        authfile = "/etc/u2f-mappings";
+        cue = true;
+      };
+      environment.etc."u2f-mappings".text = lib.concatStringsSep ":" [
+        username
+        "TJsm3V7hBAhRxztwfcVAHJbDLZQ3RW/8+K0Tpw9t/P16sVF7xfqO0PtFOJPrts8krMQQTo5lxXSKPLCML4U02g==,PuVsPDLBP/Yu8WHE2VIokBunqpDNDnof/CJmiyw6p94JsqsXUmFn0gIxTdu2Hes+Q9TJIV5ysDAhklEw7IRnNg==,es256,+presence"
+      ];
+      security.pam.services = {
+        sudo.u2f.enable = true;
+        sudo-i.u2f.enable = true;
+        polkit-1.u2f.enable = true;
+        cosmic-greeter.u2f.enable = true;
+      };
+
       security.sudo.enable = false;
       security.sudo-rs = {
         enable = true;
@@ -69,7 +84,26 @@
       networking = {
         hostName = hostname;
         networkmanager.enable = true;
-        firewall.trustedInterfaces = [ "tailscale0" ];
+        # Only what's used over the tailnet: SSH and Sunshine streaming (Moonlight).
+        # The Sunshine web UI (47990) stays local.
+        firewall.interfaces.tailscale0 = {
+          allowedTCPPorts = [
+            22
+            47984
+            47989
+            48010
+          ];
+          allowedUDPPortRanges = [
+            {
+              from = 47998;
+              to = 48000;
+            }
+          ];
+          allowedUDPPorts = [
+            48002
+            48010
+          ];
+        };
       };
 
       services.openssh = {
@@ -121,22 +155,18 @@
           }
         ];
 
-        systemd.user.services.lock-on-login = {
-          Unit = {
-            Description = "Lock the autologin session";
-            After = [ "graphical-session.target" ];
-          };
-          Service = {
-            Type = "oneshot";
-            ExecStart = pkgs.writeShellScript "lock-on-login" ''
-              for _ in 1 2 3 4 5; do
-                ${pkgs.systemd}/bin/loginctl lock-session auto
-                sleep 2
-              done
-            '';
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
+        xdg.configFile."autostart/lock-on-login.desktop".text = ''
+          [Desktop Entry]
+          Type=Application
+          Name=Lock on login
+          NoDisplay=true
+          Exec=${pkgs.writeShellScript "lock-on-login" ''
+            for _ in 1 2 3 4 5; do
+              ${pkgs.systemd}/bin/loginctl lock-session
+              sleep 2
+            done
+          ''}
+        '';
 
         home.packages = with pkgs; [
           # CLI
