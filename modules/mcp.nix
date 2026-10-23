@@ -10,7 +10,7 @@
       intellijUrl = "http://127.0.0.1:64342/stream";
     in
     {
-      sops.secrets.context7_api_key = { };
+      sops.secrets.context7_api_key.sopsFile = ../secrets/personal.yaml;
 
       programs.zed-editor.userSettings.context_servers.intellij = {
         source = "http";

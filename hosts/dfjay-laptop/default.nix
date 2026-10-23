@@ -31,7 +31,10 @@
     {
       home-manager.users.${username} = {
         sops.age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
-        sops.secrets."netrc".path = "/Users/${username}/.netrc";
+        sops.secrets."netrc" = {
+          sopsFile = ../../secrets/personal.yaml;
+          path = "/Users/${username}/.netrc";
+        };
 
         home.packages = with pkgs; [
           # CLI

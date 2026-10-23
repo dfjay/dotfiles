@@ -22,6 +22,7 @@
 
   config =
     {
+      config,
       pkgs,
       lib,
       inputs,
@@ -37,6 +38,12 @@
       ];
 
       facter.reportPath = ./facter.json;
+
+      sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+      sops.secrets.dfjay_password_hash = {
+        sopsFile = ../../secrets/desktop.yaml;
+        neededForUsers = true;
+      };
 
       security.pam.u2f.settings = {
         authfile = "/etc/u2f-mappings";
@@ -58,9 +65,6 @@
         enable = true;
         execWheelOnly = false;
       };
-
-      sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      sops.gnupg.sshKeyPaths = [ ];
 
       security = {
         polkit.enable = true;
@@ -146,8 +150,11 @@
       };
 
       home-manager.users.${username} = {
-        sops.gnupg.home = "/home/${username}/.gnupg";
-        sops.secrets."netrc".path = "/home/${username}/.netrc";
+        sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+        sops.secrets."netrc" = {
+          sopsFile = ../../secrets/personal.yaml;
+          path = "/home/${username}/.netrc";
+        };
         programs.git.includes = [
           {
             path = "~/code/work/.gitconfig";
@@ -195,7 +202,7 @@
             "networkmanager"
             "wheel"
           ];
-          hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
+          hashedPasswordFile = config.sops.secrets.dfjay_password_hash.path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR yubikey"
           ];

@@ -1,9 +1,6 @@
 keys:
   - &yubikey A82705DF08BC95859FF5CB7E577260D68251AC22
-  - &yubikey-ssh ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR
-  - &mac ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9W6B9WBu7PbMJWdKGFzBLMR1y2IK+kFuSsIWh2fwqg
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
-  - &mac-host age1krvvfkj4plnuszmusq3sqpp2x8nuvmndx034wu6tqet23unlwczqkkd6v2
   - &gandi-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &linode-age age14pwdxkas42n4kl8qfhxjp35s33ltgu36wkcur4s8f35pxlmk03es9rnwem
   - &regru-age age125e4z55u3642ldaz9qerxk8xfw8egj6pu6qzqfcpc36rksv8cs4qcepk52
@@ -16,13 +13,10 @@ creation_rules:
       - pgp:
           - *yubikey
         age:
-          - *yubikey-ssh
-          - *mac
           - *mac-age
           - *gandi-age
           - *linode-age
           - *regru-age
-          - *dfjay-desktop-age
 
   # Gandi-specific secrets
   - path_regex: secrets/gandi-vps\.yaml$
@@ -30,8 +24,6 @@ creation_rules:
       - pgp:
           - *yubikey
         age:
-          - *yubikey-ssh
-          - *mac
           - *mac-age
           - *gandi-age
 
@@ -41,8 +33,6 @@ creation_rules:
       - pgp:
           - *yubikey
         age:
-          - *yubikey-ssh
-          - *mac
           - *mac-age
           - *linode-age
 
@@ -52,18 +42,30 @@ creation_rules:
       - pgp:
           - *yubikey
         age:
-          - *yubikey-ssh
-          - *mac
           - *mac-age
           - *regru-age
 
-  # Desktop and other secrets
+  # Desktop system secrets, decrypted at boot by its host key
+  - path_regex: secrets/desktop\.yaml$
+    key_groups:
+      - pgp:
+          - *yubikey
+        age:
+          - *dfjay-desktop-age
+
+  # User secrets shared by laptop and desktop (home-manager)
+  # TODO: add the desktop user age key once generated
+  - path_regex: secrets/personal\.yaml$
+    key_groups:
+      - pgp:
+          - *yubikey
+        age:
+          - *mac-age
+
+  # Laptop-only secrets
   - path_regex: secrets/secret\.yaml$
     key_groups:
       - pgp:
           - *yubikey
         age:
-          - *yubikey-ssh
-          - *mac
           - *mac-age
-          - *mac-host
