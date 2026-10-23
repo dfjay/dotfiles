@@ -1,14 +1,14 @@
 {
   nixosModule =
-    { ... }:
+    { pkgs, ... }:
     {
-      virtualisation.docker = {
+      virtualisation.podman = {
         enable = true;
-        rootless = {
-          enable = false;
-          setSocketVariable = false;
-        };
+        dockerCompat = true;
+        defaultNetwork.settings.dns_enabled = true;
       };
+
+      environment.systemPackages = [ pkgs.docker-compose ];
     };
 
   darwinModule =
@@ -54,7 +54,11 @@
             mountInotify = true;
             mounts = [
               {
-                location = "~";
+                location = "~/code";
+                writable = true;
+              }
+              {
+                location = "~/dotfiles";
                 writable = true;
               }
             ];

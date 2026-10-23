@@ -47,8 +47,6 @@
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       sops.gnupg.sshKeyPaths = [ ];
 
-      virtualisation.podman.enable = true;
-
       security = {
         polkit.enable = true;
       };
@@ -168,7 +166,6 @@
           extraGroups = [
             "networkmanager"
             "wheel"
-            "docker"
           ];
           hashedPassword = "$6$J91OG.NW1Dz35n2S$L8pwihewop1tEe.x6YbjYIHRgyyax9E.q.mu/HL49xZkJEVD8DzKn.9s2rWJLWrJuL1WdpJ9NzymWQvJMBro8.";
           openssh.authorizedKeys.keys = [
