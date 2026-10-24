@@ -238,7 +238,6 @@
           "pdpe1gb",
           "rdtscp",
           "lm",
-          "constant_tsc",
           "rep_good",
           "nopl",
           "cpuid",
@@ -309,6 +308,7 @@
           "eibrs_pbrsb",
           "bhi",
           "ibpb_no_ret",
+          "spectre_v2_user",
           "its"
         ],
         "power_management": [
@@ -445,6 +445,14 @@
           "secondary_bus": 0,
           "prog_if": 0
         },
+        "driver": "cirrus-qemu",
+        "driver_module": "cirrus_qemu",
+        "drivers": [
+          "cirrus-qemu"
+        ],
+        "driver_modules": [
+          "cirrus_qemu"
+        ],
         "driver_info": {
           "type": "x11",
           "db_entry_0": [
@@ -492,7 +500,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.12.76 uhci_hcd",
+          "name": "Linux 6.18.57 uhci_hcd",
           "value": 7531
         },
         "device": {
@@ -502,11 +510,11 @@
         },
         "revision": {
           "hex": "0000",
-          "name": "6.12",
+          "name": "6.18",
           "value": 0
         },
         "serial": "0000:00:01.2",
-        "model": "Linux 6.12.76 uhci_hcd UHCI Host Controller",
+        "model": "Linux 6.18.57 uhci_hcd UHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:01.2/usb1/1-0:1.0",
         "sysfs_bus_id": "1-0:1.0",
         "resources": [
@@ -554,7 +562,7 @@
         "driver_modules": [
           "usbcore"
         ],
-        "module_alias": "usb:v1D6Bp0001d0612dc09dsc00dp00ic09isc00ip00in00"
+        "module_alias": "usb:v1D6Bp0001d0618dc09dsc00dp00ic09isc00ip00in00"
       }
     ],
     "memory": [
@@ -629,7 +637,7 @@
         "unix_device_names": [
           "/dev/input/mice"
         ],
-        "unix_device_name2": "/dev/input/mouse1",
+        "unix_device_name2": "/dev/input/mouse0",
         "resources": [
           {
             "type": "baud",
