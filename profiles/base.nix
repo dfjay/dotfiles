@@ -8,6 +8,7 @@ with modules;
   btop
   eza
   helix
+  nh
   ripgrep
   starship
   tailscale

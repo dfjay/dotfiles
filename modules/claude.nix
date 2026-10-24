@@ -1,7 +1,6 @@
 {
   homeModule =
     {
-      config,
       lib,
       pkgs,
       pkgs-master,
@@ -9,8 +8,6 @@
       ...
     }:
     {
-      home.file."${config.home.homeDirectory}/.claude/plugins/known_marketplaces.json".force = true;
-
       programs.claude-code = {
         enable = true;
         package = pkgs-master.claude-code;

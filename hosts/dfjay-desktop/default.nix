@@ -145,7 +145,6 @@
             autoReboot = true;
           };
         };
-        initrd.systemd.enable = true;
         kernelPackages = pkgs.linuxPackages_zen;
       };
 

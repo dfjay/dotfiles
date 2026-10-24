@@ -27,7 +27,6 @@ profiles.base
   lazygit
   librewolf
   mcp
-  nh
   nix
   nix-index
   nushell

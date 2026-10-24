@@ -76,11 +76,6 @@ let
       nixpkgs.overlays = overlays;
 
       nix = {
-        gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 14d";
-        };
         settings = {
           auto-optimise-store = true;
           min-free = "1G";
@@ -116,13 +111,6 @@ let
       security.pam.services.sudo_local.touchIdAuth = true;
 
       nix = {
-        gc = {
-          automatic = true;
-          interval = {
-            Weekday = 7;
-          };
-          options = "--delete-older-than 14d";
-        };
         settings.experimental-features = [
           "nix-command"
           "flakes"
