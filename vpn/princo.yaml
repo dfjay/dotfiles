@@ -44,6 +44,8 @@ nodes:
     hysteria2: { obfs: salamander }
     naive:
       domain: naive-us.dfjay.com
+    # Cloudflare's Newark PoP doesn't answer WARP on 2408 over IPv4
+    warp: { endpoint: engage.cloudflareclient.com:4500 }
 
   ru:
     ssh: regru-vps
