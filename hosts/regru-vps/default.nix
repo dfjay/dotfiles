@@ -20,10 +20,10 @@
   config =
     { inputs, ... }:
     {
-      imports = [ ./storage.nix ];
+      zramSwap.enable = true;
 
-      # Installed by nixos-infect; the layout lives in storage.nix until a reinstall
-      vps.disko.enable = false;
+      # OpenStack 1:1 NAT, private address via DHCP on ens3; no IPv6
+      networking.useDHCP = true;
 
       services.princo = {
         enable = true;
