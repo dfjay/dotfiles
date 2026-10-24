@@ -147,6 +147,9 @@
             efiInstallAsRemovable = true;
           };
 
+          boot.growPartition = true;
+          fileSystems."/".autoResize = true;
+
           disko.devices.disk.main = {
             type = "disk";
             device = cfg.disk;
