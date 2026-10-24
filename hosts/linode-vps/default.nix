@@ -7,8 +7,8 @@
   userdesc = "Pavel Yozhikov";
   nixpkgs = "nixpkgs-stable";
   home-manager = "home-manager-stable";
-  nixosStateVersion = "25.11";
-  homeStateVersion = "25.11";
+  nixosStateVersion = "26.05";
+  homeStateVersion = "26.05";
 
   modules = profiles.server;
 
@@ -21,9 +21,6 @@
     { inputs, ... }:
     {
       imports = [ ./storage.nix ];
-
-      # Installed by nixos-infect; the layout lives in storage.nix until a reinstall
-      vps.disko.enable = false;
 
       services.princo = {
         enable = true;
