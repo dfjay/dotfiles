@@ -29,6 +29,7 @@
         devenv
         nixd
         nixfmt
+        nixos-anywhere
       ];
 
       programs.claude-code.settings = {

@@ -33,8 +33,6 @@
 
     preservation.url = "github:nix-community/preservation";
 
-    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

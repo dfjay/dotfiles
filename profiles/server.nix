@@ -5,6 +5,7 @@ profiles.base
   colmena-target
   locale
   tailscale-server
+  vps
 
   git
   terminfo

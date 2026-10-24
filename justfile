@@ -32,21 +32,25 @@ gc:
 gcroot:
   ls -al /nix/var/nix/gcroots/auto/
 
-# Convert a fresh Ubuntu VPS into NixOS, provision secrets and generate facter.json
-# Usage: just infect linode-vps root@89.23.45.67
+# Install NixOS on a fresh VPS: wipes the disk, records facter.json and installs the sops age key
+# Usage: just provision linode-vps root@89.23.45.67 [--no-disko-deps on ~1 GB RAM]
 [group('vps')]
-infect host target:
+provision host target *args:
   #!/usr/bin/env bash
   set -euo pipefail
-  ssh {{target}} 'hostnamectl set-hostname nixos'
-  ssh {{target}} 'curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NO_REBOOT=1 NIX_CHANNEL=nixos-25.11 bash -x' || true
-  ssh {{target}} 'grep -q forceInstall /etc/nixos/configuration.nix || sed -i "/boot.tmp.cleanOnBoot/a\  boot.loader.grub.forceInstall = true;" /etc/nixos/configuration.nix'
-  ssh {{target}} 'curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-25.11 bash -x' || true
-  echo "Waiting for reboot..."
-  sleep 30
-  until ssh -o ConnectTimeout=5 {{target}} true 2>/dev/null; do sleep 5; done
-  just provision-keys {{host}} {{target}}
-  just facter-remote {{host}} {{target}}
+  root=$(mktemp -d)
+  trap 'rm -rf "$root"' EXIT
+  install -d -m755 "$root/var/lib/sops-nix"
+  (umask 077; sops decrypt --extract '["age_key"]' "secrets/{{host}}.yaml" > "$root/var/lib/sops-nix/key.txt")
+  nixos-anywhere \
+    --flake ".#{{host}}" \
+    --target-host "{{target}}" \
+    --copy-host-keys \
+    --ssh-option AddKeysToAgent=no \
+    --generate-hardware-config nixos-facter "hosts/{{host}}/facter.json" \
+    --extra-files "$root" \
+    {{args}}
+  echo "✓ {{host}} installed; commit hosts/{{host}}/facter.json"
 
 # Provision sops age key to a remote host
 # Usage: just provision-keys linode-vps root@89.23.45.67

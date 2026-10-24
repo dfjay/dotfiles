@@ -32,12 +32,9 @@
       ...
     }:
     {
-      imports = [
-        inputs.nixos-facter-modules.nixosModules.facter
-        ./storage.nix
-      ];
+      imports = [ ./storage.nix ];
 
-      facter.reportPath = ./facter.json;
+      hardware.facter.reportPath = ./facter.json;
 
       sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
       sops.secrets.dfjay_password_hash = {
