@@ -143,7 +143,7 @@
             autoReboot = true;
           };
         };
-        kernelPackages = pkgs.linuxPackages_zen;
+        kernelPackages = pkgs.linuxPackages_latest;
       };
 
       home-manager.users.${username} = {
