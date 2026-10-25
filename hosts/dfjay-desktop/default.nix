@@ -85,6 +85,7 @@
       networking = {
         hostName = hostname;
         networkmanager.enable = true;
+        nftables.enable = true;
         # Only what's used over the tailnet: SSH and Sunshine streaming (Moonlight).
         # The Sunshine web UI (47990) stays local.
         firewall.interfaces.tailscale0 = {
