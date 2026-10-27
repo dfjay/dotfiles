@@ -18,9 +18,7 @@
       # tools
       codex
       games
-      opencode
       rclone
-      web3
 
       # work
       spectrum
