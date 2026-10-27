@@ -21,8 +21,6 @@
           "docker-compose"
           "dockerfile"
           "editorconfig"
-          "elixir"
-          "gleam"
           "graphql"
           "helm"
           "html"

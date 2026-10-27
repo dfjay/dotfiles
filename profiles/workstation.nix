@@ -7,7 +7,6 @@ profiles.base
   stylix
 
   # tools
-  beam
   claude
   direnv
   docker
