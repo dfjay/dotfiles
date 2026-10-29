@@ -102,6 +102,10 @@
 
           agent = {
             dock = "left";
+            commit_message_model = {
+              provider = "anthropic";
+              model = "claude-haiku-5-5";
+            };
             favorite_models = [ ];
             model_parameters = [ ];
           };
