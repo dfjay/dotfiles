@@ -13,7 +13,6 @@
       sops.secrets.context7_api_key.sopsFile = ../secrets/personal.yaml;
 
       programs.zed-editor.userSettings.context_servers.intellij = {
-        source = "http";
         url = intellijUrl;
         enabled = false;
       };
