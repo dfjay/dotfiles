@@ -65,7 +65,12 @@
             git_status = true;
             show_diagnostics = "errors";
           };
-          scrollbar.show = "never";
+          scrollbar = {
+            show = "always";
+            git_diff = true;
+            diagnostics = "all";
+            search_results = true;
+          };
           project_panel = {
             dock = "right";
             folder_indicator = "both";
