@@ -74,6 +74,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Work config, kept private
+    spectrum = {
+      url = "git+ssh://git@github.com/dfjay/dotfiles-spectrum";
+      flake = false;
+    };
+
     # Non-flake sources
     portfolio = {
       url = "github:dfjay/dfjay.com";

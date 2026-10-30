@@ -19,7 +19,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Update lockfile
-        run: nix flake update
+        run: nix flake update $(jq -r '.nodes.root.inputs | keys[] | select(. != "spectrum")' flake.lock)
 
       - name: Commit changes
         uses: EndBug/add-and-commit@cc9c08ba6c8df3b93a8f2db63e89b98368ae2ae8 # v11.1.1

@@ -1,4 +1,9 @@
-{ modules, profiles, ... }:
+{
+  inputs,
+  modules,
+  profiles,
+  ...
+}:
 
 {
   system = "aarch64-darwin";
@@ -21,9 +26,11 @@
       games
       rclone
 
+    ])
+    ++ [
       # work
-      spectrum
-    ]);
+      (import "${inputs.spectrum}/spectrum.nix")
+    ];
 
   config =
     { pkgs, username, ... }:

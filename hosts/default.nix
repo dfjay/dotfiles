@@ -20,7 +20,7 @@ let
   selfManaged = lib.filter isSelfManaged subdirs;
 
   hosts = lib.genAttrs (lib.filter (name: !isSelfManaged name) subdirs) (
-    name: (import (./. + "/${name}") { inherit modules profiles; }) // { host = name; }
+    name: (import (./. + "/${name}") { inherit inputs modules profiles; }) // { host = name; }
   );
 
   colmenaHosts = lib.filterAttrs (_: hostCfg: hostCfg ? colmena) hosts;

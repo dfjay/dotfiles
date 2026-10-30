@@ -150,11 +150,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1793073767,
-        "narHash": "sha256-zL/9I57Uk9YZ3cRK7wqesMQ5DqzGAg+Flqc32XrSh4A=",
+        "lastModified": 1793246567,
+        "narHash": "sha256-ywLMKXURakXhU4yf1PUJubyi05ezGCRImicR71BaaIE=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "4e23b00003acb1e90bec84998185cd73e4d7487b",
+        "rev": "1c6b0fda2940b5bbfda0bf110590c06a97cacc4f",
         "type": "gitlab"
       },
       "original": {
@@ -295,11 +295,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793124281,
-        "narHash": "sha256-KdGTOgYXgMDA/ymTV10yLMt9tOjz9EmTgnTvaD+bhe4=",
+        "lastModified": 1793193205,
+        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1e3ebeb683d055d1675d3f64e6d2b186cb2ee504",
+        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
         "type": "github"
       },
       "original": {
@@ -432,11 +432,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1792842277,
-        "narHash": "sha256-pGPnZGi8y9d76xNeracniXO3dsYVROEmMkMc8jD0Ihc=",
+        "lastModified": 1793225069,
+        "narHash": "sha256-sx1f99WGrDfJ83KKuQrqGPmot0rnDgmpLJDzpU2oHQQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d3b13ad75cc492690728f9307e443dec9ef9a20e",
+        "rev": "e62746b0b472753ef019baceab6f1e2e52014980",
         "type": "github"
       },
       "original": {
@@ -448,11 +448,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1793155960,
-        "narHash": "sha256-6nEb9ZEYhsGhDi969jV5WDPs4IKPnbePgkOLL1wpis0=",
+        "lastModified": 1793263452,
+        "narHash": "sha256-aghsekvUVU8DOeJbYvWIAxNl5z7/SERXCSL/PVbZSxU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ceef943fbafd92b6534791918283472fd4ef4297",
+        "rev": "2ae0829398a14aa86866b25b659befc73513b567",
         "type": "github"
       },
       "original": {
@@ -464,11 +464,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1793015021,
-        "narHash": "sha256-Ee5BWo8sh3pGt70QUdRajnaginqFmWvrtdBc4gJzhks=",
+        "lastModified": 1793183032,
+        "narHash": "sha256-56mFMf8heLNfYhcgbrh4GpN5x+G9JOfTFXZC3n6w0qM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "718f670e845328e9c2cecdd832835712b2cbd065",
+        "rev": "08d3a97586f6b6343b3b5e799980773629432610",
         "type": "github"
       },
       "original": {
@@ -598,6 +598,7 @@
         "princo": "princo",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
+        "spectrum": "spectrum",
         "stylix": "stylix",
         "trailofbits-skills": "trailofbits-skills"
       }
@@ -630,11 +631,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793086596,
-        "narHash": "sha256-ObKS44vw4IIVpQ69YJzUGjZ0IwnpWoUlwjJSY7gefdo=",
+        "lastModified": 1793261817,
+        "narHash": "sha256-fAvtOccUXHVAH5wXK+ABYUUC47W2qTb9T9EefLcS9ME=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "c7e9d512653a35ef4d5879c3df4d44d7b78d0e6d",
+        "rev": "afcefd09c71e63663a46e4ce5e09968584f2c709",
         "type": "github"
       },
       "original": {
@@ -661,6 +662,22 @@
         "owner": "Mic92",
         "repo": "sops-nix",
         "type": "github"
+      }
+    },
+    "spectrum": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793371657,
+        "narHash": "sha256-nIkOvktkUGk6eb9fbcN8rqw49twivFuMeV70NjG0q9M=",
+        "ref": "refs/heads/main",
+        "rev": "3fc863494cfd03c935520e4599e40881ff9e39bc",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/dfjay/dotfiles-spectrum"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/dfjay/dotfiles-spectrum"
       }
     },
     "stable": {
@@ -810,11 +827,11 @@
     "trailofbits-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793131765,
-        "narHash": "sha256-dPsbm2D50drub0v81lehnVAKno47FXiiASVh9K+7Rgo=",
+        "lastModified": 1793212734,
+        "narHash": "sha256-vQiXAEv3+VsLweirfFaN1nD/PWuiDOlT5LeSLwIa304=",
         "owner": "trailofbits",
         "repo": "skills",
-        "rev": "bf23bfb21f10a2a4b0406086d690dc8cb1b3ccf3",
+        "rev": "2be6433b39e009cd2b6fd3be1895f6b1faa5af9a",
         "type": "github"
       },
       "original": {
