@@ -1,11 +1,21 @@
 {
   homeModule =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
 
     {
       programs.java = {
         enable = true;
         package = pkgs.zulu;
+      };
+
+      programs.zed-editor.userSettings.lsp.kotlin-lsp.binary.env = {
+        JAVA_HOME = config.programs.java.package.home;
+        IJ_JAVA_OPTIONS = "-Dcom.jetbrains.ls.imports.gradle.java.home=${config.programs.java.package.home}";
       };
 
       home.packages =

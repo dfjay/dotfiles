@@ -1,11 +1,11 @@
 final: _prev: {
   kotlin-lsp = final.stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "kotlin-lsp";
-    version = "263.6379.0";
+    version = "263.7084.0";
 
     src = final.fetchurl {
       url = "https://download.jetbrains.com/language-server/kotlin-server/${finalAttrs.version}/kotlin-server-${finalAttrs.version}-aarch64.sit";
-      hash = "sha256-6+8uE81K3E7J4ECEuEgACj7HqdKRfGTyaVdM4u/p7K0=";
+      hash = "sha256-tAO/ilS9RY47pnMc+KuzNAvgi0OcA1dt/AKxP682lLg=";
     };
 
     nativeBuildInputs = [
