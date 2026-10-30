@@ -51,7 +51,7 @@
             untracked = "?\${count} ";
             deleted = "✘\${count} ";
             renamed = "»\${count} ";
-            stashed = "\$\${count} ";
+            stashed = "\\$\${count} ";
           };
 
           git_state = {
