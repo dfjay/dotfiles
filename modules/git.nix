@@ -24,7 +24,6 @@
         ignores = [
           ".claude/"
           ".mcp.json"
-          ".ai/"
           ".zed/"
         ];
 
