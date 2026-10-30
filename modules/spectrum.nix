@@ -83,7 +83,6 @@ in
       caBundle = "${config.home.homeDirectory}/.local/share/ca-certificates/spectrum.pem";
       youtrackUrl = "https://mcp-youtrack.cloud.sd";
       youtrackToken = config.sops.secrets.youtrack_mcp_token.path;
-      gitlabMcpUrl = "https://gitlab.spectrumdata.tech/api/v4/mcp";
 
       youtrackProxy = pkgs.writeShellScript "mcp-youtrack-proxy" ''
         if ! token=$(cat ${lib.escapeShellArg youtrackToken}); then
@@ -100,22 +99,41 @@ in
           ${lib.escapeShellArg youtrackUrl}
       '';
 
-      jetbrainsMcp = (pkgs.formats.json { }).generate "jetbrains-mcp-spectrum.json" {
-        mcpServers = {
-          youtrack-cloud.command = "${youtrackProxy}";
-          gitlab.url = gitlabMcpUrl;
+      spectrumJdk = config.programs.java.package.overrideAttrs (old: {
+        postFixup = (old.postFixup or "") + ''
+          cacerts=$(readlink -f $out/lib/security/cacerts)
+          chmod u+w "$cacerts"
+          ${lib.getExe' pkgs.gawk "awk"} '/BEGIN CERT/ { n++ } { print > ("spectrum-" n ".pem") }' \
+            ${pkgs.writeText "spectrum-ca.pem" spectrumCa}
+          for pem in spectrum-*.pem; do
+            $out/bin/keytool -importcert -noprompt -storepass changeit \
+              -keystore "$cacerts" -alias "''${pem%.pem}" -file "$pem"
+          done
+        '';
+      });
+
+      zedSettings = (pkgs.formats.json { }).generate "zed-settings-spectrum.json" {
+        context_servers.youtrack-cloud = {
+          command = "${youtrackProxy}";
+          args = [ ];
+        };
+        lsp.kotlin-lsp.binary = (config.programs.zed-editor.userSettings.lsp.kotlin-lsp.binary or { }) // {
+          env = {
+            JAVA_HOME = "${spectrumJdk}";
+            IJ_JAVA_OPTIONS = "-Dcom.jetbrains.ls.imports.gradle.java.home=${spectrumJdk}";
+          };
         };
       };
 
-      zedSettings = (pkgs.formats.json { }).generate "zed-settings-spectrum.json" {
-        context_servers = {
-          youtrack-cloud = {
-            command = "${youtrackProxy}";
-            args = [ ];
-          };
-          gitlab.url = gitlabMcpUrl;
-        };
-      };
+      exportSpectrumEnv = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: value: "export ${name}=${lib.escapeShellArg value}") {
+          GOSUMDB = "sum.golang.org https://nexus.spectrumdata.tech/repository/proxy-sum-golang/";
+          GOPROXY = "https://nexus.spectrumdata.tech/repository/proxy-golang/,https://proxy.golang.org,direct";
+          GOPRIVATE = "gitlab.spectrumdata.tech,codes.spectrum";
+          NODE_EXTRA_CA_CERTS = caBundle;
+          JAVA_HOME = "${spectrumJdk}";
+        }
+      );
 
       claudeSubcommands = [
         "agents"
@@ -140,37 +158,20 @@ in
         "update"
         "upgrade"
       ];
-    in
-    {
-      sops.secrets.youtrack_mcp_token = { };
 
-      home.packages = lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.mattermost-desktop;
+      claudeWrapper = pkgs.writeShellScriptBin "claude" ''
+        claude=${lib.getExe config.programs.claude-code.finalPackage}
 
-      home.file."code/work/mcp.json".text = builtins.toJSON {
-        mcpServers.youtrack-cloud.command = "${youtrackProxy}";
-      };
-
-      home.file."code/work/opencode.json".text = builtins.toJSON {
-        "$schema" = "https://opencode.ai/config.json";
-        mcp.youtrack-cloud = {
-          type = "local";
-          command = [ "${youtrackProxy}" ];
-          enabled = true;
-        };
-      };
-
-      home.file."code/work/.bin/codex".source = pkgs.writeShellScript "codex-spectrum" ''
-        exec ${lib.getExe config.programs.codex.package} \
-          -c 'mcp_servers.youtrack-cloud.command="${youtrackProxy}"' \
-          "$@"
-      '';
-
-      home.file."code/work/.bin/claude".source = pkgs.writeShellScript "claude-spectrum" ''
-        case "''${1-}" in
-          ${lib.concatStringsSep "|" claudeSubcommands})
-            exec ${lib.getExe config.programs.claude-code.finalPackage} "$@"
-            ;;
+        case "$(pwd -P)/" in
+          ${spectrumRoot}/*) ;;
+          *) exec "$claude" "$@" ;;
         esac
+
+        case "''${1-}" in
+          ${lib.concatStringsSep "|" claudeSubcommands}) exec "$claude" "$@" ;;
+        esac
+
+        ${exportSpectrumEnv}
 
         plugins=()
         for manifest in \
@@ -180,9 +181,42 @@ in
           plugins+=(--plugin-dir "''${manifest%/.claude-plugin/plugin.json}")
         done
 
-        exec ${lib.getExe config.programs.claude-code.finalPackage} "$@" \
-          --mcp-config ${spectrumRoot}/mcp.json "''${plugins[@]}"
+        exec "$claude" "$@" --mcp-config ${spectrumRoot}/mcp.json "''${plugins[@]}"
       '';
+    in
+    {
+      sops.secrets.youtrack_mcp_token = { };
+
+      home.file."code/work/mcp.json".text = builtins.toJSON {
+        mcpServers.youtrack-cloud.command = "${youtrackProxy}";
+      };
+
+      home.file."code/work/opencode.json" = lib.mkIf config.programs.opencode.enable {
+        text = builtins.toJSON {
+          "$schema" = "https://opencode.ai/config.json";
+          mcp.youtrack-cloud = {
+            type = "local";
+            command = [ "${youtrackProxy}" ];
+            enabled = true;
+          };
+        };
+      };
+
+      home.file."code/work/.bin/codex" = lib.mkIf config.programs.codex.enable {
+        source = pkgs.writeShellScript "codex-spectrum" ''
+          exec ${lib.getExe config.programs.codex.package} \
+            -c 'mcp_servers.youtrack-cloud.command="${youtrackProxy}"' \
+            "$@"
+        '';
+      };
+
+      home.packages = [
+        (lib.hiPrio claudeWrapper)
+      ]
+      ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.mattermost-desktop;
+
+      programs.zed-editor.userSettings.agent_servers.claude-acp.env.CLAUDE_CODE_EXECUTABLE =
+        lib.getExe claudeWrapper;
 
       home.activation.spectrumProjectAgents = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -d ${lib.escapeShellArg spectrumRoot} ]; then
@@ -190,10 +224,6 @@ in
             -mindepth 2 -maxdepth 5 -type d -name .git -prune -print0 \
           | while IFS= read -r -d "" gitdir; do
               repo=''${gitdir%/.git}
-
-              target="$repo/.ai/mcp/mcp.json"
-              ${pkgs.diffutils}/bin/cmp -s ${jetbrainsMcp} "$target" \
-                || run ${pkgs.coreutils}/bin/install -Dm644 ${jetbrainsMcp} "$target"
 
               target="$repo/.zed/settings.json"
               if [ ! -e "$target" ]; then
@@ -218,6 +248,11 @@ in
         text = spectrumCa;
       };
 
+      home.file."Library/Java/JavaVirtualMachines/zulu-${lib.versions.major spectrumJdk.version}-spectrum.jdk" =
+        lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+          source = "${spectrumJdk}/Library/Java/JavaVirtualMachines/zulu-${lib.versions.major spectrumJdk.version}.jdk";
+        };
+
       programs.claude-code.settings.env = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         NODE_EXTRA_CA_CERTS = caBundle;
       };
@@ -238,13 +273,13 @@ in
       ];
 
       home.file."code/work/.envrc".text = ''
-        export GOSUMDB="sum.golang.org https://nexus.spectrumdata.tech/repository/proxy-sum-golang/"
-        export GOPROXY="https://nexus.spectrumdata.tech/repository/proxy-golang/,https://proxy.golang.org,direct"
-        export GOPRIVATE="gitlab.spectrumdata.tech,codes.spectrum"
-
-        export NODE_EXTRA_CA_CERTS="${caBundle}"
+        ${exportSpectrumEnv}
+      ''
+      + lib.optionalString config.programs.opencode.enable ''
 
         export OPENCODE_CONFIG="${spectrumRoot}/opencode.json"
+      ''
+      + lib.optionalString config.programs.codex.enable ''
         PATH_add "${spectrumRoot}/.bin"
       '';
     };
