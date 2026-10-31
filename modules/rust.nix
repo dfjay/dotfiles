@@ -10,7 +10,6 @@
             "rust-src"
           ];
         })
-        pkgs.rustlings
       ];
     };
 }
