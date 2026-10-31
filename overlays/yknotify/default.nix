@@ -10,6 +10,11 @@ final: _prev: {
       hash = "sha256-AhTr3lzYS6z1XoqVC2IIdJoDVdWajrbGhOe20dVQrGQ=";
     };
 
+    # Upstream treats any USB HID device opened via IOHIDLibUserClient as a
+    # security key, so touchscreens and other HID readers trigger FIDO2 alerts.
+    # Only count devices on the FIDO HID usage page (0xF1D0).
+    patches = [ ./fido-only.patch ];
+
     vendorHash = null;
 
     meta = {

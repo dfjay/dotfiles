@@ -1,0 +1,42 @@
+--- a/yknotify.go
++++ b/yknotify.go
+@@ -11,6 +11,29 @@
+ 	"time"
+ )
+ 
++// FIDO Alliance HID usage page (0xF1D0), declared by the CTAP HID interface of
++// every FIDO2 security key. Other USB HID devices (touchscreens, mice, gamepads)
++// also log "open by IOHIDLibUserClient" + "startQueue" and must not trigger FIDO2.
++const fidoUsagePage = "61904"
++
++// isFIDODevice reports whether the HID device with the given registry ID
++// (e.g. "0x100000c81") is a FIDO authenticator, according to ioreg.
++func isFIDODevice(registryID string) bool {
++	out, err := exec.Command("ioreg", "-r", "-c", "AppleUserUSBHostHIDDevice", "-w0").Output()
++	if err != nil {
++		return true // fail open: keep upstream behaviour
++	}
++	inDevice := false
++	for _, line := range strings.Split(string(out), "\n") {
++		if strings.HasPrefix(line, "+-o ") {
++			inDevice = strings.Contains(line, "id "+registryID+",")
++		} else if inDevice && strings.Contains(line, `"PrimaryUsagePage" = `) {
++			return strings.HasSuffix(strings.TrimSpace(line), "= "+fidoUsagePage)
++		}
++	}
++	return false
++}
++
+ const defaultPredicate = `(processImagePath == "/kernel" AND senderImagePath ENDSWITH "IOHIDFamily") OR (subsystem CONTAINS "CryptoTokenKit")`
+ 
+ var (
+@@ -106,7 +129,8 @@
+ 				parts := strings.Split(msg, " open by ")
+ 				if len(parts) == 2 {
+ 					clientID := strings.Split(parts[1], " ")[0]
+-					yubiKeyClients[clientID] = true
++					deviceID := strings.TrimPrefix(parts[0][strings.Index(parts[0], "AppleUserUSBHostHIDDevice:"):], "AppleUserUSBHostHIDDevice:")
++					yubiKeyClients[clientID] = isFIDODevice(deviceID)
+ 				}
+ 			}
+ 
