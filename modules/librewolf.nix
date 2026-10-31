@@ -114,11 +114,7 @@
           default = {
             id = 0;
             isDefault = true;
-            extensions.packages =
-              sharedExtensions
-              ++ (with pkgs.firefox-addons; [
-                metamask
-              ]);
+            extensions.packages = sharedExtensions;
             settings = sharedSettings // {
               "security.enterprise_roots.enabled" = false;
             };
