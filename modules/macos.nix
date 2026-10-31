@@ -68,6 +68,9 @@
             "com.apple.assistant.support"."Assistant Enabled" = false;
             "com.apple.Siri".StatusMenuVisible = false;
             "com.apple.Siri".UserHasDeclinedEnable = true;
+
+            # Spotlight → "Show Related Content" off: the rule's presence
+            "com.apple.Spotlight".EnabledPreferenceRules = [ "Custom.relatedContents" ];
           };
         };
 
