@@ -140,6 +140,7 @@
             "pyright-lsp@claude-plugins-nix" = true;
             "kotlin-lsp@claude-plugins-nix" = true;
             "jdtls-lsp@claude-plugins-nix" = true;
+            "swift-lsp@claude-plugins-nix" = true;
             "code-review@claude-plugins-nix" = true;
             "security-guidance@claude-plugins-nix" = true;
             "sharp-edges@trailofbits" = true;
