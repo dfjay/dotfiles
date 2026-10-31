@@ -53,7 +53,6 @@
           buffer_font_family = monospace.name;
           ui_font_size = 15;
           buffer_font_size = 13;
-          "unstable.ui_density" = "compact";
 
           toolbar = {
             breadcrumbs = false;
