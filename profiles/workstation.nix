@@ -13,6 +13,7 @@ profiles.base
   fd
   fish
   formats
+  fzf
   gh
   ghostty
   git
@@ -34,7 +35,6 @@ profiles.base
   ripgrep-all
   rust
   skills
-  skim
   ssh
   tealdeer
   yubikey
