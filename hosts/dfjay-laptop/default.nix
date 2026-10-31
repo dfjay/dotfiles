@@ -19,6 +19,7 @@
       # system
       aerospace
       macos
+      smudge
 
       # tools
       codex

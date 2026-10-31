@@ -597,6 +597,7 @@
         "preservation": "preservation",
         "princo": "princo",
         "rust-overlay": "rust-overlay_2",
+        "smudge": "smudge",
         "sops-nix": "sops-nix",
         "spectrum": "spectrum",
         "stylix": "stylix",
@@ -641,6 +642,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "smudge": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793457746,
+        "narHash": "sha256-jMEwRW56v27JAUc0PTouV81g58hYpcz/9cy8qgVGfJY=",
+        "owner": "dfjay",
+        "repo": "smudge",
+        "rev": "ac0ed3ba5a0cd832885aa34c2767c93d8d5a666f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfjay",
+        "repo": "smudge",
         "type": "github"
       }
     },
