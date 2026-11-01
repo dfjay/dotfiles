@@ -33,6 +33,7 @@
           "solidity"
           "sql"
           "svelte"
+          "swift"
           "toml"
           "vue"
           "xml"
