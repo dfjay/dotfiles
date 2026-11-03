@@ -2,4 +2,5 @@ config sing-box 'main'
     option enabled '1'
     option user 'root'
     option conffile '/etc/sing-box/config.json'
-    option workdir '/usr/share/sing-box'
+    # tmpfs: the profile's cache_file would wear the flash
+    option workdir '/tmp/sing-box'

@@ -27,7 +27,10 @@
 
       services.princo = {
         enable = true;
-        config = ../../vpn/princo.yaml;
+        config = [
+          ../../vpn/princo.yaml
+          "${inputs.vpn}/princo.yaml"
+        ];
         node = "ru";
         planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };

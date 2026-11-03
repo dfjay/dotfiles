@@ -80,6 +80,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # VPN addresses, users and secrets, merged over vpn/princo.yaml; kept private
+    vpn = {
+      url = "git+ssh://git@github.com/dfjay/dotfiles-vpn";
+      flake = false;
+    };
+
     # Work config, kept private
     spectrum = {
       url = "git+ssh://git@github.com/dfjay/dotfiles-spectrum";

@@ -21,9 +21,9 @@ let
   wifiKey = builtins.getEnv "ROUTER_WIFI_KEY";
   pppoeUser = builtins.getEnv "ROUTER_PPPOE_USER";
   pppoePass = builtins.getEnv "ROUTER_PPPOE_PASS";
-  vlessUuid = builtins.getEnv "ROUTER_VLESS_UUID";
+  singBoxConfig = builtins.getEnv "ROUTER_SING_BOX_CONFIG";
 
-  hasSecrets = wifiKey != "" && pppoeUser != "" && pppoePass != "" && vlessUuid != "";
+  hasSecrets = wifiKey != "" && pppoeUser != "" && pppoePass != "" && singBoxConfig != "";
 in
 pkgs.stdenv.mkDerivation {
   pname = "openwrt-gl-mt6000-image";
@@ -67,12 +67,13 @@ pkgs.stdenv.mkDerivation {
       sed -i "s/%%WIFI_KEY%%/${wifiKey}/g" custom-files/etc/config/wireless
       sed -i "s/%%PPPOE_USER%%/${pppoeUser}/g" custom-files/etc/config/network
       sed -i "s/%%PPPOE_PASS%%/${pppoePass}/g" custom-files/etc/config/network
-      sed -i "s/%%VLESS_UUID%%/${vlessUuid}/g" custom-files/etc/sing-box/config.json
+      mkdir -p custom-files/etc/sing-box
+      cp ${pkgs.writeText "config.json" singBoxConfig} custom-files/etc/sing-box/config.json
     ''}
 
     ${lib.optionalString (!hasSecrets) ''
       echo "WARNING: Building without secrets. Config files will contain placeholders."
-      echo "Use build.sh or set ROUTER_WIFI_KEY, ROUTER_PPPOE_USER, ROUTER_PPPOE_PASS, ROUTER_VLESS_UUID env vars with --impure."
+      echo "Use build.sh or set ROUTER_WIFI_KEY, ROUTER_PPPOE_USER, ROUTER_PPPOE_PASS, ROUTER_SING_BOX_CONFIG env vars with --impure."
     ''}
 
     make image \

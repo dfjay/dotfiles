@@ -563,11 +563,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792862168,
-        "narHash": "sha256-wWV2nKkL7PLXRzVRimt9zOAirmvRqB2V3hbh/SPkUys=",
+        "lastModified": 1793736813,
+        "narHash": "sha256-hgB5poYF7mGyc+HRLFnmfwf4lfI8GOlQDdpOaMFsnGE=",
         "owner": "dfjay",
         "repo": "princo",
-        "rev": "892093e18390ff62535b98d244a203f1eb5d62c8",
+        "rev": "96d0102fa930dbeadb9801c9dd9c314b1a0a7c81",
         "type": "github"
       },
       "original": {
@@ -601,7 +601,8 @@
         "sops-nix": "sops-nix",
         "spectrum": "spectrum",
         "stylix": "stylix",
-        "trailofbits-skills": "trailofbits-skills"
+        "trailofbits-skills": "trailofbits-skills",
+        "vpn": "vpn"
       }
     },
     "rust-overlay": {
@@ -859,6 +860,22 @@
         "owner": "trailofbits",
         "repo": "skills",
         "type": "github"
+      }
+    },
+    "vpn": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793737064,
+        "narHash": "sha256-1vhNaf9sLFgRnBriKJHYcupAdzGHvOSGWq+G8nPdySk=",
+        "ref": "refs/heads/main",
+        "rev": "0d2afc4da6c45ff50bf5e8584a1d8fb89c476f02",
+        "revCount": 3,
+        "type": "git",
+        "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       }
     }
   },

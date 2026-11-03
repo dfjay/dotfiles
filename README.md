@@ -46,7 +46,7 @@ Nix flake configuration for my machines.
 ├── modules/           # Reusable NixOS/darwin/home-manager modules
 │   ├── de/            # Desktop environments
 │   └── *.nix          # Individual tool modules
-├── vpn/               # princo.yaml: VPN nodes, users, routing
+├── vpn/               # princo.yaml: VPN routing; addresses and users are in a private repo
 ├── overlays/          # nixpkgs overlays
 ├── secrets/           # SOPS-encrypted secrets
 └── justfile           # Common tasks
