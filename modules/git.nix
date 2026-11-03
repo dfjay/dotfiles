@@ -22,6 +22,7 @@
         lfs.enable = true;
 
         ignores = [
+          ".DS_Store"
           ".claude/"
           ".mcp.json"
           ".zed/"
