@@ -38,7 +38,10 @@
       largestDisk = lib.foldl' (a: b: if sizeOf b > sizeOf a then b else a) (lib.head disks) disks;
     in
     {
-      imports = [ inputs.princo.nixosModules.default ];
+      imports = [
+        inputs.princo.nixosModules.default
+        "${inputs.vpn}/site.nix"
+      ];
 
       options.vps = {
         disko.enable =

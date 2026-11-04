@@ -37,7 +37,6 @@ nodes:
     ssh: regru-vps
     tags: [domestic]
     ipv6: false
-    hysteria2: {}
     egress: direct
     dns:
       servers:
