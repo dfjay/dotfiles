@@ -1,3 +1,0 @@
-# darwin-only nixpkgs packages that r-ryantm cannot update.
-lulu
-soundsource
