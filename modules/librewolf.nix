@@ -85,8 +85,7 @@
            "$APP/Contents/Resources/firefox.icns"
       '';
 
-      # Linux: extra .desktop entry next to the regular Librewolf one, picked
-      # up by COSMIC / GNOME / KDE app launchers.
+      # Linux: extra .desktop entry next to the regular Librewolf one.
       librewolfWorkDesktopLinux = pkgs.makeDesktopItem {
         name = "librewolf-work";
         desktopName = "Librewolf Work";

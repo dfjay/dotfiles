@@ -15,7 +15,8 @@
       # system
       audio
       bluetooth
-      de.cosmic
+      desktop.hyprland
+      desktop.noctalia
       games
       locale
     ]);
@@ -25,7 +26,6 @@
       config,
       pkgs,
       lib,
-      inputs,
       hostname,
       username,
       userdesc,
@@ -54,7 +54,9 @@
         sudo.u2f.enable = true;
         sudo-i.u2f.enable = true;
         polkit-1.u2f.enable = true;
-        cosmic-greeter.u2f.enable = true;
+        greetd.u2f.enable = true;
+        # noctalia's lock screen authenticates against the login stack.
+        login.u2f.enable = true;
       };
 
       security.sudo.enable = false;
@@ -97,6 +99,8 @@
           PermitRootLogin = "no";
         };
       };
+
+      programs.kdeconnect.enable = true;
 
       boot = {
         loader = {

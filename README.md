@@ -97,9 +97,9 @@ Every file in `modules/` returns a bundle of per-class modules:
 
 They are published as `flake.modules.<class>.<name>`, where `<class>` is
 `nixos`, `darwin` or `homeManager` and `<name>` is the path under `modules/`
-with `/` replaced by `-` (`modules/de/kde.nix` becomes `de-kde`). Hosts and
-profiles list names, which `mk-host.nix` resolves against that namespace and
-filters by the host's platform — so a single list covers all three classes.
+with `/` replaced by `-`. Hosts and profiles list names, which `mk-host.nix` resolves
+against that namespace and filters by the host's platform — so a single list
+covers all three classes.
 
 Because the namespace is the flake-parts `flake.modules` option, any other file
 can extend a module by defining into the same name, and a name that has nothing
