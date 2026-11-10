@@ -86,26 +86,7 @@
         hostName = hostname;
         networkmanager.enable = true;
         nftables.enable = true;
-        # Only what's used over the tailnet: SSH and Sunshine streaming (Moonlight).
-        # The Sunshine web UI (47990) stays local.
-        firewall.interfaces.tailscale0 = {
-          allowedTCPPorts = [
-            22
-            47984
-            47989
-            48010
-          ];
-          allowedUDPPortRanges = [
-            {
-              from = 47998;
-              to = 48000;
-            }
-          ];
-          allowedUDPPorts = [
-            48002
-            48010
-          ];
-        };
+        firewall.interfaces.tailscale0.allowedTCPPorts = [ 22 ];
       };
 
       services.openssh = {
@@ -115,18 +96,6 @@
           PasswordAuthentication = false;
           PermitRootLogin = "no";
         };
-      };
-
-      services.displayManager.autoLogin = {
-        enable = true;
-        user = username;
-      };
-
-      systemd.sleep.settings.Sleep = {
-        AllowSuspend = "no";
-        AllowHibernation = "no";
-        AllowHybridSleep = "no";
-        AllowSuspendThenHibernate = "no";
       };
 
       boot = {
@@ -158,19 +127,6 @@
             condition = "gitdir:~/code/work/";
           }
         ];
-
-        xdg.configFile."autostart/lock-on-login.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Name=Lock on login
-          NoDisplay=true
-          Exec=${pkgs.writeShellScript "lock-on-login" ''
-            for _ in 1 2 3 4 5; do
-              ${pkgs.systemd}/bin/loginctl lock-session
-              sleep 2
-            done
-          ''}
-        '';
 
         home.packages = with pkgs; [
           # CLI

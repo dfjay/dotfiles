@@ -4,7 +4,6 @@
 
     {
       home.packages = with pkgs; [
-        moonlight-qt
         prismlauncher
       ];
     };
@@ -25,13 +24,6 @@
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
         gamescopeSession.enable = true;
-      };
-
-      services.sunshine = {
-        enable = true;
-        autoStart = true;
-        capSysAdmin = true;
-        openFirewall = false;
       };
     };
 
