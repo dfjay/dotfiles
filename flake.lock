@@ -129,11 +129,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792526520,
-        "narHash": "sha256-3hSJlv8mUVnZPMWK2+CM7a9O+nR6Z4mCh27NfLCmTPc=",
+        "lastModified": 1794328522,
+        "narHash": "sha256-h2BYMW4nTFpIqnMd8gwAPFmJAp/1wWLQ6vT0NfL5qt4=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "cedd626e11b635470fa6f9fdb8ad79b0075dd7f9",
+        "rev": "1dd30c29c88d99ce295f15e27f93c49bc5fbae07",
         "type": "github"
       },
       "original": {
@@ -448,11 +448,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1794286452,
-        "narHash": "sha256-/t6vuIlMtiu3pAzzlLycSRoUjgFnfgEeM6HhbyFV8zs=",
+        "lastModified": 1794331954,
+        "narHash": "sha256-dSXj9ZCImgthcL2Waq6upuGNxP/9bRu3su8BsKigIRs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c5b5c5edd3aedaf18a320edb864bbf011dc476a4",
+        "rev": "dc787595799b1e75538f3afb37434ee59c57446a",
         "type": "github"
       },
       "original": {
@@ -563,11 +563,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794162224,
-        "narHash": "sha256-a+YuEJUMRaHBWKoO6KK2WgJAal6G4Fw8DlrvZoolBOU=",
+        "lastModified": 1794329833,
+        "narHash": "sha256-Dt/h4DyPKkz2jbvJrq+i2ezQJ55Oz1CpD+tLndpGn9Q=",
         "owner": "dfjay",
         "repo": "princo",
-        "rev": "1faa402443f264778d8659c64c0f167acddd30bb",
+        "rev": "64e385eece30c585feed4ed3403bb815a6c54d19",
         "type": "github"
       },
       "original": {
@@ -633,11 +633,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794216702,
-        "narHash": "sha256-J+4v+Olc/2mN/bSc9CuAQ/PB7c0w1mzDJK8JvS7rKmM=",
+        "lastModified": 1794303164,
+        "narHash": "sha256-UZMtOt43/HRVssXPSuPv8t11Toq9+CjyWUfYQ3tqGVE=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "b70538330f20adc9665afa2976471eb5b85ebd1f",
+        "rev": "89750a2ef1c6a44db9f4251b16c23deffdcfddff",
         "type": "github"
       },
       "original": {
@@ -865,11 +865,11 @@
     "vpn": {
       "flake": false,
       "locked": {
-        "lastModified": 1793916289,
-        "narHash": "sha256-tyaxRY3zZIRBhlStoeM66tgFQZ8R+bTCG6x1VSZNBbI=",
+        "lastModified": 1794205915,
+        "narHash": "sha256-/FjBj/5PGYpsjJYOS9GhQOarjNcli2mU3n+o3kx0hh4=",
         "ref": "refs/heads/main",
-        "rev": "475d4f33f15ca94dcc894f410a7e2601bfac9f00",
-        "revCount": 6,
+        "rev": "199fe28ce9b4b0654c3e9e6db0a4d0e91faf754d",
+        "revCount": 7,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       },
