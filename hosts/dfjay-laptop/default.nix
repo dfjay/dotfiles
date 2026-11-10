@@ -26,7 +26,7 @@
       ollama
       games
       rclone
-
+      web3
     ])
     ++ [
       # work
