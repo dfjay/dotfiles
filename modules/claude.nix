@@ -1,17 +1,26 @@
 {
   homeModule =
     {
+      config,
       lib,
       pkgs,
       pkgs-master,
       inputs,
       ...
     }:
+    let
+      homeDir = lib.escapeShellArg config.home.homeDirectory;
+    in
     {
       programs.claude-code = {
         enable = true;
         package = pkgs-master.claude-code;
         enableMcpIntegration = true;
+
+        mcpServers.intellij = {
+          type = "http";
+          url = "http://127.0.0.1:64342/stream";
+        };
 
         marketplaces = {
           claude-plugins-nix = inputs.claude-plugins-official;
@@ -23,6 +32,7 @@
             NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
           };
           enableVimMode = true;
+          effortLevel = "high";
           attribution.commit = "Assisted-by: Claude Code";
           # Keeps the claude.ai session link out of commit messages; this repo
           # is public, so the session id would be published with it.
@@ -182,5 +192,32 @@
           };
         };
       };
+
+      # IDEA bundles skills for its own tools only inside the jar. Air passes them to
+      # ACP agents, not to this CLI, so they are copied into ~/.claude/skills
+      home.activation.jetbrainsBundledSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        jar=$(
+          ${pkgs.coreutils}/bin/ls -1d \
+            "/Applications/IntelliJ IDEA"*.app/Contents/plugins/air-plugin/lib/modules/intellij.aiagentextensions.contrib.ide.idea.jar \
+            ${homeDir}"/Applications/IntelliJ IDEA"*.app/Contents/plugins/air-plugin/lib/modules/intellij.aiagentextensions.contrib.ide.idea.jar \
+            2>/dev/null | ${pkgs.coreutils}/bin/head -1 || true
+        )
+
+        if [ -n "$jar" ]; then
+          staged=$(${pkgs.coreutils}/bin/mktemp -d)
+          for skill in ij-debugger jvm-imports refactor-jvm-jb; do
+            if ${pkgs.unzip}/bin/unzip -qo "$jar" "bundledSkills/$skill/*" -d "$staged" 2>/dev/null \
+                 && [ -s "$staged/bundledSkills/$skill/SKILL.md" ]; then
+              target=${homeDir}/.claude/skills/$skill
+              if ! ${pkgs.diffutils}/bin/diff -rq "$staged/bundledSkills/$skill" "$target" >/dev/null 2>&1; then
+                run ${pkgs.coreutils}/bin/rm -rf "$target"
+                run ${pkgs.coreutils}/bin/mkdir -p ${homeDir}/.claude/skills
+                run ${pkgs.coreutils}/bin/cp -R "$staged/bundledSkills/$skill" "$target"
+              fi
+            fi
+          done
+          ${pkgs.coreutils}/bin/rm -rf "$staged"
+        fi
+      '';
     };
 }
