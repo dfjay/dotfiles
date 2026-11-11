@@ -79,6 +79,10 @@
       ];
 
       programs.claude-code.settings = {
+        enabledPlugins = {
+          "jdtls-lsp@claude-plugins-nix" = true;
+          "kotlin-lsp@claude-plugins-nix" = true;
+        };
         permissions.allow = [
           "Bash(gradle build *)"
           "Bash(gradle test *)"

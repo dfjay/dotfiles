@@ -31,5 +31,14 @@
       ];
 
       programs.uv.enable = true;
+
+      programs.claude-code.lspServers.python = {
+        command = lib.getExe' pkgs.basedpyright "basedpyright-langserver";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".py" = "python";
+          ".pyi" = "python";
+        };
+      };
     };
 }

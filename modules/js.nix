@@ -33,6 +33,8 @@
         typescript-language-server
       ];
 
+      programs.claude-code.settings.enabledPlugins."typescript-lsp@claude-plugins-nix" = true;
+
       programs.claude-code.settings.permissions.allow = [
         "Bash(npm run *)"
         "Bash(npm test *)"

@@ -37,7 +37,6 @@
           "toml"
           "vue"
           "xml"
-          "zig"
 
           "biome"
           "git-firefly"

@@ -29,6 +29,7 @@
       ];
 
       programs.claude-code.settings = {
+        enabledPlugins."gopls-lsp@claude-plugins-nix" = true;
         permissions.allow = [
           "Bash(go build *)"
           "Bash(go test *)"

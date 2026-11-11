@@ -135,51 +135,13 @@
               '';
           };
           enabledPlugins = {
-            "gopls-lsp@claude-plugins-nix" = true;
-            "typescript-lsp@claude-plugins-nix" = true;
-            "rust-analyzer-lsp@claude-plugins-nix" = true;
-            "pyright-lsp@claude-plugins-nix" = true;
-            "kotlin-lsp@claude-plugins-nix" = true;
-            "jdtls-lsp@claude-plugins-nix" = true;
-            "swift-lsp@claude-plugins-nix" = true;
+            # sourcekit-lsp ships with Xcode
+            "swift-lsp@claude-plugins-nix" = pkgs.stdenv.hostPlatform.isDarwin;
             "code-review@claude-plugins-nix" = true;
             "security-guidance@claude-plugins-nix" = true;
             "sharp-edges@trailofbits" = true;
             "spec-to-code-compliance@trailofbits" = true;
             "variant-analysis@trailofbits" = true;
-          };
-        };
-
-        lspServers = {
-          nix = {
-            command = "${pkgs.nixd}/bin/nixd";
-            extensionToLanguage = {
-              ".nix" = "nix";
-            };
-          };
-          zig = {
-            command = "${pkgs.zls}/bin/zls";
-            extensionToLanguage = {
-              ".zig" = "zig";
-            };
-          };
-          yaml = {
-            command = "${pkgs.yaml-language-server}/bin/yaml-language-server";
-            args = [ "--stdio" ];
-            extensionToLanguage = {
-              ".yaml" = "yaml";
-              ".yml" = "yaml";
-            };
-          };
-          toml = {
-            command = "${pkgs.taplo}/bin/taplo";
-            args = [
-              "lsp"
-              "stdio"
-            ];
-            extensionToLanguage = {
-              ".toml" = "toml";
-            };
           };
         };
       };

@@ -49,6 +49,13 @@
         nixos-anywhere
       ];
 
+      programs.claude-code.lspServers.nix = {
+        command = lib.getExe pkgs.nixd;
+        extensionToLanguage = {
+          ".nix" = "nix";
+        };
+      };
+
       programs.claude-code.settings = {
         permissions.allow = [
           "Bash(nix build *)"

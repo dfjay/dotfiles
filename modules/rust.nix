@@ -25,6 +25,8 @@
         )
       ];
 
+      programs.claude-code.settings.enabledPlugins."rust-analyzer-lsp@claude-plugins-nix" = true;
+
       home.packages = [
         (pkgs.rust-bin.stable.latest.default.override {
           extensions = [
