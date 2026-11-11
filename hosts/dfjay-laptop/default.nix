@@ -23,6 +23,7 @@
 
       # tools
       codex
+      idea
       ollama
       games
       rclone
@@ -151,7 +152,6 @@
           "draw-things"
           "element"
           "iina"
-          "intellij-idea"
           "kde-connect"
           "loopback"
           "lulu"
