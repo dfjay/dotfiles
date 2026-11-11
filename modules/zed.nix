@@ -132,7 +132,7 @@
             ];
           };
           lsp.rust-analyzer.binary.path = "${config.home.profileDirectory}/bin/rust-analyzer";
-          lsp.kotlin-lsp.binary = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+          lsp.kotlin-lsp.binary = {
             path = lib.getExe pkgs.kotlin-lsp-proxy;
             arguments = [
               (lib.getExe pkgs.kotlin-lsp)
