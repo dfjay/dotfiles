@@ -30,6 +30,7 @@ profiles.base
   nix
   nix-index
   nushell
+  nvim
   postgres
   python
   ripgrep-all

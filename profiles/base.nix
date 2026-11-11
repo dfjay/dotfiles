@@ -7,7 +7,6 @@ with modules;
   bat
   btop
   eza
-  helix
   nh
   ripgrep
   starship

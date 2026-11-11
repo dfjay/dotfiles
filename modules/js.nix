@@ -1,8 +1,28 @@
 {
   homeModule =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
 
     {
+      imports = [
+        (
+          { options, ... }:
+          {
+            config = lib.optionalAttrs (options.programs ? nvf) {
+              programs.nvf.settings.vim = {
+                lsp.enable = true;
+                languages = {
+                  typescript = {
+                    enable = true;
+                    format.type = [ "biome" ];
+                  };
+                  svelte.enable = true;
+                };
+              };
+            };
+          }
+        )
+      ];
+
       home.packages = with pkgs; [
         biome
         bun

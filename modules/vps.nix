@@ -126,7 +126,6 @@
           environment.systemPackages = with pkgs; [
             curl
             wget
-            vim
             htop
             git
             mtr
@@ -141,6 +140,13 @@
           ];
 
           security.sudo.enable = true;
+
+          programs.neovim = {
+            enable = true;
+            defaultEditor = true;
+            viAlias = true;
+            vimAlias = true;
+          };
         }
 
         # Boots on both BIOS and UEFI, so the layout fits any provider

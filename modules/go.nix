@@ -3,6 +3,20 @@
     { pkgs, lib, ... }:
 
     {
+      imports = [
+        (
+          { options, ... }:
+          {
+            config = lib.optionalAttrs (options.programs ? nvf) {
+              programs.nvf.settings.vim = {
+                lsp.enable = true;
+                languages.go.enable = true;
+              };
+            };
+          }
+        )
+      ];
+
       programs.go = {
         enable = true;
       };

@@ -123,7 +123,7 @@
         };
       };
 
-      environment.variables.EDITOR = "hx";
+      environment.variables.EDITOR = "nvim";
 
       homebrew = {
         enable = true;

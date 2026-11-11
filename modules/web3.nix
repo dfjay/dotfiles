@@ -19,26 +19,43 @@
         anchor
       ];
 
-      programs.helix.languages = {
-        language-server.solidity = {
-          command = lib.getExe solidity-lsp;
-          args = [ "--stdio" ];
-        };
-        language = [
+      imports = [
+        (
+          { options, ... }:
           {
-            name = "solidity";
-            language-servers = [ "solidity" ];
-            formatter = {
-              command = lib.getExe' pkgs.foundry "forge";
-              args = [
-                "fmt"
-                "--raw"
-                "-"
-              ];
+            # nvf has no solidity language module, so wire the pieces by hand
+            config = lib.optionalAttrs (options.programs ? nvf) {
+              programs.nvf.settings.vim = {
+                treesitter = {
+                  enable = true;
+                  grammars = [ pkgs.vimPlugins.nvim-treesitter.grammarPlugins.solidity ];
+                };
+
+                lsp.servers.solidity = {
+                  cmd = [
+                    (lib.getExe solidity-lsp)
+                    "--stdio"
+                  ];
+                  filetypes = [ "solidity" ];
+                  root_markers = [
+                    "foundry.toml"
+                    "hardhat.config.ts"
+                    "hardhat.config.js"
+                    ".git"
+                  ];
+                };
+
+                formatter.conform-nvim = {
+                  enable = true;
+                  setupOpts = {
+                    formatters_by_ft.solidity = [ "forge_fmt" ];
+                    formatters.forge_fmt.command = lib.getExe' pkgs.foundry "forge";
+                  };
+                };
+              };
             };
-            auto-format = true;
           }
-        ];
-      };
+        )
+      ];
     };
 }

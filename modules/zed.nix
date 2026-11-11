@@ -98,7 +98,6 @@
 
           base_keymap = "JetBrains";
           vim_mode = true;
-          helix_mode = true;
           vim.toggle_relative_line_numbers = true;
           which_key = {
             enabled = true;

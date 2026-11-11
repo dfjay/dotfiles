@@ -24,6 +24,23 @@
     { pkgs, lib, ... }:
 
     {
+      imports = [
+        (
+          { options, ... }:
+          {
+            config = lib.optionalAttrs (options.programs ? nvf) {
+              programs.nvf.settings.vim = {
+                lsp.enable = true;
+                languages.nix = {
+                  lsp.servers = [ "nixd" ];
+                  format.type = [ "nixfmt" ];
+                };
+              };
+            };
+          }
+        )
+      ];
+
       home.packages = with pkgs; [
         colmena
         devenv

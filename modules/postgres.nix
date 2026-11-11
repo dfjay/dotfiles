@@ -40,6 +40,24 @@
       style = s: "'${s}'";
     in
     {
+      imports = [
+        (
+          { options, ... }:
+          {
+            config = lib.optionalAttrs (options.programs ? nvf) {
+              programs.nvf.settings.vim = {
+                lsp.enable = true;
+                languages.sql = {
+                  enable = true;
+                  format.enable = false;
+                  extraDiagnostics.enable = false;
+                };
+              };
+            };
+          }
+        )
+      ];
+
       options.postgres.services = lib.mkOption {
         default = { };
         description = ''

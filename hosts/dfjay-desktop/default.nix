@@ -172,7 +172,7 @@
         usbutils
       ];
 
-      environment.variables.EDITOR = "hx";
+      environment.variables.EDITOR = "nvim";
 
       programs.throne = {
         enable = true;
