@@ -151,9 +151,9 @@
       {
         "architecture": "x86_64",
         "vendor_name": "AuthenticAMD",
-        "family": 23,
-        "model": 49,
-        "stepping": 0,
+        "family": 25,
+        "model": 1,
+        "stepping": 1,
         "features": [
           "fpu",
           "vme",
@@ -194,6 +194,7 @@
           "ssse3",
           "fma",
           "cx16",
+          "pcid",
           "sse4_1",
           "sse4_2",
           "x2apic",
@@ -235,27 +236,29 @@
           "xsaveopt",
           "xsavec",
           "xgetbv1",
+          "xsaves",
           "clzero",
           "xsaveerptr",
           "wbnoinvd",
           "arat",
           "umip",
+          "pku",
+          "ospke",
+          "vaes",
+          "vpclmulqdq",
           "rdpid",
           "overflow_recov",
           "succor"
         ],
         "bugs": [
           "sysret_ss_attrs",
-          "null_seg",
           "spectre_v1",
           "spectre_v2",
           "spec_store_bypass",
-          "retbleed",
-          "smt_rsb",
           "srso",
           "ibpb_no_ret"
         ],
-        "bogo": 4599.99,
+        "bogo": 4000,
         "cache": 512,
         "physical_id": 0,
         "siblings": 1,
@@ -426,7 +429,7 @@
           "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi-disk-0",
           "/dev/disk/by-label/linode-root",
           "/dev/disk/by-path/pci-0000:00:02.0-scsi-0:0:0:0",
-          "/dev/disk/by-uuid/87579d5e-70f4-28d1-fecf-4c3fd8ec4bec",
+          "/dev/disk/by-uuid/2bf4061b-583c-acab-7408-4007f0701421",
           "/dev/sda"
         ],
         "unix_device_name2": "/dev/sg0",
@@ -587,7 +590,7 @@
           {
             "type": "mem",
             "base": 0,
-            "range": 1011625984,
+            "range": 1011621888,
             "enabled": true,
             "access": "read_write",
             "prefetch": "unknown"
@@ -785,11 +788,11 @@
         "resources": [
           {
             "type": "hwaddr",
-            "address": 102
+            "address": 50
           },
           {
             "type": "phwaddr",
-            "address": 102
+            "address": 50
           }
         ],
         "driver": "virtio_net",
@@ -806,29 +809,6 @@
     "network_interface": [
       {
         "index": 18,
-        "attached_to": 0,
-        "class_list": [
-          "network_interface"
-        ],
-        "base_class": {
-          "hex": "0107",
-          "name": "Network Interface",
-          "value": 263
-        },
-        "sub_class": {
-          "hex": "0000",
-          "name": "Loopback",
-          "value": 0
-        },
-        "model": "Loopback network interface",
-        "sysfs_id": "/class/net/lo",
-        "unix_device_name": "lo",
-        "unix_device_names": [
-          "lo"
-        ]
-      },
-      {
-        "index": 19,
         "attached_to": 12,
         "class_list": [
           "network_interface"
@@ -853,11 +833,11 @@
         "resources": [
           {
             "type": "hwaddr",
-            "address": 102
+            "address": 50
           },
           {
             "type": "phwaddr",
-            "address": 102
+            "address": 50
           }
         ],
         "driver": "virtio_net",
@@ -867,6 +847,29 @@
         ],
         "driver_modules": [
           "virtio_net"
+        ]
+      },
+      {
+        "index": 19,
+        "attached_to": 0,
+        "class_list": [
+          "network_interface"
+        ],
+        "base_class": {
+          "hex": "0107",
+          "name": "Network Interface",
+          "value": 263
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Loopback",
+          "value": 0
+        },
+        "model": "Loopback network interface",
+        "sysfs_id": "/class/net/lo",
+        "unix_device_name": "lo",
+        "unix_device_names": [
+          "lo"
         ]
       }
     ],
