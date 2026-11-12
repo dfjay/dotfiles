@@ -10,7 +10,7 @@
   user = "dfjay";
   useremail = "mail@dfjay.com";
 
-  darwinStateVersion = 6;
+  darwinStateVersion = 7;
   homeStateVersion = "26.11";
 
   modules =
