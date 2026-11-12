@@ -14,6 +14,7 @@
         config.virtualisation = {
           cores = 4;
           darwin-builder.memorySize = 6 * 1024;
+          darwin-builder.diskSize = 60 * 1024;
         };
       };
 
