@@ -71,11 +71,11 @@
     "claude-plugins-official": {
       "flake": false,
       "locked": {
-        "lastModified": 1794463590,
-        "narHash": "sha256-7ddCmC7xM5NWxD4rfxUeUCzfK4H6lCgGmKG1l9hkppc=",
+        "lastModified": 1794528635,
+        "narHash": "sha256-Tj9RfGrEeCig0gl4R60jAPj55LLZCdT6n1eZgumFPbQ=",
         "owner": "anthropics",
         "repo": "claude-plugins-official",
-        "rev": "e0ab6e51219eef74e417a0e1d89e5d53e5e763d4",
+        "rev": "f75f5b25ae94f4332be4ff5f18435741d2589bdb",
         "type": "github"
       },
       "original": {
@@ -150,11 +150,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1794456182,
-        "narHash": "sha256-NiG9KYgyGQyHNdbpJoj3qhWioQHXD+VSGOrvl8Q6nKw=",
+        "lastModified": 1794488997,
+        "narHash": "sha256-dX4pNKg/CE+WYLisCN8IrDOudzQ2aUmkGAQJpUNoNeo=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "cc049e2da5650b5dd4853f7046f8ee53a353f5ce",
+        "rev": "b54fa31d52fad7f88604acea059f7dd081ed0ffc",
         "type": "gitlab"
       },
       "original": {
@@ -463,11 +463,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1794285365,
-        "narHash": "sha256-wZbTou+ANeUoN7ojuMBOPU9D4qMZ96MLxcDp2BzmIUY=",
+        "lastModified": 1794495034,
+        "narHash": "sha256-E0hYoioqUtM2XmPPvYYpJgdADF5AW9oOoPSEiM9dTHQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9ac0edc06bfb33e6c0000be79d98ef8d89e26503",
+        "rev": "2074cc672349f14240fb7ea90d509e0b643e9dd4",
         "type": "github"
       },
       "original": {
@@ -479,11 +479,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1794481963,
-        "narHash": "sha256-1sPUMNaxycZGlPLOiy5kcnNMVMuydMEf/nOdUB/vLho=",
+        "lastModified": 1794542149,
+        "narHash": "sha256-Nw7CthHBPojjckwARfWhGU2xE8ehNkm8llkW1+cmvFk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f5aef505e0f9873ed6d2de1e3fa2ccbb3e13bc5e",
+        "rev": "d36b92a06e773bc6117594853822a81e6cc48480",
         "type": "github"
       },
       "original": {
@@ -543,11 +543,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794477186,
-        "narHash": "sha256-DrdxLvPwBEJd8N5ycaIG1zhWFCAj+QT/XJRm9wcegtc=",
+        "lastModified": 1794522644,
+        "narHash": "sha256-EOYKot/+xy+p+5cd3+1EeR7nz1FevIkxC/Hs6TbndWg=",
         "owner": "NotAShelf",
         "repo": "nvf",
-        "rev": "01869cbbf1938bd02858dae14d9a942d35a60454",
+        "rev": "d38e36c2513337b56a3b16af268c7a3f2d33de7a",
         "type": "github"
       },
       "original": {
@@ -616,11 +616,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794481838,
-        "narHash": "sha256-qpqOnqWgfzQUCv+PGPZWMDtoqAjzWtwTgeSHuzI+Wmw=",
+        "lastModified": 1794497690,
+        "narHash": "sha256-wK19w2OExm0TuFWYJEhDcvfr7DwTq1oaqWNsvBN3o4o=",
         "owner": "dfjay",
         "repo": "princo",
-        "rev": "bbacdbbe1cefca3d5fd4402530b49babdf297064",
+        "rev": "143464c00c804492bdafffc0c72481bda1a63aa6",
         "type": "github"
       },
       "original": {
@@ -687,11 +687,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794476126,
-        "narHash": "sha256-KBjfmgZIUqBpjsemRKp4GvrCf8DlNsldkmxphh4X9oo=",
+        "lastModified": 1794518310,
+        "narHash": "sha256-NmwbbRaUf/AoY+NoJimXOdjlbkwl6+aDbe8nodaaZzY=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "d1e30fd696e1151603aa8adaa8f6b8c604fe3eb0",
+        "rev": "8bbfc858c7b85f5e6ed6d6cc201ffcee1bb08a9b",
         "type": "github"
       },
       "original": {
@@ -903,11 +903,11 @@
     "trailofbits-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793978375,
-        "narHash": "sha256-Ayq9NufLWIjNTFf/13BwlkcwrYzMpzI7XVuq3Tsgeyk=",
+        "lastModified": 1794505727,
+        "narHash": "sha256-8NBnk9sFW1IMkd+qmTvLKweh3CkeJaALEZBLs3GaxlM=",
         "owner": "trailofbits",
         "repo": "skills",
-        "rev": "e4dd0bb5b15535f7c5a0834187dffba6ac37e4ff",
+        "rev": "149d7b21f4067765b82e67029730b42d228ef4b4",
         "type": "github"
       },
       "original": {
