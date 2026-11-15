@@ -60,7 +60,8 @@ client:
 
   dns:
     servers:
-      proxy-dns: { address: https://dns.quad9.net, via: select, resolver: bootstrap-dns }
+      proxy-dns:
+        { address: https://dns.quad9.net, via: select, resolver: bootstrap-dns }
       direct-dns: { address: 77.88.8.8 }
       bootstrap-dns: { address: 77.88.8.8 }
       ru-dns: { address: 77.88.8.8, via: ru-select }
@@ -73,7 +74,10 @@ client:
       - { match: [geosite:bybit, geosite:category-ru], server: ru-dns }
 
   rules:
-    - { match: [ip:private, network:icmp, domain_suffix:3gppnetwork.org], action: direct } # LAN, ping, VoWiFi
+    - {
+        match: [ip:private, network:icmp, domain_suffix:3gppnetwork.org],
+        action: direct,
+      }
     - { match: [geosite:bybit], via: ru-select }
     - { match: [geosite:category-ip-geo-detect], action: direct }
     - { match: [geosite:category-ru, geoip:ru], via: ru-select }
@@ -81,3 +85,10 @@ client:
 
 subscription:
   node: fr
+
+monitor:
+  notify:
+    ops: { type: telegram, via: "!domestic" }
+  reach:
+    - from: domestic
+    - { from: "!domestic", to: domestic }
