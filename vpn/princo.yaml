@@ -24,17 +24,17 @@ defaults:
 
 nodes:
   fr:
-    ssh: gandi-vps
+    ssh: fr-vps
     hysteria2: { obfs: salamander }
     warp: { endpoint: 162.159.192.1:2408 }
 
   us:
-    ssh: linode-vps
+    ssh: us-vps
     hysteria2: { obfs: salamander }
     warp: { endpoint: 162.159.192.1:2408 }
 
   ru:
-    ssh: regru-vps
+    ssh: ru-vps
     tags: [domestic]
     ipv6: false
     egress: direct

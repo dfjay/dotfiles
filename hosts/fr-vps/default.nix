@@ -13,7 +13,7 @@
   modules = profiles.server;
 
   colmena = {
-    targetHost = "linode-vps";
+    targetHost = "fr-vps";
     targetUser = "dfjay";
   };
 
@@ -28,8 +28,35 @@
           ../../vpn/princo.yaml
           "${inputs.vpn}/princo.yaml"
         ];
-        node = "us";
+        node = "fr";
         planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+      };
+
+      services.nginx.virtualHosts."dfjay.com" = {
+        forceSSL = true;
+        enableACME = true;
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = 80;
+          }
+          {
+            addr = "[::]";
+            port = 80;
+          }
+          {
+            addr = "127.0.0.1";
+            port = 8443;
+            ssl = true;
+          }
+          {
+            addr = "[::1]";
+            port = 8443;
+            ssl = true;
+          }
+        ];
+        root = "${inputs.portfolio}";
+        locations."/".tryFiles = "$uri $uri/ /index.html";
       };
     };
 }

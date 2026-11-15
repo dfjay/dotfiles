@@ -4,25 +4,31 @@ Nix flake configuration for my machines.
 
 ## Hosts
 
-| Host | Platform | Description |
-|------|----------|-------------|
-| `dfjay-laptop` | aarch64-darwin | macOS (nix-darwin) |
-| `dfjay-desktop` | x86_64-linux | NixOS desktop |
-| `gandi-vps` | x86_64-linux | NixOS VPS |
-| `linode-vps` | x86_64-linux | NixOS VPS |
-| `regru-vps` | x86_64-linux | NixOS VPS (RU) |
-| `router` | mediatek/filogic | OpenWrt router |
+| Host            | Platform         | Description        |
+| --------------- | ---------------- | ------------------ |
+| `dfjay-laptop`  | aarch64-darwin   | macOS (nix-darwin) |
+| `dfjay-desktop` | x86_64-linux     | NixOS desktop      |
+| `fr-vps`        | x86_64-linux     | NixOS VPS          |
+| `ru-vps`        | x86_64-linux     | NixOS VPS          |
+| `us-vps`        | x86_64-linux     | NixOS VPS          |
+| `router`        | mediatek/filogic | OpenWrt router     |
 
 ## Stack
 
-- **[Nix Flakes](https://nixos.wiki/wiki/Flakes)** + **[flake-parts](https://github.com/hercules-ci/flake-parts)** — reproducible builds
-- **[home-manager](https://github.com/nix-community/home-manager)** — user environment & dotfiles
-- **[nix-darwin](https://github.com/LnL7/nix-darwin)** — macOS system configuration
+- **[Nix Flakes](https://nixos.wiki/wiki/Flakes)** +
+  **[flake-parts](https://github.com/hercules-ci/flake-parts)** — reproducible
+  builds
+- **[home-manager](https://github.com/nix-community/home-manager)** — user
+  environment & dotfiles
+- **[nix-darwin](https://github.com/LnL7/nix-darwin)** — macOS system
+  configuration
 - **[Stylix](https://github.com/danth/stylix)** — system-wide theming
-- **[sops-nix](https://github.com/Mic92/sops-nix)** — secrets management (Age + PGP/YubiKey)
+- **[sops-nix](https://github.com/Mic92/sops-nix)** — secrets management (Age +
+  PGP/YubiKey)
 - **[Colmena](https://github.com/zhaofengli/colmena)** — remote deployment
 - **[Lanzaboote](https://github.com/nix-community/lanzaboote)** — Secure Boot
-- **[Disko](https://github.com/nix-community/disko)** — declarative disk partitioning
+- **[Disko](https://github.com/nix-community/disko)** — declarative disk
+  partitioning
 
 ## Structure
 
@@ -35,9 +41,9 @@ Nix flake configuration for my machines.
 │   ├── mk-host.nix    # Host declaration -> nixos/darwin configuration
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
-│   ├── gandi-vps/     # NixOS VPS
-│   ├── linode-vps/    # NixOS VPS
-│   ├── regru-vps/     # NixOS VPS (RU)
+│   ├── fr-vps/        # NixOS VPS
+│   ├── ru-vps/        # NixOS VPS (RU)
+│   ├── us-vps/        # NixOS VPS
 │   └── router/        # OpenWrt router
 ├── profiles/          # Named module lists shared by hosts
 │   ├── base.nix       # Every host, servers included
@@ -97,9 +103,9 @@ Every file in `modules/` returns a bundle of per-class modules:
 
 They are published as `flake.modules.<class>.<name>`, where `<class>` is
 `nixos`, `darwin` or `homeManager` and `<name>` is the path under `modules/`
-with `/` replaced by `-`. Hosts and profiles list names, which `mk-host.nix` resolves
-against that namespace and filters by the host's platform — so a single list
-covers all three classes.
+with `/` replaced by `-`. Hosts and profiles list names, which `mk-host.nix`
+resolves against that namespace and filters by the host's platform — so a single
+list covers all three classes.
 
 Because the namespace is the flake-parts `flake.modules` option, any other file
 can extend a module by defining into the same name, and a name that has nothing

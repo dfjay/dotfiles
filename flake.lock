@@ -919,11 +919,11 @@
     "vpn": {
       "flake": false,
       "locked": {
-        "lastModified": 1794755178,
-        "narHash": "sha256-GR3mQbMfQTCHb8sHCXSPfD//mt2j3CCmuuhcPc9+dI4=",
+        "lastModified": 1794777661,
+        "narHash": "sha256-TmPhKY1HGHQcGWkgq9llX55DSQEWDAFkIbXmeEIsgyY=",
         "ref": "refs/heads/main",
-        "rev": "367b4838b8c0646c0b8d30c64849080f0a15c52b",
-        "revCount": 11,
+        "rev": "a57bda2fb5e6cee213ad6ba44ff965254c0a8209",
+        "revCount": 13,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       },

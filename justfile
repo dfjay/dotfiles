@@ -33,7 +33,7 @@ gcroot:
   ls -al /nix/var/nix/gcroots/auto/
 
 # Install NixOS on a fresh VPS: wipes the disk, records facter.json and installs the sops age key
-# Usage: just provision linode-vps root@89.23.45.67 [--no-disko-deps on ~1 GB RAM]
+# Usage: just provision us-vps root@89.23.45.67 [--no-disko-deps on ~1 GB RAM]
 [group('vps')]
 provision host target *args:
   #!/usr/bin/env bash
@@ -53,7 +53,7 @@ provision host target *args:
   echo "✓ {{host}} installed; commit hosts/{{host}}/facter.json"
 
 # Provision sops age key to a remote host
-# Usage: just provision-keys linode-vps root@89.23.45.67
+# Usage: just provision-keys us-vps root@89.23.45.67
 [group('vps')]
 provision-keys host target:
   #!/usr/bin/env bash
@@ -63,7 +63,7 @@ provision-keys host target:
   echo "✓ age key provisioned on {{target}}"
 
 # Generate facter.json from a remote host
-# Usage: just facter-remote linode-vps root@89.23.45.67
+# Usage: just facter-remote us-vps root@89.23.45.67
 [group('vps')]
 facter-remote host target:
   ssh {{target}} 'nix --extra-experimental-features "nix-command flakes" run github:numtide/nixos-facter -- -o /tmp/facter.json'
@@ -71,12 +71,22 @@ facter-remote host target:
   echo "✓ hosts/{{host}}/facter.json updated"
 
 # Deploy config to VPS via colmena and copy age key
-# Usage: just deploy linode-vps
+# Usage: just deploy us-vps
 [group('vps')]
 deploy host *args:
   #!/usr/bin/env bash
   set -euo pipefail
   colmena apply --on {{host}} {{args}}
+
+# Deploy over a public address, for when Tailscale is down or not up yet
+# Usage: just deploy-ip us-vps 66.135.18.247
+[group('vps')]
+deploy-ip host addr *args:
+  nix run nixpkgs#nixos-rebuild-ng -- switch \
+    --flake ".#{{host}}" \
+    --target-host "dfjay@{{addr}}" \
+    --sudo \
+    {{args}}
 
 # Regenerate facter.json for the current host
 # Usage: just facter dfjay-desktop

@@ -13,17 +13,19 @@
   modules = profiles.server;
 
   colmena = {
-    targetHost = "regru-vps";
+    targetHost = "us-vps";
     targetUser = "dfjay";
   };
 
   config =
     { inputs, ... }:
     {
-      zramSwap.enable = true;
+      # Pinned: the first install builds before facter.json is tracked
+      vps.disk = "/dev/vda";
 
-      # OpenStack 1:1 NAT, private address via DHCP on ens3; no IPv6
+      # IPv4 over DHCP, IPv6 over SLAAC
       networking.useDHCP = true;
+      networking.tempAddresses = "disabled";
 
       services.princo = {
         enable = true;
@@ -31,13 +33,8 @@
           ../../vpn/princo.yaml
           "${inputs.vpn}/princo.yaml"
         ];
-        node = "ru";
+        node = "us";
         planPkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
       };
-
-      services.resolved.settings.Resolve.FallbackDNS = [
-        "194.58.125.120"
-        "194.67.94.40"
-      ];
     };
 }
