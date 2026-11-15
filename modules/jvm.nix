@@ -64,7 +64,7 @@
 
       programs.java = {
         enable = true;
-        package = pkgs.zulu;
+        package = pkgs.zulu25;
       };
 
       programs.zed-editor.userSettings.lsp.kotlin-lsp.binary.env = kotlinLspEnv;
