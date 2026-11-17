@@ -9,17 +9,17 @@ final: _prev: {
       sources = {
         aarch64-darwin = {
           url = "${dist}-aarch64.sit";
-          hash = "sha256-tAO/ilS9RY47pnMc+KuzNAvgi0OcA1dt/AKxP682lLg=";
+          hash = "sha256-LSI4j1i+b036eo8YweIxhxFk3KzBbkB1WQKdcjKBa0o=";
         };
         x86_64-linux = {
           url = "${dist}.tar.gz";
-          hash = "sha256-rgxLAeF6tzpKUienjqmebcvj5JlgAxWyJ1mk5M3dEd8=";
+          hash = "sha256-45jnmQJ/QXSeoz+qV0cDB9E9QPkQlhhYx+MK29d4rgg=";
         };
       };
     in
     {
       pname = "kotlin-lsp";
-      version = "263.7084.0";
+      version = "271.2085.0";
 
       src = final.fetchurl sources.${final.stdenvNoCC.hostPlatform.system};
 

@@ -12,7 +12,6 @@
 
       kotlinLspEnv = {
         JAVA_HOME = javaHome;
-        IJ_JAVA_OPTIONS = "-Dcom.jetbrains.ls.imports.gradle.java.home=${javaHome}";
       };
     in
     {
