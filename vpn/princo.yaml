@@ -51,6 +51,7 @@ client:
   groups:
     select:
       nodes: "!domestic"
+      relay: domestic
       default: first
     ru-select:
       nodes: domestic

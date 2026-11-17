@@ -150,11 +150,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1794775650,
-        "narHash": "sha256-Aaf6OFIz6T+LfbnewyIvX9DQ+QhyolsFTSYUzKT53vA=",
+        "lastModified": 1794801771,
+        "narHash": "sha256-TdlskgDOwOwH+cXD1Hs1eiaCi0uLnYYxbBlLckFoNOU=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "bc8477f9b13385aec9b369de1c3e4479e07bbbb8",
+        "rev": "2060a2a111cee4c855ba08e3df37173321d9d589",
         "type": "gitlab"
       },
       "original": {
@@ -479,11 +479,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1794800212,
-        "narHash": "sha256-DWV7RstnmyLQaAE4SgEC7wl9xWUjA5o503tjv1cmJD4=",
+        "lastModified": 1794837630,
+        "narHash": "sha256-4JlPqFteCfiTuRNJVMPYJXbgzWA0T3wDjbRtI0GNTCs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "07b383c9d5f02bf2406bc98099c6aec83089621e",
+        "rev": "d956f6d47066687502a44f9520171aeccd8c03ef",
         "type": "github"
       },
       "original": {
@@ -616,11 +616,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794768527,
-        "narHash": "sha256-qBwQCe6e1xM4LEpliYjpLoSiGPsv2gp35qoiLnK1k50=",
+        "lastModified": 1794912224,
+        "narHash": "sha256-ya8JCzU2V/t9CYRtnswglbCP03+A3jLdGXtM+zmDz0w=",
         "owner": "dfjay",
         "repo": "princo",
-        "rev": "f3365b21cbe03a323c99f6cb0c18b9e3cbd6978e",
+        "rev": "cc5952a171ff2bf72f60858768fcc62f06831ff8",
         "type": "github"
       },
       "original": {
@@ -687,11 +687,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794733384,
-        "narHash": "sha256-VaXNWDU+9dXckN4BlZbrcYTTd9pIscLeiknbhHX4+lk=",
+        "lastModified": 1794820811,
+        "narHash": "sha256-z43rmhOmnCG4gN2EcSm4tzHUSRg7DG5SaGscYreafzg=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "67f1944c7c99d8dbb57fa3d83043bc0a92cbcc56",
+        "rev": "2ff7d39b901d79ee26d26f9fa32f90511eecaa0e",
         "type": "github"
       },
       "original": {
@@ -743,11 +743,11 @@
     "spectrum": {
       "flake": false,
       "locked": {
-        "lastModified": 1793825407,
-        "narHash": "sha256-UbyP4TAbQprfmXqi987X85KyyftRIIznq79cfvbMm9I=",
+        "lastModified": 1794906849,
+        "narHash": "sha256-IzQLlGDwGDIi+v+xReASFcfapE8t1ym/Xz9KwlT5ARM=",
         "ref": "refs/heads/main",
-        "rev": "c763f488ae7c5b242618b10dfa319c616af3c1c0",
-        "revCount": 3,
+        "rev": "f425fea3b451463140e6e8a91996fa271ae1db9c",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-spectrum"
       },
@@ -919,11 +919,11 @@
     "vpn": {
       "flake": false,
       "locked": {
-        "lastModified": 1794777661,
-        "narHash": "sha256-TmPhKY1HGHQcGWkgq9llX55DSQEWDAFkIbXmeEIsgyY=",
+        "lastModified": 1794911691,
+        "narHash": "sha256-59ntKKmyWQWD/9YDyiEU/42HHW1bac1BmI0ppzacEV8=",
         "ref": "refs/heads/main",
-        "rev": "a57bda2fb5e6cee213ad6ba44ff965254c0a8209",
-        "revCount": 13,
+        "rev": "209eab371b19bf1e1d06bd94ef7443b71e6c3d24",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       },
