@@ -5,15 +5,13 @@ up:
 
 # Update all the flake inputs and apply the current system configuration
 [group('nix')]
-upgrade:
+upgrade *args:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  nix flake update
-
   case "$(uname -s)" in
-    Darwin) nh darwin switch . ;;
-    Linux) nh os switch . ;;
+    Darwin) nh darwin switch --update . {{args}} ;;
+    Linux) nh os switch --update . {{args}} ;;
     *) echo "Unsupported OS: $(uname -s)" >&2; exit 1 ;;
   esac
 
@@ -82,10 +80,10 @@ deploy host *args:
 # Usage: just deploy-ip us-vps 66.135.18.247
 [group('vps')]
 deploy-ip host addr *args:
-  nix run nixpkgs#nixos-rebuild-ng -- switch \
-    --flake ".#{{host}}" \
+  nh os switch . \
+    --hostname "{{host}}" \
     --target-host "dfjay@{{addr}}" \
-    --sudo \
+    --elevation-strategy passwordless \
     {{args}}
 
 # Regenerate facter.json for the current host

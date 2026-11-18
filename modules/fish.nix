@@ -92,6 +92,8 @@
 
           nrs = "nh os switch";
           nds = "nh darwin switch";
+          nsp = "nh search";
+          nso = "nh search options";
         };
       };
     };
