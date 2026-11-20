@@ -9,6 +9,7 @@ Nix flake configuration for my machines.
 | `dfjay-laptop`  | aarch64-darwin   | macOS (nix-darwin) |
 | `dfjay-desktop` | x86_64-linux     | NixOS desktop      |
 | `fr-vps`        | x86_64-linux     | NixOS VPS          |
+| `nl-vps`        | x86_64-linux     | NixOS VPS          |
 | `ru-vps`        | x86_64-linux     | NixOS VPS          |
 | `us-vps`        | x86_64-linux     | NixOS VPS          |
 | `router`        | mediatek/filogic | OpenWrt router     |
@@ -42,6 +43,7 @@ Nix flake configuration for my machines.
 │   ├── dfjay-laptop/  # macOS
 │   ├── dfjay-desktop/ # NixOS desktop
 │   ├── fr-vps/        # NixOS VPS
+│   ├── nl-vps/        # NixOS VPS
 │   ├── ru-vps/        # NixOS VPS (RU)
 │   ├── us-vps/        # NixOS VPS
 │   └── router/        # OpenWrt router

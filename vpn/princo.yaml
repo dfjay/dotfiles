@@ -33,6 +33,11 @@ nodes:
     hysteria2: { obfs: salamander }
     warp: { endpoint: 162.159.192.1:2408 }
 
+  nl:
+    ssh: nl-vps
+    hysteria2: { obfs: salamander }
+    warp: { endpoint: 162.159.192.1:2408 }
+
   ru:
     ssh: ru-vps
     tags: [domestic]
@@ -85,7 +90,7 @@ client:
   final: select
 
 subscription:
-  node: fr
+  node: nl
 
 monitor:
   notify:
