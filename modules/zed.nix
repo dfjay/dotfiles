@@ -1,11 +1,6 @@
 {
   homeModule =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { config, ... }:
 
     let
       inherit (config.stylix.fonts) monospace sansSerif;
@@ -18,32 +13,18 @@
         enable = true;
         enableMcpIntegration = true;
         extensions = [
-          "docker-compose"
-          "dockerfile"
           "editorconfig"
-          "elixir"
-          "gleam"
           "graphql"
-          "helm"
           "html"
-          "java"
-          "justfile"
-          "kotlin"
           "make"
-          "nix"
           "proto"
-          "solidity"
           "sql"
-          "svelte"
           "swift"
           "toml"
-          "vue"
           "xml"
 
-          "biome"
           "git-firefly"
           "gitlab-ci-ls"
-          "golangci-lint"
 
           "jetbrains-themes"
           "jetbrains-new-ui-icons"
@@ -95,6 +76,7 @@
           hover_popover_delay = 550;
           colorize_brackets = true;
           use_smartcase_search = true;
+          diff_view_style = "split";
           autosave = "on_focus_change";
 
           base_keymap = "JetBrains";
@@ -111,54 +93,20 @@
               provider = "anthropic";
               model = "claude-haiku-5-5";
             };
-            favorite_models = [ ];
-            model_parameters = [ ];
           };
           agent_servers = {
-            "claude-acp".type = "registry";
+            "claude-acp" = {
+              type = "registry";
+              default_config_options = {
+                model = "opus";
+                effort = "high";
+                mode = "auto";
+              };
+            };
             "codex-acp".type = "registry";
           };
 
           telemetry.metrics = false;
-
-          file_types = {
-            Helm = [
-              "**/templates/**/*.tpl"
-              "**/templates/**/*.yaml"
-              "**/templates/**/*.yml"
-              "**/helmfile.d/**/*.yaml"
-              "**/helmfile.d/**/*.yml"
-              "**/values*.yaml"
-            ];
-          };
-          lsp.rust-analyzer.binary.path = "${config.home.profileDirectory}/bin/rust-analyzer";
-          lsp.kotlin-lsp.binary = {
-            path = lib.getExe pkgs.kotlin-lsp-proxy;
-            arguments = [
-              (lib.getExe pkgs.kotlin-lsp)
-              "--stdio"
-            ];
-          };
-          lsp.gopls.initialization_options.hints = {
-            assignVariableTypes = false;
-            rangeVariableTypes = false;
-            compositeLiteralTypes = false;
-          };
-          languages = {
-            Kotlin = {
-              language_servers = [ "kotlin-lsp" ];
-            };
-            Nix = {
-              language_servers = [
-                "nixd"
-                "!nil"
-              ];
-            };
-            # Ruler overrides matching each formatter's wrap point.
-            Python = {
-              wrap_guides = [ 88 ];
-            };
-          };
         };
       };
 

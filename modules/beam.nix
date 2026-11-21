@@ -18,6 +18,11 @@
         )
       ];
 
+      programs.zed-editor.extensions = [
+        "elixir"
+        "gleam"
+      ];
+
       home.packages =
         (with pkgs.beam29Packages; [
           elixir

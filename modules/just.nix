@@ -16,6 +16,8 @@
         )
       ];
 
+      programs.zed-editor.extensions = [ "justfile" ];
+
       home.packages = with pkgs; [
         just
         just-lsp

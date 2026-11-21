@@ -21,6 +21,15 @@
         enable = true;
       };
 
+      programs.zed-editor = {
+        extensions = [ "golangci-lint" ];
+        userSettings.lsp.gopls.initialization_options.hints = {
+          assignVariableTypes = false;
+          rangeVariableTypes = false;
+          compositeLiteralTypes = false;
+        };
+      };
+
       home.packages = with pkgs; [
         delve
         golangci-lint

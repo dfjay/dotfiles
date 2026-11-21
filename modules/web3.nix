@@ -19,6 +19,8 @@
         anchor
       ];
 
+      programs.zed-editor.extensions = [ "solidity" ];
+
       imports = [
         (
           { options, ... }:

@@ -50,6 +50,14 @@
         nixos-anywhere
       ];
 
+      programs.zed-editor = {
+        extensions = [ "nix" ];
+        userSettings.languages.Nix.language_servers = [
+          "nixd"
+          "!nil"
+        ];
+      };
+
       programs.claude-code.lspServers.nix = {
         command = lib.getExe pkgs.nixd;
         extensionToLanguage = {

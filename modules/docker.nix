@@ -52,6 +52,11 @@
           ]
         );
 
+      programs.zed-editor.extensions = [
+        "docker-compose"
+        "dockerfile"
+      ];
+
       services.colima = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         enable = true;
         profiles.default = {

@@ -25,6 +25,9 @@
         )
       ];
 
+      programs.zed-editor.userSettings.lsp.rust-analyzer.binary.path =
+        "${config.home.profileDirectory}/bin/rust-analyzer";
+
       programs.claude-code.settings.enabledPlugins."rust-analyzer-lsp@claude-plugins-nix" = true;
 
       home.packages = [

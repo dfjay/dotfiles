@@ -33,6 +33,12 @@
         typescript-language-server
       ];
 
+      programs.zed-editor.extensions = [
+        "biome"
+        "svelte"
+        "vue"
+      ];
+
       programs.claude-code.settings.enabledPlugins."typescript-lsp@claude-plugins-nix" = true;
 
       programs.claude-code.settings.permissions.allow = [

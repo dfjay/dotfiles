@@ -32,6 +32,8 @@
 
       programs.uv.enable = true;
 
+      programs.zed-editor.userSettings.languages.Python.wrap_guides = [ 88 ];
+
       programs.claude-code.lspServers.python = {
         command = lib.getExe' pkgs.basedpyright "basedpyright-langserver";
         args = [ "--stdio" ];

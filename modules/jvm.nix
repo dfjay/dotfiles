@@ -66,7 +66,27 @@
         package = pkgs.zulu25;
       };
 
-      programs.zed-editor.userSettings.lsp.kotlin-lsp.binary.env = kotlinLspEnv;
+      programs.zed-editor = {
+        extensions = [
+          "java"
+          "kotlin"
+        ];
+        userSettings = {
+          lsp.kotlin-lsp.binary = {
+            path = lib.getExe pkgs.kotlin-lsp-proxy;
+            arguments = [
+              (lib.getExe pkgs.kotlin-lsp)
+              "--stdio"
+            ];
+            env = kotlinLspEnv;
+          };
+          languages = {
+            Kotlin.language_servers = [ "kotlin-lsp" ];
+            # scalafmt's default maxColumn
+            Scala.wrap_guides = [ 80 ];
+          };
+        };
+      };
 
       home.packages = with pkgs; [
         async-profiler
