@@ -1,7 +1,6 @@
 keys:
   - &yubikey A82705DF08BC95859FF5CB7E577260D68251AC22
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
-  - &fr-age age1rhlq6f0e4evcwaucra29nu05wzhv9wu2c8vsh9f580glz44xgsaqtfsugf
   - &us-age age1vljcpwhu7h3a46vgc4n8a2wlsf2xmuyvplnka3l03t7fae0ge5tsjnxqh9
   - &ru-age age125e4z55u3642ldaz9qerxk8xfw8egj6pu6qzqfcpc36rksv8cs4qcepk52
   - &nl-age age13dh0hz2fmktvycqn8u4zukha7mahdnnuvgkqezmqr8dahtzlferq5f4cfk
@@ -15,19 +14,9 @@ creation_rules:
           - *yubikey
         age:
           - *mac-age
-          - *fr-age
           - *us-age
           - *ru-age
           - *nl-age
-
-  # fr-vps secrets
-  - path_regex: secrets/fr-vps\.yaml$
-    key_groups:
-      - pgp:
-          - *yubikey
-        age:
-          - *mac-age
-          - *fr-age
 
   # us-vps secrets
   - path_regex: secrets/us-vps\.yaml$

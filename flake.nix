@@ -98,11 +98,6 @@
     };
 
     # Non-flake sources
-    portfolio = {
-      url = "github:dfjay/dfjay.com";
-      flake = false;
-    };
-
     claude-plugins-official = {
       url = "github:anthropics/claude-plugins-official";
       flake = false;

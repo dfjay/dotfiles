@@ -556,22 +556,6 @@
         "type": "github"
       }
     },
-    "portfolio": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1793480626,
-        "narHash": "sha256-NK2ffRZ0oEnHHUTsobvyKzAPqToBKhDRQUNS1dOVfU8=",
-        "owner": "dfjay",
-        "repo": "dfjay.com",
-        "rev": "6183a5b7e9de9540b125961154213319ecb2fa60",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dfjay",
-        "repo": "dfjay.com",
-        "type": "github"
-      }
-    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -647,7 +631,6 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "nvf": "nvf",
-        "portfolio": "portfolio",
         "preservation": "preservation",
         "princo": "princo",
         "rust-overlay": "rust-overlay_2",
@@ -919,11 +902,11 @@
     "vpn": {
       "flake": false,
       "locked": {
-        "lastModified": 1795207234,
-        "narHash": "sha256-HiihBif8mj5XbhUxI+ADSn7X52TKJvKNvkBs4f80/Gw=",
+        "lastModified": 1795246882,
+        "narHash": "sha256-2zb0HQD0GohsODwmEwWwEJgNzD696IC4V9Yq3KFP68E=",
         "ref": "refs/heads/main",
-        "rev": "8142ee8703698a11c7f0f36efd6fd301e086e065",
-        "revCount": 27,
+        "rev": "f43f71677d1f21f1aeb3e93f65a8b671d95e7b9c",
+        "revCount": 28,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       },
