@@ -726,11 +726,11 @@
     "spectrum": {
       "flake": false,
       "locked": {
-        "lastModified": 1794906849,
-        "narHash": "sha256-IzQLlGDwGDIi+v+xReASFcfapE8t1ym/Xz9KwlT5ARM=",
+        "lastModified": 1795427696,
+        "narHash": "sha256-rAiUZi2rpiJ9SiFXb35rIuHpMAT2rjiiU7mY2gYDbVU=",
         "ref": "refs/heads/main",
-        "rev": "f425fea3b451463140e6e8a91996fa271ae1db9c",
-        "revCount": 5,
+        "rev": "1271631b35726575b1d82eda9a11a2ba0baeb814",
+        "revCount": 6,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-spectrum"
       },
