@@ -74,8 +74,6 @@
 
       services.printing.enable = true;
 
-      services.fwupd.enable = true;
-
       hardware = {
         cpu.amd.updateMicrocode = true;
         graphics = {

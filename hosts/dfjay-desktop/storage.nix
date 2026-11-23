@@ -128,6 +128,8 @@
         "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
+        "/var/lib/systemd/timers"
+        "/var/lib/cups"
         "/var/lib/sbctl"
         "/etc/NetworkManager/system-connections"
         "/etc/nixos"
