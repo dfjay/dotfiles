@@ -1,6 +1,6 @@
 {
   darwinModule =
-    { ... }:
+    { config, ... }:
     {
       # https://daiderd.com/nix-darwin/manual/index.html#sec-options
       # https://github.com/yannbertrand/macos-defaults
@@ -15,6 +15,8 @@
             show-recents = false;
             orientation = "bottom";
             tilesize = 40;
+            # AeroSpace guide: Mission Control shows its hidden windows too small otherwise
+            expose-group-apps = true;
             # Hot-corners
             wvous-tl-corner = 1; # top-left
             wvous-tr-corner = 1; # top-right
@@ -38,6 +40,17 @@
             Clicking = false;
             TrackpadRightClick = true;
             TrackpadThreeFingerDrag = true;
+          };
+
+          NSGlobalDomain = {
+            ApplePressAndHoldEnabled = false;
+            KeyRepeat = 2;
+            InitialKeyRepeat = 20;
+          };
+
+          screencapture = {
+            location = "${config.users.users.${config.system.primaryUser}.home}/Pictures/Screenshots";
+            type = "png";
           };
 
           WindowManager = {
@@ -83,9 +96,13 @@
     };
 
   homeModule =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
 
     {
       services.gpg-agent.pinentry.package = pkgs.pinentry_mac;
+
+      home.activation.screenshotsDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run mkdir -p "$HOME/Pictures/Screenshots"
+      '';
     };
 }

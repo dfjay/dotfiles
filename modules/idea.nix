@@ -3,6 +3,8 @@
     { ... }:
     {
       homebrew.casks = [ "intellij-idea" ];
+
+      system.defaults.CustomUserPreferences."com.jetbrains.intellij".AppleWindowTabbingMode = "always";
     };
 
   homeModule =
