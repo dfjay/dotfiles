@@ -53,9 +53,16 @@
           sudo.u2f.enable = true;
           sudo-i.u2f.enable = true;
           polkit-1.u2f.enable = true;
-          greetd.u2f.enable = true;
-          # noctalia's lock screen authenticates against the login stack.
           login.u2f.enable = true;
+
+          greetd = {
+            useDefaultRules = lib.mkForce true;
+            rules = lib.genAttrs [ "auth" "account" "password" "session" ] (_: {
+              login.enable = false;
+            });
+            startSession = true;
+            enableGnomeKeyring = true;
+          };
         };
       };
 
