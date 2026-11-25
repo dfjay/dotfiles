@@ -49,10 +49,6 @@
         sudo-rs.enable = true;
         polkit.enable = true;
 
-        pam.u2f.settings = {
-          authfile = "/etc/u2f-mappings";
-          cue = true;
-        };
         pam.services = {
           sudo.u2f.enable = true;
           sudo-i.u2f.enable = true;
@@ -62,10 +58,6 @@
           login.u2f.enable = true;
         };
       };
-      environment.etc."u2f-mappings".text = lib.concatStringsSep ":" [
-        username
-        "TJsm3V7hBAhRxztwfcVAHJbDLZQ3RW/8+K0Tpw9t/P16sVF7xfqO0PtFOJPrts8krMQQTo5lxXSKPLCML4U02g==,PuVsPDLBP/Yu8WHE2VIokBunqpDNDnof/CJmiyw6p94JsqsXUmFn0gIxTdu2Hes+Q9TJIV5ysDAhklEw7IRnNg==,es256,+presence"
-      ];
 
       # Suppress systemd-machine-id-commit.service since machine-id is persisted via preservation
       systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];

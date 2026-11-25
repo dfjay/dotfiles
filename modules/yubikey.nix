@@ -1,4 +1,20 @@
+let
+  u2fOrigin = "pam://dfjay";
+  u2fKeys = [
+    "MCqVKxndnYsp6J/rUnUct10DV2vAj+VRJWyc/1hh9gZiX0jL1Nu/FrLRdSLM67FyfTcd6pUv7aIraFZDvKXiZg==,iM0rjGbb0hzEvI1I0sqqKZ5MWJoccoxyvgzPCtb5rY/fsbNCBCX1CD9xyriOPSlHrXJlfXRxwRgEXCEy1M6HAQ==,es256,+presence"
+  ];
+  u2fMappings = username: builtins.concatStringsSep ":" ([ username ] ++ u2fKeys);
+in
 {
+  darwinModule =
+    { pkgs, username, ... }:
+    {
+      security.pam.services.sudo_local.text = pkgs.lib.mkAfter ''
+        auth       sufficient     ${pkgs.pam_u2f}/lib/security/pam_u2f.so authfile=/etc/u2f-mappings origin=${u2fOrigin} cue
+      '';
+      environment.etc."u2f-mappings".text = u2fMappings username;
+    };
+
   homeModule =
     {
       config,
@@ -52,8 +68,15 @@
     };
 
   nixosModule =
-    { ... }:
+    { username, ... }:
     {
+      security.pam.u2f.settings = {
+        authfile = "/etc/u2f-mappings";
+        origin = u2fOrigin;
+        cue = true;
+      };
+      environment.etc."u2f-mappings".text = u2fMappings username;
+
       programs.yubikey-touch-detector.enable = true;
     };
 }
