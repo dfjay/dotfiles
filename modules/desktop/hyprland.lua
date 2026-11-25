@@ -1,21 +1,38 @@
--- Hyprland config, loaded from the hyprland.lua that home-manager generates.
--- Colors come from stylix (hl.config in that file), store paths from nix.lua.
--- Reference: https://wiki.hypr.land/configuring/
-
 local nix = require("nix")
 local ipc = nix.noctalia .. " msg "
+
+hl.env("XCURSOR_THEME", nix.cursor.name)
+hl.env("XCURSOR_SIZE",  nix.cursor.size)
 
 -- Same keys as aerospace on macOS, with SUPER in place of alt.
 local mod = "SUPER"
 
+-- Same monitors as aerospace's workspace-to-monitor-force-assignment.
+local ultrawide   = "desc:Dell Inc. DELL U4025QW"
+local touchscreen = "desc:Woodwind Communications Systems Inc SU13TO"
+local touchscreenPort = "HDMI-A-1"
+
+-- 5120x2160@120, the EDID preferred mode is only 60 Hz.
+hl.monitor({
+    output   = ultrawide,
+    mode     = "highrr",
+    position = "0x0",
+    scale    = 1.25,
+})
+
+-- 13" touch panel, 4K@60 preferred. highrr would pick 800x600@60.32.
+hl.monitor({
+    output   = touchscreen,
+    mode     = "preferred",
+    position = "auto-right",
+    scale    = 2,
+})
+
 hl.monitor({
     output   = "",
-    mode     = "highrr",
+    mode     = "preferred",
     position = "auto",
     scale    = "auto",
-    -- Fullscreen HDR content switches the output to HDR on its own
-    -- (render.cm_auto_hdr). For HDR on the desktop too, add:
-    -- cm = "hdr", bitdepth = 10,
 })
 
 hl.config({
@@ -36,37 +53,60 @@ hl.config({
 
     input = {
         kb_layout    = "us,ru",
-        kb_options   = "grp:caps_toggle",
+        kb_options   = "caps:escape",
+        repeat_delay = 300,
+        repeat_rate  = 33,
         follow_mouse = 1,
+        -- Touch otherwise maps onto the whole layout, not the touch panel.
+        -- Input output mapping takes a connector, not desc:.
+        touchdevice  = {
+            output = touchscreenPort,
+        },
     },
 
     misc = {
         force_default_wallpaper = 0,
-        -- Adaptive sync only for fullscreen windows (games).
         vrr = 2,
     },
 
     render = {
-        -- Lower latency for fullscreen games.
         direct_scanout = 2,
     },
 })
 
--- Persistent workspaces 1-9, like aerospace's persistent-workspaces.
-for i = 1, 9 do
-    hl.workspace_rule({ workspace = tostring(i), persistent = true })
-end
+-- The panel also exposes an absolute pointer next to its multitouch node.
+hl.device({
+    name   = "ilitek-ilitek-tp-mouse",
+    output = touchscreenPort,
+})
 
----- Autostart ----
--- noctalia, polkit agent and hypridle run as systemd user services.
+-- Persistent workspaces 1-9, like aerospace's persistent-workspaces:
+-- 1-7 on the ultrawide, 8-9 on the touch panel.
+for i = 1, 9 do
+    hl.workspace_rule({
+        workspace  = tostring(i),
+        persistent = true,
+        monitor    = i <= 7 and ultrawide or touchscreen,
+        default    = i == 1 or i == 8,
+    })
+end
 
 ---- Apps ----
 
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(nix.terminal))
-hl.bind(mod .. " + Space",  hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
+hl.bind("ALT + Space",      hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
+hl.bind(mod .. " + Space",  hl.dsp.exec_cmd("hyprctl switchxkblayout all next"))
 hl.bind(mod .. " + S",      hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
 hl.bind(mod .. " + comma",  hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mod .. " + Escape", hl.dsp.exec_cmd(ipc .. "session lock"))
+
+hl.bind("Print",                 hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind(mod .. " + SHIFT + S",   hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind("SHIFT + Print",         hl.dsp.exec_cmd(ipc .. "screenshot-fullscreen"))
+hl.bind("ALT + Print",           hl.dsp.exec_cmd(ipc .. "screenshot-window"))
+
+hl.bind("ALT + Tab",         hl.dsp.exec_cmd(ipc .. "window-switcher hold"))
+hl.bind("ALT + SHIFT + Tab", hl.dsp.exec_cmd(ipc .. "window-switcher hold reverse"))
 
 ---- Windows ----
 
@@ -108,7 +148,6 @@ hl.define_submap("service", function()
         hl.dispatch(hl.dsp.window.float())
         hl.dispatch(hl.dsp.submap("reset"))
     end)
-    -- Flip the split direction of the focused pair (dwindle only).
     hl.bind("R", function()
         hl.dispatch(hl.dsp.layout("togglesplit"))
         hl.dispatch(hl.dsp.submap("reset"))

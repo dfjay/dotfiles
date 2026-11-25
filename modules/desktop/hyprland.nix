@@ -6,10 +6,21 @@
       programs.hyprland.enable = true;
 
       services.gnome.gnome-keyring.enable = true;
+
+      # Terminal=true entries (yazi as the folder handler) need it to start.
+      xdg.terminal-exec = {
+        enable = true;
+        settings.default = [ "com.mitchellh.ghostty.desktop" ];
+      };
     };
 
   homeModule =
-    { lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     {
       wayland.windowManager.hyprland = {
@@ -18,7 +29,19 @@
         portalPackage = null;
 
         configType = "lua";
-        systemd.enableXdgAutostart = true;
+        systemd = {
+          enableXdgAutostart = true;
+          # noctalia launches apps as systemd services, they need the cursor too.
+          variables = [
+            "DISPLAY"
+            "HYPRLAND_INSTANCE_SIGNATURE"
+            "WAYLAND_DISPLAY"
+            "XDG_CURRENT_DESKTOP"
+            "XDG_SESSION_TYPE"
+            "XCURSOR_THEME"
+            "XCURSOR_SIZE"
+          ];
+        };
 
         extraLuaFiles = {
           nix = {
@@ -27,6 +50,10 @@
               return {
                 terminal = "${lib.getExe pkgs.ghostty}",
                 noctalia = "${lib.getExe pkgs.noctalia}",
+                cursor = {
+                  name = "${config.home.pointerCursor.name}",
+                  size = "${toString config.home.pointerCursor.size}",
+                },
               }
             '';
           };

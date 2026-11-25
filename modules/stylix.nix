@@ -51,6 +51,15 @@ let
     };
 in
 {
-  nixosModule = mkModule "nixosModules";
+  nixosModule =
+    { pkgs, ... }:
+    {
+      imports = [ (mkModule "nixosModules") ];
+      stylix.cursor = {
+        package = pkgs.apple-cursor;
+        name = "macOS";
+        size = 24;
+      };
+    };
   darwinModule = mkModule "darwinModules";
 }
