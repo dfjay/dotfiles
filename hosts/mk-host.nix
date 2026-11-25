@@ -108,7 +108,10 @@ let
         home = homeDirectory;
       };
 
-      security.pam.services.sudo_local.touchIdAuth = true;
+      security.pam.services.sudo_local = {
+        touchIdAuth = true;
+        reattach = true;
+      };
 
       nix = {
         settings.experimental-features = [
