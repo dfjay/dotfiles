@@ -10,7 +10,7 @@ local mod = "SUPER"
 
 hl.monitor({
     output   = "",
-    mode     = "preferred",
+    mode     = "highrr",
     position = "auto",
     scale    = "auto",
     -- Fullscreen HDR content switches the output to HDR on its own
