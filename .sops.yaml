@@ -1,5 +1,5 @@
 keys:
-  - &yubikey A82705DF08BC95859FF5CB7E577260D68251AC22
+  - &yubikey 4A8AD708448F193C3DD61F74E660AE2C72C0D9E2
   - &mac-age age169gkmzkh42gjt6pylegtk07tzhxhct8ajst32zpqsvanax2u3y5szwxp3t
   - &us-age age1vljcpwhu7h3a46vgc4n8a2wlsf2xmuyvplnka3l03t7fae0ge5tsjnxqh9
   - &ru-age age125e4z55u3642ldaz9qerxk8xfw8egj6pu6qzqfcpc36rksv8cs4qcepk52

@@ -1,7 +1,8 @@
 let
   u2fOrigin = "pam://dfjay";
   u2fKeys = [
-    "MCqVKxndnYsp6J/rUnUct10DV2vAj+VRJWyc/1hh9gZiX0jL1Nu/FrLRdSLM67FyfTcd6pUv7aIraFZDvKXiZg==,iM0rjGbb0hzEvI1I0sqqKZ5MWJoccoxyvgzPCtb5rY/fsbNCBCX1CD9xyriOPSlHrXJlfXRxwRgEXCEy1M6HAQ==,es256,+presence"
+    "+Mm1l4/LrwC+C8KpbxTLIykuiEVU14msEFe5YoBUpa07ctd7hCXzwWTHXi6gdQTFJDDkkwMXGjC6jOWm8TnPzg==,+EwdIOGfoC9+eH5P1/OIgm6bD2ML4dUCmljfiodCBw4nf05YE295sQJRPgSxUQqJJR42ygCDHCyUfuHIE0SQkA==,es256,+presence"
+    "pM1N2pdUVP9ForQZAqqz3qePxwzcmZ0+htldNbVU3tXBwYkpKzlVzpShSVYw06z1/dpp5TV002EESfobZWHPPw==,TlNbwoTDE2qGXELWgxSFLAediDkettZDB440QkHljC6nyeSu7OLOhHTs/0vYOO5EWHj7/15VVcBm8N0eyJBICQ==,es256,+presence"
   ];
   u2fMappings = username: builtins.concatStringsSep ":" ([ username ] ++ u2fKeys);
 in
@@ -48,12 +49,12 @@ in
       home.packages = [ pkgs.yubikey-manager ];
 
       programs.git.signing = {
-        key = "A82705DF08BC95859FF5CB7E577260D68251AC22"; # primary key [SC]
+        key = "4A8AD708448F193C3DD61F74E660AE2C72C0D9E2"; # primary key [C]
         signByDefault = true;
       };
 
       services.gpg-agent.sshKeys = [
-        "FB20142EEBEAA96FD7F688382F5E558BA4A23694" # auth subkey
+        "4DDE9C74B1179D4533034D73D601DD99B577877D" # auth subkey
       ];
 
       launchd.agents.yknotify = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {

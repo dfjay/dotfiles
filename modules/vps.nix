@@ -100,7 +100,7 @@
               description = userdesc;
               extraGroups = [ "wheel" ];
               openssh.authorizedKeys.keys = [
-                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFmvdG0pEwUZcsrElS/5B+jR9PYfEECrtgy8VLs5pwR cardno:20_488_896"
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOit5gYKGOh6Wwy3Q/nyLpyN8tg/vDjpNiXQc7dIV27 openpgp:0x830BAD41"
               ];
             };
           };
