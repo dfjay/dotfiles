@@ -76,6 +76,7 @@ let
       nixpkgs.overlays = overlays;
 
       nix = {
+        channel.enable = false;
         settings = {
           auto-optimise-store = true;
           min-free = "1G";
