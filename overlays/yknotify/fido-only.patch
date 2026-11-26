@@ -1,6 +1,6 @@
 --- a/yknotify.go
 +++ b/yknotify.go
-@@ -11,6 +11,29 @@
+@@ -11,6 +11,34 @@
  	"time"
  )
  
@@ -27,10 +27,42 @@
 +	return false
 +}
 +
++// fidoGrace is how long a FIDO HID queue must stay open before it counts as a
++// touch request. Tools that only probe the key (ykman, browsers enumerating
++// authenticators) open and close it within a few hundred milliseconds.
++const fidoGrace = time.Second
++
  const defaultPredicate = `(processImagePath == "/kernel" AND senderImagePath ENDSWITH "IOHIDFamily") OR (subsystem CONTAINS "CryptoTokenKit")`
  
  var (
-@@ -106,7 +129,8 @@
+@@ -27,6 +55,7 @@
+ 
+ type TouchState struct {
+ 	fido2Needed   bool
++	fido2Since    time.Time
+ 	openPGPNeeded bool
+ 	lastNotify    time.Time
+ }
+@@ -42,7 +71,7 @@
+ 		return
+ 	}
+ 
+-	if ts.fido2Needed {
++	if ts.fido2Needed && now.Sub(ts.fido2Since) >= fidoGrace {
+ 		event := TouchEvent{
+ 			Type:      "FIDO2",
+ 			Timestamp: now.UTC().Format(time.RFC3339),
+@@ -81,6 +110,9 @@
+ 	state := &TouchState{}
+ 	scanner := bufio.NewScanner(stdout)
+ 	yubiKeyClients := make(map[string]bool)
++	// FIDO clients with a running queue. A single flag is not enough: several
++	// keys can be open at once, and a client may close without stopQueue.
++	fidoPending := make(map[string]bool)
+ 
+ 	go func() {
+ 		ticker := time.NewTicker(time.Second)
+@@ -106,7 +138,8 @@
  				parts := strings.Split(msg, " open by ")
  				if len(parts) == 2 {
  					clientID := strings.Split(parts[1], " ")[0]
@@ -40,3 +72,33 @@
  				}
  			}
  
+@@ -114,14 +147,25 @@
+ 			// Only trigger FIDO2 for tracked YubiKey clients.
+ 			if strings.HasSuffix(msg, "startQueue") {
+ 				clientID := strings.Split(msg, " ")[0]
+-				state.fido2Needed = yubiKeyClients[clientID]
+-			} else if strings.HasSuffix(msg, "stopQueue") {
+-				clientID := strings.Split(msg, " ")[0]
+ 				if yubiKeyClients[clientID] {
+-					state.fido2Needed = false
++					fidoPending[clientID] = true
+ 				}
++			} else if strings.HasSuffix(msg, "stopQueue") {
++				delete(fidoPending, strings.Split(msg, " ")[0])
++			} else if parts := strings.Split(msg, " close by "); len(parts) == 2 {
++				// e.g., AppleUserUSBHostHIDDevice:0x100000c81 close by IOHIDLibUserClient:0x10016f869 (0x0)
++				// ykman closes the device without a stopQueue.
++				clientID := strings.Split(parts[1], " ")[0]
++				delete(fidoPending, clientID)
++				delete(yubiKeyClients, clientID)
+ 			}
+ 
++			needed := len(fidoPending) > 0
++			if needed && !state.fido2Needed {
++				state.fido2Since = time.Now()
++			}
++			state.fido2Needed = needed
++
+ 		case strings.HasSuffix(entry.ProcessImagePath, "usbsmartcardreaderd") &&
+ 			strings.HasSuffix(entry.Subsystem, "CryptoTokenKit"):
+ 			state.openPGPNeeded = entry.EventMessage == "Time extension received"
