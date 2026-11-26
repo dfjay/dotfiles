@@ -24,8 +24,9 @@ hl.monitor({
 hl.monitor({
     output   = touchscreen,
     mode     = "preferred",
-    position = "auto-right",
-    scale    = 2,
+    -- Centered under the ultrawide: (4096 - 1536) / 2, below its 1728 logical rows.
+    position = "1280x1728",
+    scale    = 2.5,
 })
 
 hl.monitor({
@@ -37,14 +38,40 @@ hl.monitor({
 
 hl.config({
     general = {
-        gaps_in     = 5,
-        gaps_out    = 5,
-        border_size = 2,
+        -- gaps_in applies per window side: 4 + 4 between windows matches gaps_out.
+        gaps_in     = 4,
+        gaps_out    = 8,
+        border_size = 1,
+        col = {
+            active_border   = "rgba(ffffff30)",
+            inactive_border = "rgba(ffffff12)",
+        },
         layout      = "dwindle",
     },
 
     decoration = {
-        rounding = 10,
+        rounding       = 12,
+        rounding_power = 3,
+        dim_inactive   = true,
+        dim_strength   = 0.08,
+
+        shadow = {
+            enabled        = true,
+            range          = 40,
+            render_power   = 3,
+            offset         = { 0, 10 },
+            color          = "rgba(00000070)",
+            color_inactive = "rgba(00000038)",
+        },
+
+        blur = {
+            enabled  = true,
+            size     = 10,
+            passes   = 3,
+            noise    = 0.02,
+            vibrancy = 0.2,
+            popups   = true,
+        },
     },
 
     dwindle = {
@@ -72,7 +99,20 @@ hl.config({
     render = {
         direct_scanout = 2,
     },
+
+    xwayland = {
+        force_zero_scaling = true,
+    },
 })
+
+hl.curve("easeOut", { type = "bezier", points = { {0.22, 1}, {0.36, 1} } })
+
+hl.animation({ leaf = "windows",    enabled = true, speed = 3.5, bezier = "easeOut" })
+hl.animation({ leaf = "windowsIn",  enabled = true, speed = 3.5, bezier = "easeOut", style = "popin 92%" })
+hl.animation({ leaf = "windowsOut", enabled = true, speed = 2.5, bezier = "easeOut", style = "popin 92%" })
+hl.animation({ leaf = "fade",       enabled = true, speed = 2.5, bezier = "easeOut" })
+hl.animation({ leaf = "border",     enabled = true, speed = 3,   bezier = "easeOut" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 3.5, bezier = "easeOut", style = "slide" })
 
 -- The panel also exposes an absolute pointer next to its multitouch node.
 hl.device({

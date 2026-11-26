@@ -61,6 +61,8 @@
         };
       };
 
+      stylix.targets.hyprland.enable = false;
+
       wayland.systemd.target = "hyprland-session.target";
 
       services.hyprpolkitagent.enable = true;
