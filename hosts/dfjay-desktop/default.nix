@@ -71,6 +71,7 @@
       systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
       services.printing.enable = true;
+      services.speechd.enable = false;
 
       networking = {
         hostName = hostname;
@@ -140,6 +141,9 @@
         enable = true;
         passwordFilesLocation = "/var/lib/nixos";
       };
+
+      system.etc.overlay.enable = true;
+      system.nixos-init.enable = true;
 
       users = {
         defaultUserShell = pkgs.fish;
