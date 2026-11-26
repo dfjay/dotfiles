@@ -21,8 +21,4 @@
       };
     };
   };
-
-  homeModule = {
-    programs.nh.enable = true;
-  };
 }

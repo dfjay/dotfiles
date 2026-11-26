@@ -5,7 +5,6 @@
     {
       environment.systemPackages = with pkgs; [ alsa-utils ];
 
-      services.pulseaudio.enable = false;
       security.rtkit.enable = true;
       services.pipewire = {
         enable = true;

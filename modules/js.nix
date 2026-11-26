@@ -13,9 +13,14 @@
                 languages = {
                   typescript = {
                     enable = true;
+                    lsp.servers = [ "typescript-go" ];
                     format.type = [ "biome" ];
+                    extraDiagnostics.types = [ "biomejs" ];
                   };
-                  svelte.enable = true;
+                  svelte = {
+                    enable = true;
+                    extraDiagnostics.enable = false;
+                  };
                 };
               };
             };

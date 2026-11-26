@@ -3,7 +3,6 @@
     { ... }:
     {
       networking.firewall = {
-        enable = true;
         # mDNS for printer/device discovery on LAN
         allowedUDPPorts = [ 5353 ];
       };

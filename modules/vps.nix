@@ -112,7 +112,6 @@
               PasswordAuthentication = false;
               KbdInteractiveAuthentication = false;
               MaxAuthTries = 3;
-              X11Forwarding = false;
               AllowAgentForwarding = false;
             };
           };
@@ -138,8 +137,6 @@
             iperf3
             nmap
           ];
-
-          security.sudo.enable = true;
 
           programs.neovim = {
             enable = true;

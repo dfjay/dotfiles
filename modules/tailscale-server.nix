@@ -13,6 +13,9 @@
           preauthorized = true;
         };
         extraUpFlags = [
+          "--reset"
+          "--hostname"
+          config.networking.hostName
           "--advertise-tags=tag:server"
         ];
       };

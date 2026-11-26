@@ -5,11 +5,6 @@
       services.tailscale = {
         enable = true;
         openFirewall = true;
-        extraUpFlags = [
-          "--reset"
-          "--hostname"
-          config.networking.hostName
-        ];
       };
 
       services.resolved.enable = true;

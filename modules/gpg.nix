@@ -16,7 +16,6 @@
   nixosModule =
     { ... }:
     {
-      systemd.user.services.gcr-ssh-agent.enable = false;
-      systemd.user.sockets.gcr-ssh-agent.enable = false;
+      services.gnome.gcr-ssh-agent.enable = false;
     };
 }
