@@ -71,11 +71,11 @@
     "claude-plugins-official": {
       "flake": false,
       "locked": {
-        "lastModified": 1795554885,
-        "narHash": "sha256-4o4BbW198W0HFRLfD22Cld6h2xP2jJj/8kwoql/XH+Y=",
+        "lastModified": 1795647086,
+        "narHash": "sha256-J9pxacOMDz6wEHJHo5d0JhLfR/95hhJwUz1RmHqRvcI=",
         "owner": "anthropics",
         "repo": "claude-plugins-official",
-        "rev": "6985b2d88dc08b4a0d202f5f0301f02e360b9cb1",
+        "rev": "0fbfda5a91f4adc311daca25acc99132f40f0b6e",
         "type": "github"
       },
       "original": {
@@ -150,11 +150,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1795579382,
-        "narHash": "sha256-gWHGwbcyUxUmDhHaAdSBnBrOEgACNRy2GvEjQG7njPg=",
+        "lastModified": 1795665773,
+        "narHash": "sha256-HK36/qO4Wh8UArUJOEnIwBuWho2ESpiNzRmv1dvTp6I=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "e07dc67cab8e59a57aa833b025b859e008cf19fa",
+        "rev": "f4ec2979b3167a58cc74fb34ccaef7dd55c66083",
         "type": "gitlab"
       },
       "original": {
@@ -311,11 +311,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795534022,
-        "narHash": "sha256-xkRZ+PcPWaAyf9YrEBszYD5w2S6/Ac2tIfsufzd4dEQ=",
+        "lastModified": 1795686323,
+        "narHash": "sha256-4iRcuQObXq+6JrmHkCUjevZ4L0Wy97MkUE8BeOaCgRs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b56bcd042b5e69ad188eca20d9bec1bfbf3dd453",
+        "rev": "567216631dfccee23b32288de037b1339918144c",
         "type": "github"
       },
       "original": {
@@ -371,11 +371,11 @@
     "mattpocock-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1795531383,
-        "narHash": "sha256-kn99yoU6xzp3FydMJtiPdKz1uvUMkuIugr6xwJd1lwg=",
+        "lastModified": 1795608503,
+        "narHash": "sha256-kM/OK6+kbTHzlN5d6wjL9hM80lolcSCoO8A1oRvEJEU=",
         "owner": "mattpocock",
         "repo": "skills",
-        "rev": "d65391149dbb5fe76478e76fa8d5122b2aa5a70e",
+        "rev": "6f7f7831a625f040a8e06a0e7954826b87ce775a",
         "type": "github"
       },
       "original": {
@@ -479,11 +479,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1795586061,
-        "narHash": "sha256-GhgTnXnsAN7XSibV9f/XyDJWN1AZS8falcbZRYL3YKU=",
+        "lastModified": 1795694479,
+        "narHash": "sha256-JHjgW+xYLDsh0qjRvvXrQwsRn63avxAUhVGoVxrkN5g=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f7009b12fc7dba3953ca9eb5b606712183448dbf",
+        "rev": "6e348fdae5fa81cf6ea6c30312a4b76608f3639c",
         "type": "github"
       },
       "original": {
@@ -600,11 +600,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795164392,
-        "narHash": "sha256-ki4eiNHyPCggJVpnNqjz9yXFPsjjVTzVD6/vnotJiRg=",
+        "lastModified": 1795643671,
+        "narHash": "sha256-dFWvshiKfnNGsrDfX7KGAbKZINBoXOrKZwrf4pF7CW8=",
         "owner": "dfjay",
         "repo": "princo",
-        "rev": "c489330a8dc499401ae3c327ae863001ca59de39",
+        "rev": "7244c41ac0df073759552c05c7a6cb0049b7c5a4",
         "type": "github"
       },
       "original": {
@@ -670,11 +670,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795522582,
-        "narHash": "sha256-2UgrrjTeYt4UMmsjdcUjhxSnCGYOlzMuGuk7dRB5Kq4=",
+        "lastModified": 1795689650,
+        "narHash": "sha256-gvke5rg5P9S2TAXdOASCqEPc/OdvPKaHIGoMlbYLJ/E=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "639e209cc8eecd0c307fd95c8aabc011bf047c41",
+        "rev": "8771c4aba509d6efb8bf376fd8cb657cce52b013",
         "type": "github"
       },
       "original": {
@@ -726,11 +726,11 @@
     "spectrum": {
       "flake": false,
       "locked": {
-        "lastModified": 1795428115,
-        "narHash": "sha256-0EYw1mqQMqeVNPX5JUBZWUsfdlAR9gcBBhUDEb76D2U=",
+        "lastModified": 1795695115,
+        "narHash": "sha256-SSduGznHJk1gE+aVrv2o+3+76vq44YLBTsu57q9gick=",
         "ref": "refs/heads/main",
-        "rev": "356ceba8581359d1c88ae37d1a44f4d501ff8ef0",
-        "revCount": 7,
+        "rev": "90fafdb72ae453c2a8661cec6c5e2dfc7f9ba8b3",
+        "revCount": 8,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-spectrum"
       },
@@ -902,11 +902,11 @@
     "vpn": {
       "flake": false,
       "locked": {
-        "lastModified": 1795246882,
-        "narHash": "sha256-2zb0HQD0GohsODwmEwWwEJgNzD696IC4V9Yq3KFP68E=",
+        "lastModified": 1795695100,
+        "narHash": "sha256-n3AHkoew6ehxbV6DSwOzyla4nhrW43XWI9fDyLPmkHo=",
         "ref": "refs/heads/main",
-        "rev": "f43f71677d1f21f1aeb3e93f65a8b671d95e7b9c",
-        "revCount": 28,
+        "rev": "ac2754743a51d5ba29ccaac79a55be5a438fbe77",
+        "revCount": 29,
         "type": "git",
         "url": "ssh://git@github.com/dfjay/dotfiles-vpn"
       },
