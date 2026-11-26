@@ -26,6 +26,7 @@
               type = "luks";
               name = "cryptroot";
               settings.allowDiscards = true;
+              settings.bypassWorkqueues = true;
               settings.crypttabExtraOpts = [ "tpm2-device=auto" ];
               content = {
                 type = "btrfs";
@@ -73,17 +74,12 @@
   boot.initrd.systemd.services.rollback = {
     description = "Rollback BTRFS root subvolume to a pristine state";
     wantedBy = [ "initrd.target" ];
+    requires = [ "systemd-cryptsetup@cryptroot.service" ];
+    after = [ "systemd-cryptsetup@cryptroot.service" ];
     before = [ "sysroot.mount" ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''
-      for i in {1..20}; do
-        if [ -b /dev/mapper/cryptroot ]; then
-          break
-        fi
-        sleep 0.1
-      done
-
       mkdir -p /btrfs_tmp
       mount -t btrfs -o subvol=/ /dev/mapper/cryptroot /btrfs_tmp
 
@@ -93,17 +89,8 @@
           mv /btrfs_tmp/@root "/btrfs_tmp/old_roots/$timestamp"
       fi
 
-      delete_subvolume_recursively() {
-          IFS=$'\n'
-          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-              delete_subvolume_recursively "/btrfs_tmp/$i"
-          done
-          btrfs subvolume delete "$1"
-      }
-
-      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-          delete_subvolume_recursively "$i"
-      done
+      find /btrfs_tmp/old_roots/ -mindepth 1 -maxdepth 1 -mtime +30 \
+        -exec btrfs subvolume delete --recursive {} +
 
       btrfs subvolume create /btrfs_tmp/@root
       umount /btrfs_tmp
@@ -125,10 +112,22 @@
     preserveAt."/persist" = {
       directories = [
         "/var/log"
-        "/var/lib/bluetooth"
-        "/var/lib/nixos"
+        {
+          directory = "/var/lib/nixos";
+          inInitrd = true;
+        }
+        {
+          directory = "/var/lib/userborn";
+          inInitrd = true;
+        }
         "/var/lib/systemd/coredump"
         "/var/lib/systemd/timers"
+        "/var/lib/systemd/rfkill"
+        {
+          directory = "/var/lib/systemd/timesync";
+          user = "systemd-timesync";
+          group = "systemd-timesync";
+        }
         "/var/lib/cups"
         "/var/lib/sbctl"
         "/etc/NetworkManager/system-connections"
@@ -136,7 +135,6 @@
         "/var/lib/AccountsService"
         "/var/lib/NetworkManager"
         "/var/lib/sudo"
-        "/var/lib/tailscale"
         {
           directory = "/var/lib/colord";
           user = "colord";
@@ -148,6 +146,10 @@
         {
           file = "/etc/machine-id";
           inInitrd = true;
+        }
+        {
+          file = "/var/lib/systemd/random-seed";
+          mode = "0600";
         }
         {
           file = "/etc/ssh/ssh_host_rsa_key";
@@ -168,13 +170,6 @@
           file = "/etc/ssh/ssh_host_ed25519_key.pub";
           how = "symlink";
           configureParent = true;
-        }
-        {
-          file = "/var/keys/secret_file";
-          configureParent = true;
-          parent = {
-            mode = "0700";
-          };
         }
       ];
     };

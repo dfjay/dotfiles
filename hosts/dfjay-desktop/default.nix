@@ -135,6 +135,11 @@
         ];
       };
 
+      services.userborn = {
+        enable = true;
+        passwordFilesLocation = "/var/lib/nixos";
+      };
+
       users = {
         defaultUserShell = pkgs.fish;
         mutableUsers = false;

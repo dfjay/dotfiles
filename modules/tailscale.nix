@@ -14,6 +14,10 @@
 
       services.resolved.enable = true;
       security.polkit.enable = lib.mkIf config.networking.dhcpcd.enable true;
+
+      preservation.preserveAt."/persist".directories = lib.mkIf config.preservation.enable [
+        "/var/lib/tailscale"
+      ];
     };
 
   darwinModule =

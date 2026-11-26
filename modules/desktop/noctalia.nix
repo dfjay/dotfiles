@@ -1,12 +1,22 @@
 {
   nixosModule =
-    { ... }:
+    { config, lib, ... }:
 
     {
       services.displayManager.noctalia-greeter.enable = true;
 
       services.upower.enable = true;
       services.power-profiles-daemon.enable = true;
+
+      preservation.preserveAt."/persist".directories = lib.mkIf config.preservation.enable [
+        "/var/lib/power-profiles-daemon"
+        {
+          directory = "/var/lib/noctalia-greeter";
+          user = "greeter";
+          group = "greeter";
+          mode = "0750";
+        }
+      ];
     };
 
   homeModule =
