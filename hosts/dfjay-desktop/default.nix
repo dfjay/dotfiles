@@ -38,6 +38,7 @@
         reportPath = ./facter.json;
         detected.dhcp.enable = false;
       };
+      system.tools.nixos-generate-config.enable = false;
 
       sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
       sops.secrets.dfjay_password_hash = {
